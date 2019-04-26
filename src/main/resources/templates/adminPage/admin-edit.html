@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑用户</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!--<link rel="stylesheet" href="/css/okadmin.css">-->
+</head>
+<body>
+<div th:include="publictemplate :: css">
+
+</div>
+<div class="ok-body">
+    <!--面包屑导航区域-->
+    <div class="ok-body-breadcrumb">
+        <span class="layui-breadcrumb">
+            <a><cite>首页</cite></a>
+            <a><cite>系统用户列表</cite></a>
+            <a><cite>用户列表</cite></a>
+            <a><cite>编辑用户</cite></a>
+        </span>
+        <a class="layui-btn layui-btn-sm" href="javascript:location.replace(location.href);" title="刷新">
+            <i class="layui-icon layui-icon-refresh"></i>
+        </a>
+    </div>
+    <!--form表单-->
+    <form class="layui-form layui-form-pane ok-form" lay-filter="adminEdit" id="addadmin">
+        <input type="text" hidden th:value="${admin.id}" name="id">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="adminName" placeholder="请输入用户名" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-block">
+                <select name="role" lay-filter="role" lay-verify="required">
+                    <option value=""></option>
+                    <option value="su">超级用户</option>
+                    <option value="user" selected="">管理员</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号码</label>
+            <div class="layui-input-block">
+                <input type="text" name="phone" placeholder="请输入手机号码" autocomplete="off" class="layui-input" lay-verify="phone">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <select name="state" lay-filter="state" lay-verify="required">
+                    <option value=""></option>
+                    <option value="0">停用</option>
+                    <option value="1" selected="">启用</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <input type="text" name="desc" placeholder="请输入备注" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="add">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script th:inline="javascript">
+
+    layui.use(["element", "form", "jquery", "laydate"], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var laydate = layui.laydate;
+        form.val('adminEdit', {
+            /*<![CDATA[*/
+            "adminName": [[${admin.adminName}]] // "name": "value"
+            ,"password": [[${admin.password}]]
+            ,"phone": [[${admin.phone}]]
+            ,"role":[[${admin.role}]]
+            ,"state": [[${admin.state == true ? 1 : 0}]] //复选框选中状态
+            ,"desc": [[${admin.desc}]]
+            /*]]>*/
+        })
+        form.on("submit(add)", function (data) {
+            ajax();
+            return false;
+        });
+
+    })
+
+    function ajax() {
+        $.ajax({
+            cache: true,//缓存
+            type: "POST",//提交类型
+            url: '/admin/updateByPK',
+            data: $("#addadmin").serialize(),// 你的formid
+            dataType: 'json',
+            async: false,
+            error: function (data) {
+                layer.msg("错误!ERR:001,您可以稍后重试")
+            },
+            success: function (data) {
+                if (data.res){
+                    layer.msg("修改成功！", {icon: 6, time: 1000, anim: 4}, function () {
+                        parent.layer.close(parent.layer.getFrameIndex(window.name));
+                    })
+                }
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

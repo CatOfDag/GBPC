@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>ok-admin v1.0 | 很赞的后台模版</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="湖南科技学院中层干部测评系统">
+    <meta name="description" content="湖南科技学院中层干部测评系统"/>
+    <link rel="stylesheet" href="css/okadmin.css">
+</head>
+<body>
+<div th:include="publictemplate :: css"></div>
+<div class="ok-body">
+    <blockquote class="layui-elem-quote">
+        欢迎管理员：<span class="x-red">admin</span>！当前时间: <span id="nowTime"></span> <span id="weekday"></span>
+    </blockquote>
+    <fieldset class="layui-elem-field">
+        <legend>数据统计</legend>
+        <div class="layui-row layui-col-space10 layui-row-margin">
+            <div class="layui-col-md4">
+                <div class="layui-bg-green md2-sub1">
+                    <i class="iconfont icon-dianliyonghuzongshu"></i>
+                </div>
+                <div class="md2-sub2">
+                    <span>100</span>
+                    <cite>参测总干部</cite>
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-bg-red md2-sub1">
+                    <i class="iconfont icon-jiaose"></i>
+                </div>
+                <div class="md2-sub2">
+                    <span>100/99</span>
+                    <cite>参评/已评人数</cite>
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-bg-blue md2-sub1">
+                    <i class="iconfont icon-wenzhang2"></i>
+                </div>
+                <div class="md2-sub2">
+                    <span>3/2</span>
+                    <cite>总项目/已完成项目</cite>
+                </div>
+            </div>
+            
+        </div>
+    </fieldset>
+
+    <blockquote class="layui-elem-quote">
+        系统基本参数
+    </blockquote>
+    <table class="layui-table">
+        <colgroup>
+            <col width="300">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <td>本机IP地址</td>
+            <td>1.1.1.1</td>
+        </tr>
+        <tr>
+            <td>服务器地址</td>
+            <td><a href="http://ok-admin.xlbweb.cn" target="_blank">http://ok-admin.xlbweb.cn</a></td>
+        </tr>
+        <tr>
+            <td>操作系统</td>
+            <td>CentOS</td>
+        </tr>
+        <tr>
+            <td>运行环境</td>
+            <td>JDK 1.8.0_171</td>
+        </tr>
+        <tr>
+            <td>数据库版本</td>
+            <td>MySQL 5.7</td>
+        </tr>
+        <tr>
+            <td>最大上传限制</td>
+            <td>5M</td>
+        </tr>
+        <tr>
+            <td>当前用户权限</td>
+            <td>超级管理员</td>
+        </tr>
+        <tr>
+            <td>剩余空间</td>
+            <td>888888M</td>
+        </tr>
+        </tbody>
+    </table>    
+<!--js引入-->
+<!--<script src="../static/lib/layui/layui.js"></script>-->
+<!--js逻辑-->
+<script type="text/javascript">
+
+    layui.use('util', function () {
+        var util = layui.util;
+        util.fixbar({});
+    });
+
+    /**
+     * 初始化函数
+     */
+    setDate();
+
+    /**
+     * 获取当前时间
+     */
+    var nowDate1 = "";
+    function setDate() {
+        var date = new Date();
+        var year = date.getFullYear();
+        nowDate1 = year + "-" + addZero((date.getMonth() + 1)) + "-" + addZero(date.getDate()) + "  ";
+        nowDate1 += addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds());
+        document.getElementById("nowTime").innerHTML = nowDate1;
+        setTimeout('setDate()', 1000);
+    }
+
+    /**
+     * 年月日是分秒为10以下的数字则添加0字符串
+     * @param time
+     * @returns {number | *}
+     */
+    function addZero(time) {
+        var i = parseInt(time);
+        if (i / 10 < 1) {
+            i = "0" + i;
+        }
+        return i;
+    }
+
+    /**
+     * 初始化星期几
+     * @type {string}
+     */
+    var weekday = "星期" + "日一二三四五六".charAt(new Date().getDay());
+    document.getElementById("weekday").innerHTML = weekday;
+</script>
+</body>
+</html>

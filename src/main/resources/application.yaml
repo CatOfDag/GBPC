@@ -1,0 +1,30 @@
+#服务器配置相当于web.xml
+server:
+  port: 8080
+  servlet:
+    path: /
+#设置日志的显示级别,level中是以<k,v>存储的
+logging:
+  level:
+    cn.cyan: debug
+#配置数据库的连接
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/huse
+    username: root
+    password: 1234
+  #thymeleaf的配置
+  thymeleaf:
+    cache: false
+    encoding: UTF-8
+    mode: LEGACYHTML5
+    prefix: classpath:/templates/
+    suffix: .html #注意加一个点鸭
+    servlet:
+      content-type: text/html
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true  #设置驼峰
+  mapper-locations: classpath:mapping/*.xml #设置mapper xml文件夹[如果使用通用mapper则不需要配置了]
+  type-aliases-package: com.huse.pojo #设置别名包

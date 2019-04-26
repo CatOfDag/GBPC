@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <script src="../layui.js"></script>
+    <!--<link rel="stylesheet" th:href="@{/css/okadmin.css}">-->
+    <!--<link rel="stylesheet" th:href="@{/css/pagecss.css}">-->
+    <!--<link rel="shortcut icon" th:href="@{/static/imgs/favicon.ico}"/>-->
+    <title>登录</title>
+</head>
+<div th:include="publictemplate :: css"></div>
+<body style="overflow-y: hidden;overflow-x: hidden">
+<div class="layui-row">
+    <div class="layui-col-xs6 layui-col-md12" style="position: relative;
+    background:url(../static/imgs/bg.png);width: 100%;height: 1500px;background-size:2570px 1416px ">
+        <div class="title">
+            <div class="logo"></div>
+            <p>中层干部年度考核评测系统</p>
+        </div>
+        <div class="welc">欢迎,请登录!</div>
+        <div class="grid-demo grid-demo-bg2">
+            <form class="layui-form" action="">
+               <div class="login_box">
+                   <div class="form_tb">
+                       <label class="layui-form-label">用户名</label>
+                       <div class="layui-input-block" style="margin-bottom: 30px">
+                           <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                       </div>
+                       <label class="layui-form-label">密码</label>
+                       <div class="layui-input-block" style="margin-bottom: 50px">
+                           <input type="password" name="title" lay-verify="pass" autocomplete="off" placeholder="请输入密码" class="layui-input">
+                       </div>
+                   </div>
+                   <div class="layui-form-item">
+                       <div class="layui-input-block" style="margin-left: 200px">
+                           <button class="layui-btn layui-btn-lg layui-btn-normal" lay-submit="" lay-filter="demo1">登录</button>
+                       </div>
+                   </div>
+               </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+
+        //自定义验证规则
+        form.verify({
+            title: function(value){
+                if(value.length < 1){
+                    return '请输入用户名';
+                }
+            }
+            ,pass: [
+                /^[\S]{6,12}$/
+                ,'密码必须6到12位，且不能出现空格'
+            ]
+            ,content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
