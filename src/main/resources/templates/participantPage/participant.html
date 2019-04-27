@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <title>干部列表</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <!--<link rel="stylesheet" th:href="@{/static/css/okadmin.css}">-->
-    <!--<link rel="stylesheet" th:href="@{/static/lib/nprogress/nprogress.css}">-->
 </head>
 <body>
 <div class="ok-body">
@@ -22,15 +20,6 @@
             <i class="layui-icon layui-icon-refresh"></i>
         </a>
     </div>
-    <!--模糊搜索区域-->
-    <!--<div class="layui-row">-->
-        <!--<form class="layui-form layui-col-md12 ok-search">-->
-            <!--<input class="layui-input" placeholder="输入用户名搜索" autocomplete="off">-->
-            <!--<button class="layui-btn" lay-submit="" lay-filter="search">-->
-                <!--<i class="layui-icon layui-icon-search"></i>-->
-            <!--</button>-->
-        <!--</form>-->
-    <!--</div>-->
     <!--工具栏-->
     <okToolbar>
         <button class="layui-btn layui-btn-danger" id="batchDel">
@@ -46,9 +35,6 @@
     <!--数据表格-->
     <table class="layui-hide" id="tableId" lay-filter="tableFilter"></table>
 </div>
-<!--js逻辑-->
-<!--<script th:src="@{/static/lib/layui/layui.js}"></script>-->
-<!--<script th:src="@{/static/lib/nprogress/nprogress.js}"></script>-->
 <script th:inline="none">
     NProgress.start();
     window.onload = function () {
@@ -82,6 +68,7 @@
                 {field: "role", title: "身份", width: 150},
                 {field: "endtime", title: "有效时间", width: 200},
                 {field: "state", title: "状态", width: 100},
+                {field: "voteAlias", title: "投票项目", width: 100},
                 {title: "操作", width: 200, align: 'center', templet: "#operationTpl"}
             ]],
             done: function (res, curr, count) {
@@ -89,10 +76,6 @@
             }
         });
 
-        form.on("submit(search)", function () {
-            layer.msg("正在查询，请稍后...");
-            return false;
-        });
 
         table.on("tool(tableFilter)", function (obj) {
             var data = obj.data;
@@ -105,7 +88,7 @@
                     maxmin: true,
                     shade: 0.5,
                     area: ["40%", "70%"],
-                    content: "edit",
+                    content: "/participant/edit?id="+data.id,
                     zIndex: layer.zIndex,
                     end: function () {
                         $(".layui-laypage-btn")[0].click();
@@ -113,7 +96,25 @@
                 });
             } else if (layEvent === "del") {
                 layer.confirm("确定要删除吗？", {skin: "layui-layer-lan", icon: 2, title: "提示", anim: 6}, function () {
-                    layer.msg("操作成功！", {icon: 1, time: 1000});
+                    $.ajax({
+                        cache: true,//缓存
+                        type: "POST",//提交类型
+                        url: '/participant/deleteByPK',
+                        data: {id:data.id},// 你的formid
+                        dataType: 'json',
+                        async: false,
+                        error: function (data) {
+                            console.log("失败")
+                        },
+                        success: function (data) {
+                            if (data.res){
+                                layer.msg("删除成功", {icon: 1, time: 1000});
+                                table.reload('tableId', {
+                                    url: "/participant/getParticipantList"
+                                });
+                            }
+                        }
+                    });
                 });
             }
         });
@@ -167,6 +168,7 @@
 </script>
 <script type="text/html" id="operationTpl">
     <a href="javascript:;" title="编辑" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
     <a href="javascript:;" title="删除" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
 </script>
 </body>

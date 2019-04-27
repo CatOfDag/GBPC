@@ -6,7 +6,7 @@ import com.huse.utils.AjaxResult;
 import com.huse.utils.Laytable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,7 +30,9 @@ public class ParticipantController {
     }
 
     @RequestMapping("participant/edit")
-    public String editParticipant() {
+    public String editParticipant(int id, ModelMap mp) {
+        Participant participant = participantService.selectByPrimaryKey(id);
+        mp.addAttribute("participant", participant);
         return "participantPage/participant-edit";
     }
 
@@ -56,13 +58,25 @@ public class ParticipantController {
         return ajaxResult;
     }
 
-    @RequestMapping("participant/deleteParticipant")
+    @RequestMapping("participant/deleteByPK")
     @ResponseBody
     public AjaxResult deleteParticipant(int id) {
         int i = participantService.deleteByPrimaryKey(id);
+        System.out.println("要删除的id是" + id);
         boolean flag = i > 0 ? true : false;
         ajaxResult.setRes(flag);
         return ajaxResult;
+    }
+
+    @RequestMapping("participant/updateByPK")
+    @ResponseBody
+    public AjaxResult updateByPK(Participant participant) {
+        System.out.println(participant.toString());
+        final int i = participantService.updateByPrimaryKey(participant);
+        boolean flag = i > 0 ? true : false;
+        ajaxResult.setRes(true);
+        return ajaxResult;
+
     }
 
 }
