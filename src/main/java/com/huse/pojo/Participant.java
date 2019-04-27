@@ -67,7 +67,7 @@ public class Participant {
     public void setVoteAlias(String voteAlias) {
         this.voteAlias = voteAlias == null ? null : voteAlias.trim();
     }
-
+    //草泥马怎么上传到码云了
     @Override
     public String toString() {
         return "Participant{" +
