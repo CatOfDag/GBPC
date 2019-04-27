@@ -21,15 +21,6 @@
             <i class="layui-icon layui-icon-refresh"></i>
         </a>
     </div>
-    <!--模糊搜索区域-->
-    <div class="layui-row">
-        <form class="layui-form layui-col-md12 ok-search">
-            <input class="layui-input" placeholder="输入用户名搜索" autocomplete="off">
-            <button class="layui-btn" lay-submit="" lay-filter="search">
-                <i class="layui-icon layui-icon-search"></i>
-            </button>
-        </form>
-    </div>
     <!--工具栏-->
     <okToolbar>
         <button class="layui-btn layui-btn-danger" id="batchDel">
@@ -42,9 +33,6 @@
     <!--数据表格-->
     <table class="layui-hide" id="tableId" lay-filter="tableFilter"></table>
 </div>
-<!--js逻辑-->
-<!--<script th:src="@{/static/lib/layui/layui.js}"></script>-->
-<!--<script th:src="@{/static/lib/nprogress/nprogress.js}"></script>-->
 <script th:inline="none">
     NProgress.start();
     window.onload = function () {
@@ -87,11 +75,6 @@
             done: function (res, curr, count) {
                 $("#countNum").text(count);
             }
-        });
-
-        form.on("submit(search)", function () {
-            layer.msg("正在查询，请稍后...");
-            return false;
         });
 
         table.on("tool(tableFilter)", function (obj) {

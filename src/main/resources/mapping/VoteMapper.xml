@@ -103,4 +103,10 @@
       desc = #{desc,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getVoteList" resultMap="BaseResultMap">
+    SELECT * FROM huse_vote
+  </select>
+  <select id="count" resultType="java.lang.Integer">
+    SELECT count(*) FROM huse_vote
+  </select>
 </mapper>

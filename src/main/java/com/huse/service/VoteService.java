@@ -1,10 +1,10 @@
-package com.huse.mapper;
+package com.huse.service;
 
 import com.huse.pojo.Vote;
 
 import java.util.List;
 
-public interface VoteMapper {
+public interface VoteService {
     int deleteByPrimaryKey(Integer id);
 
     int insert(Vote record);

@@ -43,11 +43,21 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">参与投票</label>
+            <div class="layui-input-block">
+                <select name="voteAlias" lay-filter="voteAlias" lay-verify="required">
+                    <option value=""></option>
+                    <option value="19投票">19投票</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">截止时间</label>
             <div class="layui-input-block">
                 <input type="text" name="endtime" placeholder="请设设置截止时间" autocomplete="off" class="layui-input" id="end" lay-verify="required">
             </div>
         </div>
+<!--        新建一个用户默认其是启用状态-->
         <input type="text" hidden name="state" value="1">
         <div class="layui-form-item">
             <div class="layui-input-block">
@@ -77,7 +87,6 @@
         });
 
         form.on("submit(add)", function (data) {
-            console.log("你点了提交");
             ajax();
             return false;
         });

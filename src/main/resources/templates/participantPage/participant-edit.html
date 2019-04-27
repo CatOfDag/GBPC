@@ -40,6 +40,15 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">参与投票</label>
+            <div class="layui-input-block">
+                <select name="voteAlias" lay-filter="voteAlias" lay-verify="required">
+                    <option value=""></option>
+                    <option value="19投票">19投票</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">截止时间</label>
             <div class="layui-input-block">
                 <input type="text" name="endtime" placeholder="请设设置截止时间" autocomplete="off" class="layui-input" id="end" lay-verify="required">
@@ -66,6 +75,7 @@
             // 需要对时间进行格式化
             ,"endtime": [[${#dates.format(participant.endtime,'yyyy-MM-dd HH:mm:ss')}]]
             ,"state":[[${participant.state}]]
+            ,"voteAlias":[[${participant.voteAlias}]]
             /*]]>*/
         })
 
@@ -87,7 +97,7 @@
             dataType: 'json',
             success: function (data) {
                 if (data.res) {
-                    layer.msg("添加成功！", {icon: 6, time: 1000, anim: 4}, function () {
+                    layer.msg("修改成功！", {icon: 6, time: 1000, anim: 4}, function () {
                         parent.layer.close(parent.layer.getFrameIndex(window.name));
                     })
                 }
