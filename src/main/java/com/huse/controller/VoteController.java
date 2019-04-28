@@ -6,6 +6,7 @@ import com.huse.utils.AjaxResult;
 import com.huse.utils.Laytable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +35,10 @@ public class VoteController {
     }
 
     @GetMapping("vote/edit")
-    public String adminVote() {
+    public String adminVote(int id, ModelMap mp) {
+        Vote vote = voteService.selectByPrimaryKey(id);
+        mp.addAttribute("vote", vote);
+        System.out.println(vote.toString());
         return "votePage/vote-edit";
     }
 
@@ -70,6 +74,16 @@ public class VoteController {
     @ResponseBody
     public AjaxResult deleteByPK(int id) {
         int i = voteService.deleteByPrimaryKey(id);
+        boolean flag = i > 0 ? true : false;
+        ajaxResult.setRes(flag);
+        return ajaxResult;
+    }
+
+    @RequestMapping("vote/updateByPK")
+    @ResponseBody
+    public AjaxResult updateByPK(Vote vote) {
+        System.out.println("传入的vote信息"+vote.toString());
+        int i = voteService.updateByPrimaryKey(vote);
         boolean flag = i > 0 ? true : false;
         ajaxResult.setRes(flag);
         return ajaxResult;
