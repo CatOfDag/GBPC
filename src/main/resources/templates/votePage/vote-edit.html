@@ -23,38 +23,47 @@
         </a>
     </div>
     <!--form表单-->
-    <form class="layui-form layui-form-pane ok-form">
+    <form class="layui-form layui-form-pane ok-form" id="voteInfo">
         <div class="layui-form-item">
             <label class="layui-form-label">项目名称</label>
             <div class="layui-input-block">
-                <input type="text" name="username" placeholder="请输入项目名" autocomplete="off" class="layui-input"
-                       lay-verify="required">
+                <input type="text" name="name" placeholder="请输入项目名" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">项目别名</label>
+            <div class="layui-input-block">
+                <input type="text" name="alias" placeholder="请输入别名" autocomplete="off" class="layui-input" lay-verify="required">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">开始日期</label>
             <div class="layui-input-block">
-                <input type="text" name="begin" placeholder="请选择开始日期" autocomplete="off" class="layui-input" id="begin"
-                       lay-verify="birthdayVerify">
+                <input type="text" name="beginTime" placeholder="请选择开始日期" autocomplete="off" class="layui-input" id="begin" lay-verify="birthdayVerify">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">截止日期</label>
             <div class="layui-input-block">
-                <input type="text" name="end" placeholder="请选择截止日期" autocomplete="off" class="layui-input" id="end"
-                       lay-verify="birthdayVerify">
+                <input type="text" name="endTime" placeholder="请选择截止日期" autocomplete="off" class="layui-input" id="end" lay-verify="birthdayVerify">
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">状态</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="status" lay-skin="switch" lay-text="启用|停用" checked value="0">
+                <select name="state" lay-filter="state" lay-verify="required">
+                    <option value=""></option>
+                    <option value="0">停用</option>
+                    <option value="1" selected="">启用</option>
+                </select>
             </div>
         </div>
+
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
-                <textarea name="remarks" placeholder="请输入内容" class="layui-textarea"></textarea>
+                <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item">
@@ -65,8 +74,6 @@
         </div>
     </form>
 </div>
-<!--js逻辑-->
-<!--<script th:src="@{/static/lib/layui/layui.js}"></script>-->
 <script>
     layui.use(["element", "form", "jquery", "laydate"], function () {
         var form = layui.form;

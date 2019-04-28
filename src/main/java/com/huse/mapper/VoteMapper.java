@@ -17,7 +17,7 @@ public interface VoteMapper {
 
     int updateByPrimaryKey(Vote record);
 
-    List<Vote> getVoteList();
+    List<Vote> getVoteList(int start,int limit);
 
     int count();
 }

@@ -7,14 +7,15 @@ public class Cadre {
 
     private String job;
 
-
     private Boolean state;
+
+    private String desc;
 
     private String password;
 
     private String role;
 
-    private String desc;
+    private String avoteLias;//fuck 笔误
 
     public Integer getId() {
         return id;
@@ -40,13 +41,20 @@ public class Cadre {
         this.job = job == null ? null : job.trim();
     }
 
-
     public Boolean getState() {
         return state;
     }
 
     public void setState(Boolean state) {
         this.state = state;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc == null ? null : desc.trim();
     }
 
     public String getPassword() {
@@ -65,12 +73,12 @@ public class Cadre {
         this.role = role == null ? null : role.trim();
     }
 
-    public String getDesc() {
-        return desc;
+    public String getAvoteLias() {
+        return avoteLias;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc == null ? null : desc.trim();
+    public void setAvoteLias(String avoteLias) {
+        this.avoteLias = avoteLias == null ? null : avoteLias.trim();
     }
 
     @Override
@@ -80,9 +88,10 @@ public class Cadre {
                 ", cadreName='" + cadreName + '\'' +
                 ", job='" + job + '\'' +
                 ", state=" + state +
+                ", desc='" + desc + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
-                ", desc='" + desc + '\'' +
+                ", avoteLias='" + avoteLias + '\'' +
                 '}';
     }
 }

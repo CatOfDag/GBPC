@@ -56,20 +56,18 @@
 
         table.render({
             elem: "#tableId",
-            url: "../data/user.json",
+            url: "/vote/getVoteList",
             limit: 10,
             page: true,
             cols: [[
                 {type: "checkbox"},
                 {field: "id", title: "ID", width: 80, sort: true},
-                {field: "username", title: "用户名", width: 100},
-                {field: "name", title: "姓名", width: 100},
-                {field: "password", title: "密码", width: 100},
-                {field: "status", title: "状态", width: 85, templet: "#statusTpl"},
-                {field: "role", title: "角色", width: 100, templet: "#roleTpl"},
-                {field: "email", title: "邮箱", width: 200},
-                {field: "createTime", title: "创建时间", width: 200},
-                {field: "logins", title: "登陆次数", width: 100},
+                {field: "name", title: "投票名称", width: 300},
+                {field: "alias", title: "投票简称", width: 200},
+                {field: "beginTime", title: "开始时间", width: 200},
+                {field: "endTime", title: "结束时间", width: 200},
+                {field: "desc", title: "描述", width: 200},
+                {field: "state", title: "状态", width: 80},
                 {title: "操作", width: 200, align: 'center', templet: "#operationTpl"}
             ]],
             done: function (res, curr, count) {
@@ -95,8 +93,26 @@
                     }
                 });
             } else if (layEvent === "del") {
-                layer.confirm("确定要删除吗？", {skin: "layui-layer-lan", icon: 2, title: "提示", anim: 6}, function () {
-                    layer.msg("操作成功！", {icon: 1, time: 1000});
+                layer.confirm("若删除该投票,与之关联用户的信息也被删除,确定要删除吗？", {skin: "layui-layer-lan", icon: 2, title: "提示", anim: 6}, function () {
+                    $.ajax({
+                        cache: true,//缓存
+                        type: "POST",//提交类型
+                        url: '/vote/deleteByPK',
+                        data: {id:data.id},// 你的formid
+                        dataType: 'json',
+                        async: false,
+                        error: function (data) {
+                            console.log("失败")
+                        },
+                        success: function (data) {
+                            if (data.res){
+                                layer.msg("删除成功", {icon: 1, time: 1000});
+                                table.reload('tableId', {
+                                    url: "/vote/getVoteList"
+                                });
+                            }
+                        }
+                    });
                 });
             }
         });
@@ -141,15 +157,10 @@
         })
     })
 </script>
-<!--模板-->
-<script type="text/html" id="statusTpl">
-    <input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="启用|停用" {{ d.status== 0 ? 'checked' : ''}}>
-</script>
-<script type="text/html" id="roleTpl">
-    {{ d.role == 0 ? '管理员' : '普通用户    '}}
-</script>
+
 <script type="text/html" id="operationTpl">
     <a href="javascript:;" title="编辑" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
     <a href="javascript:;" title="删除" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
 </script>
 </body>

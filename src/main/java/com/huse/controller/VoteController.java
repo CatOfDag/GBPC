@@ -3,6 +3,7 @@ package com.huse.controller;
 import com.huse.pojo.Vote;
 import com.huse.service.VoteService;
 import com.huse.utils.AjaxResult;
+import com.huse.utils.Laytable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,24 +24,54 @@ public class VoteController {
     private VoteService voteService;
 
     @GetMapping("vote/votelist")
-    public String voteListPage(){
+    public String voteListPage() {
         return "votePage/vote";
     }
+
     @GetMapping("vote/add")
-    public String addVote(){
+    public String addVote() {
         return "votePage/vote-add";
     }
+
     @GetMapping("vote/edit")
-    public String adminVote(){
+    public String adminVote() {
         return "votePage/vote-edit";
     }
+
     @GetMapping("vote/score")
-    public String voteScore(){
+    public String voteScore() {
         return "votePage/vote-score";
     }
 
-//    @RequestMapping("vote/getVoteList")
-//    @ResponseBody
-//    public Vote getVoteList(){
-//    }
+    @RequestMapping("vote/getVoteList")
+    @ResponseBody
+    public Laytable getVoteList(int page, int limit) {
+        int startRows = (page - 1) * limit;
+        Laytable laytable = new Laytable();
+        laytable.setCode(0);
+        laytable.setMsg("");
+        int count = voteService.count();
+        laytable.setCount(count);
+        List<Vote> voteList = voteService.getVoteList(startRows, limit);
+        laytable.setData(voteList);
+        return laytable;
+    }
+
+    @RequestMapping("vote/addVote")
+    @ResponseBody
+    public AjaxResult addVote(Vote vote) {
+        int i = voteService.insert(vote);
+        boolean flag = i > 0 ? true : false;
+        ajaxResult.setRes(flag);
+        return ajaxResult;
+    }
+
+    @RequestMapping("vote/deleteByPK")
+    @ResponseBody
+    public AjaxResult deleteByPK(int id) {
+        int i = voteService.deleteByPrimaryKey(id);
+        boolean flag = i > 0 ? true : false;
+        ajaxResult.setRes(flag);
+        return ajaxResult;
+    }
 }

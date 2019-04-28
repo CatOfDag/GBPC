@@ -15,8 +15,6 @@ public interface CadreService {
 
     int updateByPrimaryKeySelective(Cadre record);
 
-    int updateByPrimaryKeyWithBLOBs(Cadre record);
-
     int updateByPrimaryKey(Cadre record);
 
     List<Cadre> getCadreList(int start, int number);

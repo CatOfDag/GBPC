@@ -39,11 +39,6 @@ public class CadreServiceImp implements CadreService{
     }
 
     @Override
-    public int updateByPrimaryKeyWithBLOBs(Cadre record) {
-        return cadreMapper.updateByPrimaryKeyWithBLOBs(record);
-    }
-
-    @Override
     public int updateByPrimaryKey(Cadre record) {
         return cadreMapper.updateByPrimaryKey(record);
     }

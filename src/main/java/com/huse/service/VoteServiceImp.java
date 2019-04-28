@@ -43,9 +43,10 @@ public class VoteServiceImp implements VoteService {
     }
 
     @Override
-    public List<Vote> getVoteList() {
-        return voteMapper.getVoteList();
+    public List<Vote> getVoteList(int start, int limit) {
+        return voteMapper.getVoteList(start,limit);
     }
+
 
     @Override
     public int count() {

@@ -1,6 +1,5 @@
 package com.huse.mapper;
 
-import com.huse.pojo.Admin;
 import com.huse.pojo.Cadre;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,8 +15,6 @@ public interface CadreMapper {
     Cadre selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(Cadre record);
-
-    int updateByPrimaryKeyWithBLOBs(Cadre record);
 
     int updateByPrimaryKey(Cadre record);
 

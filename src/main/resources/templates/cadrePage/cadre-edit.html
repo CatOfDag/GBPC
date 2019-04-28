@@ -63,6 +63,15 @@
                 </select>
             </div>
         </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">参与投票</label>
+            <div class="layui-input-block">
+                <select name="avoteLias" lay-filter="avoteLias" lay-verify="required">
+                    <option value=""></option>
+                    <option value="19投票">19投票</option>
+                </select>
+            </div>
+        </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">描述</label>
             <div class="layui-input-block">
@@ -91,6 +100,7 @@
             ,"role":[[${cadre.role}]]
             ,"state": [[${cadre.state == true ? 1 : 0}]]
             ,"desc": [[${cadre.desc}]]
+            ,"avoteLias":[[${cadre.avoteLias}]]
             /*]]>*/
         })
 

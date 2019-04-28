@@ -1,6 +1,5 @@
 package com.huse.controller;
 
-import com.huse.pojo.Admin;
 import com.huse.pojo.Cadre;
 import com.huse.service.CadreService;
 import com.huse.utils.AjaxResult;
