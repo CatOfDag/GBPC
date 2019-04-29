@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huse.mapper.ScoreMapper" >
+  <resultMap id="BaseResultMap" type="com.huse.pojo.Score" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="PIN" property="pin" jdbcType="VARCHAR" />
+    <result column="cadre_name" property="cadreName" jdbcType="VARCHAR" />
+    <result column="alias" property="alias" jdbcType="VARCHAR" />
+    <result column="vote_time" property="voteTime" jdbcType="TIMESTAMP" />
+    <result column="virtue" property="virtue" jdbcType="INTEGER" />
+    <result column="ability" property="ability" jdbcType="INTEGER" />
+    <result column="diligence" property="diligence" jdbcType="INTEGER" />
+    <result column="feats" property="feats" jdbcType="INTEGER" />
+    <result column="honest" property="honest" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, PIN, cadre_name, alias, vote_time, virtue, ability, diligence, feats, honest
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from huse_score
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from huse_score
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.huse.pojo.Score" >
+    insert into huse_score (id, PIN, cadre_name, 
+      alias, vote_time, virtue, 
+      ability, diligence, feats, 
+      honest)
+    values (#{id,jdbcType=INTEGER}, #{pin,jdbcType=VARCHAR}, #{cadreName,jdbcType=VARCHAR}, 
+      #{alias,jdbcType=VARCHAR}, #{voteTime,jdbcType=TIMESTAMP}, #{virtue,jdbcType=INTEGER}, 
+      #{ability,jdbcType=INTEGER}, #{diligence,jdbcType=INTEGER}, #{feats,jdbcType=INTEGER}, 
+      #{honest,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huse.pojo.Score" >
+    insert into huse_score
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pin != null" >
+        PIN,
+      </if>
+      <if test="cadreName != null" >
+        cadre_name,
+      </if>
+      <if test="alias != null" >
+        alias,
+      </if>
+      <if test="voteTime != null" >
+        vote_time,
+      </if>
+      <if test="virtue != null" >
+        virtue,
+      </if>
+      <if test="ability != null" >
+        ability,
+      </if>
+      <if test="diligence != null" >
+        diligence,
+      </if>
+      <if test="feats != null" >
+        feats,
+      </if>
+      <if test="honest != null" >
+        honest,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pin != null" >
+        #{pin,jdbcType=VARCHAR},
+      </if>
+      <if test="cadreName != null" >
+        #{cadreName,jdbcType=VARCHAR},
+      </if>
+      <if test="alias != null" >
+        #{alias,jdbcType=VARCHAR},
+      </if>
+      <if test="voteTime != null" >
+        #{voteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="virtue != null" >
+        #{virtue,jdbcType=INTEGER},
+      </if>
+      <if test="ability != null" >
+        #{ability,jdbcType=INTEGER},
+      </if>
+      <if test="diligence != null" >
+        #{diligence,jdbcType=INTEGER},
+      </if>
+      <if test="feats != null" >
+        #{feats,jdbcType=INTEGER},
+      </if>
+      <if test="honest != null" >
+        #{honest,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huse.pojo.Score" >
+    update huse_score
+    <set >
+      <if test="pin != null" >
+        PIN = #{pin,jdbcType=VARCHAR},
+      </if>
+      <if test="cadreName != null" >
+        cadre_name = #{cadreName,jdbcType=VARCHAR},
+      </if>
+      <if test="alias != null" >
+        alias = #{alias,jdbcType=VARCHAR},
+      </if>
+      <if test="voteTime != null" >
+        vote_time = #{voteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="virtue != null" >
+        virtue = #{virtue,jdbcType=INTEGER},
+      </if>
+      <if test="ability != null" >
+        ability = #{ability,jdbcType=INTEGER},
+      </if>
+      <if test="diligence != null" >
+        diligence = #{diligence,jdbcType=INTEGER},
+      </if>
+      <if test="feats != null" >
+        feats = #{feats,jdbcType=INTEGER},
+      </if>
+      <if test="honest != null" >
+        honest = #{honest,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huse.pojo.Score" >
+    update huse_score
+    set PIN = #{pin,jdbcType=VARCHAR},
+      cadre_name = #{cadreName,jdbcType=VARCHAR},
+      alias = #{alias,jdbcType=VARCHAR},
+      vote_time = #{voteTime,jdbcType=TIMESTAMP},
+      virtue = #{virtue,jdbcType=INTEGER},
+      ability = #{ability,jdbcType=INTEGER},
+      diligence = #{diligence,jdbcType=INTEGER},
+      feats = #{feats,jdbcType=INTEGER},
+      honest = #{honest,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="getScoreList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from huse_score limit #{start},#{limit}
+  </select>
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from huse_score
+  </select>
+  <select id="fuzzyQuery" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT * FROM huse_score where cadre_name like '%${info}%'
+  </select>
+
+</mapper>

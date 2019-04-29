@@ -1,6 +1,8 @@
 package com.huse.controller;
 
+import com.huse.pojo.Score;
 import com.huse.pojo.Vote;
+import com.huse.service.ScoreService;
 import com.huse.service.VoteService;
 import com.huse.utils.AjaxResult;
 import com.huse.utils.Laytable;
@@ -23,6 +25,8 @@ public class VoteController {
     private AjaxResult ajaxResult;
     @Autowired
     private VoteService voteService;
+    @Autowired
+    private ScoreService scoreService;
 
     @GetMapping("vote/votelist")
     public String voteListPage() {
@@ -82,10 +86,28 @@ public class VoteController {
     @RequestMapping("vote/updateByPK")
     @ResponseBody
     public AjaxResult updateByPK(Vote vote) {
-        System.out.println("传入的vote信息"+vote.toString());
         int i = voteService.updateByPrimaryKey(vote);
         boolean flag = i > 0 ? true : false;
         ajaxResult.setRes(flag);
         return ajaxResult;
+    }
+
+    @RequestMapping("vote/getScoreList")
+    @ResponseBody
+    public Laytable score(int page, int limit, String info) {
+        Laytable laytable = new Laytable();
+        laytable.setMsg("");
+        laytable.setCode(0);
+        if (info==null || info.equals("")){
+            int startRows = (page-1)*limit;
+            List<Score> scoreList = scoreService.getScoreList(startRows, limit);
+            laytable.setCount(scoreService.count());
+            laytable.setData(scoreList);
+        }else {
+            System.out.println(info);
+            List<Score> scores = scoreService.fuzzyQuery(info);
+            laytable.setData(scores);
+        }
+        return laytable;
     }
 }

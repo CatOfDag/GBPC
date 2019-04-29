@@ -45,7 +45,6 @@
         var form = layui.form;
         var $ = layui.jquery;
         var laydate = layui.laydate;
-
         laydate.render({
             elem: "#startTime",
             type: "datetime"
@@ -159,6 +158,24 @@
         })
     })
 </script>
+<script>
+    layui.use('upload', function(){
+        var $ = layui.jquery
+            ,upload = layui.upload;
+
+        //指定允许上传的文件类型
+        upload.render({
+            elem: '#test3'
+            ,url: '/upload/'
+            ,accept: 'file' //普通文件
+            ,done: function(res){
+                console.log(res)
+            }
+        });
+
+    });
+</script>
+
 <!--模板-->
 <script type="text/html" id="statusTpl">
     <input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="启用|停用" {{ d.status== 0 ? 'checked' : ''}}>
