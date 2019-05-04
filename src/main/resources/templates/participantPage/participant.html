@@ -7,8 +7,8 @@
 </head>
 <body>
 <div class="ok-body">
-<!--引入模板-->
-<div th:include="publictemplate :: css"></div>
+    <!--引入模板-->
+    <div th:include="publictemplate :: css"></div>
     <!--面包屑导航区域-->
     <div class="ok-body-breadcrumb">
         <span class="layui-breadcrumb">
@@ -25,7 +25,7 @@
         <button class="layui-btn layui-btn-danger" id="batchDel">
             <i class="layui-icon layui-icon-delete"></i>批量删除
         </button>
-        <button class="layui-btn layui-btn-warm" id="batchimport">
+        <button class="layui-btn layui-btn-warm" id="batchimport" style="margin-left: 0px">
             <i class="layui-icon">&#xe67c;</i>批量导入
         </button>
         <button class="layui-btn" id="addUser">
@@ -40,11 +40,23 @@
     window.onload = function () {
         NProgress.done();
     }
-    layui.use(["element", "table", "form", "jquery", "laydate"], function () {
+    layui.use(["element", "table", "form", "jquery", "laydate", "upload"], function () {
         var table = layui.table;
         var form = layui.form;
         var $ = layui.jquery;
         var laydate = layui.laydate;
+        var upload = layui.upload;
+
+        //指定允许上传的文件类型
+        upload.render({
+            elem: '#batchimport'
+            , url: '/participant/batchImport'
+            , accept: 'file' //普通文件
+            , done: function (res) {
+                console.log(res)
+            }
+        });
+
         laydate.render({
             elem: "#startTime",
             type: "datetime"
@@ -87,7 +99,7 @@
                     maxmin: true,
                     shade: 0.5,
                     area: ["40%", "70%"],
-                    content: "/participant/edit?id="+data.id,
+                    content: "/participant/edit?id=" + data.id,
                     zIndex: layer.zIndex,
                     end: function () {
                         $(".layui-laypage-btn")[0].click();
@@ -99,14 +111,14 @@
                         cache: true,//缓存
                         type: "POST",//提交类型
                         url: '/participant/deleteByPK',
-                        data: {id:data.id},// 你的formid
+                        data: {id: data.id},// 你的formid
                         dataType: 'json',
                         async: false,
                         error: function (data) {
                             console.log("失败")
                         },
                         success: function (data) {
-                            if (data.res){
+                            if (data.res) {
                                 layer.msg("删除成功", {icon: 1, time: 1000});
                                 table.reload('tableId', {
                                     url: "/participant/getParticipantList"
@@ -158,27 +170,11 @@
         })
     })
 </script>
-<script>
-    layui.use('upload', function(){
-        var $ = layui.jquery
-            ,upload = layui.upload;
-
-        //指定允许上传的文件类型
-        upload.render({
-            elem: '#test3'
-            ,url: '/upload/'
-            ,accept: 'file' //普通文件
-            ,done: function(res){
-                console.log(res)
-            }
-        });
-
-    });
-</script>
 
 <!--模板-->
 <script type="text/html" id="statusTpl">
-    <input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="启用|停用" {{ d.status== 0 ? 'checked' : ''}}>
+    <input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="启用|停用" {{ d.status== 0
+           ? 'checked' : ''}}>
 </script>
 <script type="text/html" id="roleTpl">
     {{ d.role == 0 ? '管理员' : '普通用户    '}}

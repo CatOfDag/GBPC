@@ -36,6 +36,9 @@
         <button class="layui-btn layui-btn-danger" id="batchDel">
             <i class="layui-icon layui-icon-delete"></i>批量删除
         </button>
+        <button class="layui-btn layui-btn-warm" id="batchimport" style="margin-left: 0px">
+            <i class="layui-icon">&#xe67c;</i>批量导入
+        </button>
         <button class="layui-btn" id="addUser">
             <i class="layui-icon">&#xe61f;</i>添加干部
         </button>
@@ -48,10 +51,24 @@
     window.onload = function () {
         NProgress.done();
     }
-    layui.use(["element", "table", "form", "jquery", "laydate"], function () {
+    layui.use(["element", "table", "form", "jquery", "laydate","upload"], function () {
         var table = layui.table;
         var form = layui.form;
         var laydate = layui.laydate;
+        var upload = layui.upload;
+
+        //指定允许上传的文件类型
+        upload.render({
+            elem: '#batchimport'
+            , url: '/cadre/batchImport'
+            , accept: 'file' //普通文件
+            , done: function (res) {
+                if(res.res){
+                    layer.msg("导入成功")
+                }
+            }
+        });
+
 
         laydate.render({
             elem: "#startTime",
