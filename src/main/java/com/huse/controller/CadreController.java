@@ -126,9 +126,9 @@ public class CadreController {
         }
 
         Sheet sheet = wb.getSheetAt(0);
-        for (int i = 1; i <= sheet.getLastRowNum(); i++)
+        for (int i = 2; i <= sheet.getLastRowNum(); i++)
         {
-            Row row = sheet.getRow(i);//获取索引为i的行，以0开始
+            Row row = sheet.getRow(i);//获取索引为i的行，以2开始
             String cadreName= row.getCell(0).getStringCellValue();//获取第i行的索引为0的单元格数据
             String password = row.getCell(1).getStringCellValue();
             String job = row.getCell(2).getStringCellValue();

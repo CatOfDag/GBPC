@@ -65,6 +65,9 @@
             , done: function (res) {
                 if(res.res){
                     layer.msg("导入成功")
+                    table.reload('tableId', {
+                        url: "getCadreLists"
+                    });
                 }
             }
         });

@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -96,7 +97,7 @@ public class ParticipantController {
     public AjaxResult batchImport(MultipartFile file) throws IOException, MyException {
         String fileName = file.getOriginalFilename();
         System.out.println(fileName);
-        List<Cadre> cadresLists = new LinkedList<>();
+        List<Participant> participants = new LinkedList<>();
         //验证上传的文件格式
         if (!fileName.matches("^.+\\.(?i)(xls)$") && !fileName.matches("^.+\\.(?i)(xlsx)$")) {
             throw new MyException("文件格式错误");
@@ -114,32 +115,28 @@ public class ParticipantController {
             wb = new XSSFWorkbook(inputStream);
         }
 
-//        Sheet sheet = wb.getSheetAt(0);
-//        for (int i = 1; i <= sheet.getLastRowNum(); i++)
-//        {
-//            Row row = sheet.getRow(i);//获取索引为i的行，以0开始
-//            String cadreName= row.getCell(0).getStringCellValue();//获取第i行的索引为0的单元格数据
-//            String password = row.getCell(1).getStringCellValue();
-//            String job = row.getCell(2).getStringCellValue();
-//            int tempstate = (int) row.getCell(4).getNumericCellValue();
-//            String desc = row.getCell(6).getStringCellValue();
-//            String role = row.getCell(3).getStringCellValue();
-//            String avoteLias = row.getCell(5).getStringCellValue();
-//            boolean state = tempstate==1 ? true :false;
-//            Cadre cadre = new Cadre();
-//            cadre.setAvoteLias(avoteLias);
-//            cadre.setCadreName(cadreName);
-//            cadre.setDesc(desc);
-//            cadre.setJob(job);
-//            cadre.setState(state);
-//            cadre.setRole(role);
-//            cadre.setPassword(password);
-//            cadresLists.add(cadre);
-//            System.out.println("第"+i+"条的信息"+cadre.toString());
-//        }
-//        for (Cadre import_cadre: cadresLists) {
-//            participantService.insert(import_cadre);
-//        }
+        Sheet sheet = wb.getSheetAt(0);
+        for (int i = 2; i <= sheet.getLastRowNum(); i++)
+        {
+            Row row = sheet.getRow(i);//获取索引为i的行，以0开始
+            String pin= row.getCell(0).getStringCellValue();//获取第i行的索引为0的单元格数据
+            String role = row.getCell(1).getStringCellValue();
+            Date endtime = row.getCell(2).getDateCellValue();
+            int tempstate = (int) row.getCell(3).getNumericCellValue();
+            String votealias = row.getCell(4).getStringCellValue();
+            boolean state = tempstate==1 ? true :false;
+            Participant participant = new Participant();
+            participant.setEndtime(endtime);
+            participant.setPin(pin);
+            participant.setRole(role);
+            participant.setState(state);
+            participant.setVoteAlias(votealias);
+            participants.add(participant);
+            System.out.println("第"+i+"条的信息"+participant.toString());
+        }
+        for (Participant ptt: participants) {
+            participantService.insert(ptt);
+        }
         ajaxResult.setRes(true);
         return ajaxResult;
     }
