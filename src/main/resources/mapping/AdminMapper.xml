@@ -123,4 +123,7 @@
   <select id="fuzzyQuery" resultMap="BaseResultMap">
         SELECT * from huse_admin WHERE admin_name LIKE '%${info}%'
     </select>
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT * from huse_admin WHERE admin_name = #{admin_name}
+  </select>
 </mapper>

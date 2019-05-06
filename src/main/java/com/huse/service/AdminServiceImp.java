@@ -48,7 +48,6 @@ public class AdminServiceImp implements AdminService {
         return adminMapper.getAdminList(start,number);
     }
 
-
     @Override
     public int count() {
         return adminMapper.count();
@@ -57,6 +56,11 @@ public class AdminServiceImp implements AdminService {
     @Override
     public List<Admin> fuzzyQuery(String info) {
         return adminMapper.fuzzyQuery(info);
+    }
+
+    @Override
+    public Admin selectByName(String admin_name) {
+        return adminMapper.selectByName(admin_name);
     }
 
 }

@@ -3,10 +3,10 @@
 /*所有页面的CSS代码都写在这里*/
 /*登陆页面*/
 .login-body{background:url(../imgs/bg.png) no-repeat center center fixed;background-size:cover}
-.login-body .login-box{width:450px;height:270px;border:1px solid #1a312c;position:absolute;left:50%;top:50%;margin-left:-150px;margin-top:-150px;border-radius:5px;background: rgba(59, 59, 59, 0.45);}
-.login-body .login-box .head{width:100px;height:100px;border-radius:50%;position:absolute;top:-96px;left:50%;margin-left:-50px;background:url(../imgs/ok.png);background-size:cover}
+.login-body .login-box{width:450px;height:300px;border:1px solid #fff6fd;position:absolute;left:50%;top:50%;margin-left:-150px;margin-top:-150px;border-radius:5px;background: #fbfbfb;}
+.login-body .login-box .head{width:200px;height:100px;border-radius:50%;position:absolute;top:-48px;left:50%;margin-left:-50px;background-size:cover}
 .login-body .login-box .input-box{margin:10px 10px 10px 10px}
-.login-body .login-box .input-box input{margin-top:20px;border-radius:5px}
+.login-body .login-box .input-box input{margin-top:30px;border-radius:5px}
 .login-body .login-box .input-box input[type=submit]{background-color:#189F92;width:100%;border:none;outline:0;cursor:pointer;color:#fff;padding-top:8px;padding-bottom:8px;font-size:18px}
 .login-body .login-box .input-box .remember-me{margin-top:20px}
 .login-body .login-box .input-box .remember-me .layui-form-switch{margin-top:0}

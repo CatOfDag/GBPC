@@ -23,4 +23,5 @@ public interface AdminService {
 
     List<Admin> fuzzyQuery(String info);
 
+    Admin selectByName(String admin_name);
 }

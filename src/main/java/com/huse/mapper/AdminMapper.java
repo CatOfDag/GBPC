@@ -24,4 +24,6 @@ public interface AdminMapper {
 
     List<Admin> fuzzyQuery(@Param("info") String info);
 
+    Admin selectByName(String admin_name);
+
 }
