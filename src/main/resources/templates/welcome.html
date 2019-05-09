@@ -22,7 +22,7 @@
                     <i class="iconfont icon-dianliyonghuzongshu"></i>
                 </div>
                 <div class="md2-sub2">
-                    <span>100</span>
+                    <span th:text="${cadreCount}"></span>
                     <cite>参测总干部</cite>
                 </div>
             </div>
@@ -31,8 +31,8 @@
                     <i class="iconfont icon-jiaose"></i>
                 </div>
                 <div class="md2-sub2">
-                    <span>100/99</span>
-                    <cite>参评/已评人数</cite>
+                    <span th:text="${parCount+'/'+fbCount}">100/99</span>
+                    <cite>参与/完成人数</cite>
                 </div>
             </div>
             <div class="layui-col-md4">
@@ -40,8 +40,8 @@
                     <i class="iconfont icon-wenzhang2"></i>
                 </div>
                 <div class="md2-sub2">
-                    <span>3/2</span>
-                    <cite>总项目/已结束项目</cite>
+                    <span th:text="${voteCount}"></span>
+                    <cite>投票总项目</cite>
                 </div>
             </div>
             
@@ -59,11 +59,7 @@
         <tbody>
         <tr>
             <td>本机IP地址</td>
-            <td>1.1.1.1</td>
-        </tr>
-        <tr>
-            <td>服务器地址</td>
-            <td><a href="http://ok-admin.xlbweb.cn" target="_blank">http://ok-admin.xlbweb.cn</a></td>
+            <td>127.1.100</td>
         </tr>
         <tr>
             <td>操作系统</td>
@@ -81,19 +77,8 @@
             <td>最大上传限制</td>
             <td>5M</td>
         </tr>
-        <tr>
-            <td>当前用户权限</td>
-            <td>超级管理员</td>
-        </tr>
-        <tr>
-            <td>剩余空间</td>
-            <td>888888M</td>
-        </tr>
         </tbody>
-    </table>    
-<!--js引入-->
-<!--<script src="../static/lib/layui/layui.js"></script>-->
-<!--js逻辑-->
+    </table>
 <script type="text/javascript">
 
     layui.use('util', function () {

@@ -1,0 +1,67 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>登录-后台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+<body class="login-body">
+<div th:include="publictemplate :: css"></div>
+<div class="login-box animated rotateIn" style="height: 386px">
+    <div class="head"><p style="color: white;font-size:23px;">您好,请登录!</p></div>
+    <div class="layui-tab layui-tab-card">
+        <ul class="layui-tab-title">
+            <li class="layui-this">管理员入口</li>
+            <li>干部入口</li>
+            <li>投票入口</li>
+        </ul>
+        <div class="layui-tab-content" style="height: 300px;">
+            <div class="layui-tab-item layui-show">
+                <div class="input-box">
+                    <form class="layui-form" method="post" action="verification">
+                        <input type="text" name="username" required lay-verify="required" placeholder="账号" autocomplete="off" class="layui-input">
+                        <input type="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">
+                        <div class="remember-me">
+                            <span>记住我：</span>
+                            <input type="checkbox" name="rememberMe" lay-skin="switch" lay-text="是|否">
+                        </div>
+                        <input type="submit" value="登 录" lay-submit lay-filter="login">
+                        <div style="color: red;text-align: center;margin-top: 15px;">
+                            <P th:text="${state}"></P>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="input-box">
+                    <form class="layui-form" action="verification" method="post">
+                        <input type="text" name="username" required lay-verify="required" placeholder="账号" autocomplete="off" class="layui-input">
+                        <input type="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">
+                        <div class="remember-me">
+                            <span>记住我：</span>
+                            <input type="checkbox" name="rememberme" lay-skin="switch" lay-text="是|否">
+                        </div>
+                        <input type="submit" value="登 录" lay-submit lay-filter="login">
+                    </form>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="input-box">
+                    <form class="layui-form" action="">
+                        <input type="text" name="username" required lay-verify="required" placeholder="PIN码" autocomplete="off" class="layui-input">
+                        <input type="submit" value="确认" lay-submit lay-filter="login">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--js逻辑-->
+<script type="text/javascript">
+    layui.use(["form", "jquery"], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+
+    });
+</script>
+</body>
+</html>

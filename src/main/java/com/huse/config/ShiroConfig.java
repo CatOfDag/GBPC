@@ -1,17 +1,23 @@
 package com.huse.config;
 
 import com.huse.utils.UserRealm;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import com.huse.utils.UserRealm2;
 import org.apache.shiro.codec.Base64;
+import org.apache.shiro.realm.Realm;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -32,7 +38,7 @@ public class ShiroConfig {
         //防止xss读取cookie
         simpleCookie.setHttpOnly(true);
         simpleCookie.setPath("/");
-        //<!-- 记住我cookie生效时间30天 ,单位秒;-->
+        //<!-- 记住我cookie生效时间3天 ,单位秒;-->
         simpleCookie.setMaxAge(2592000);
         return simpleCookie;
     }
@@ -65,7 +71,7 @@ public class ShiroConfig {
 //    }
 
     /**
-     * 自定义realm
+     * 自定义realm.
      *
      * @return
      */
@@ -75,6 +81,12 @@ public class ShiroConfig {
 //        userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return userRealm;
     }
+
+    @Bean
+    public UserRealm2 userRealm2(){
+        UserRealm2 userRealm2 = new UserRealm2();
+        return userRealm2;
+    }
     /**
      * 安全管理器
      * 注：使用shiro-spring-boot-starter 1.4时，返回类型是SecurityManager会报错，直接引用shiro-spring则不报错
@@ -83,11 +95,41 @@ public class ShiroConfig {
      */
     @Bean
     public DefaultWebSecurityManager securityManager() {
+        List<Realm> realms = new ArrayList<>();
+        //多realm认证需要使用setRealms方法将各个realm添加进去
+        realms.add(userRealm());
+        realms.add(userRealm2());
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+//        securityManager.setRealms(realms);
         securityManager.setRealm(userRealm());
         securityManager.setRememberMeManager(rememberMeManager());
         return securityManager;
     }
+
+
+    //开启shiro注解权限控制
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor attributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        attributeSourceAdvisor.setSecurityManager(securityManager);
+        return attributeSourceAdvisor;
+    }
+    /**
+     * DefaultAdvisorAutoProxyCreator , Spring的一个bean , 由Advisor决定对哪些类的方法进行AOP代理 .
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator defaultAAP = new DefaultAdvisorAutoProxyCreator();
+        defaultAAP.setProxyTargetClass(true);
+        return defaultAAP;
+    }
+    /**
+     *
+     * 403页面跳转问题
+     *
+     * */
+
     /**
      * 设置过滤规则
      *
@@ -98,8 +140,8 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        shiroFilterFactoryBean.setLoginUrl("/adminLogin");
-        shiroFilterFactoryBean.setSuccessUrl("/");
+        shiroFilterFactoryBean.setLoginUrl("/login");
+//        shiroFilterFactoryBean.setSuccessUrl("/");
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         //注意此处使用的是LinkedHashMap，是有顺序的，shiro会按从上到下的顺序匹配验证，匹配了就不再继续验证
         //所以上面的url要苛刻，宽松的url要放在下面，尤其是"/**"要放到最下面，如果放前面的话其后的验证规则就没作用了。
@@ -108,6 +150,11 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/static/**", "anon");
         //验证帐号和密码
         filterChainDefinitionMap.put("/verification", "anon");
+        // 配置退出过滤器
+        filterChainDefinitionMap.put("/logout", "logout");
+        //设置访问权限
+        filterChainDefinitionMap.put("/index","roles[su,user]");
+        filterChainDefinitionMap.put("/","roles[su,user]");
         filterChainDefinitionMap.put("/**", "user");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;

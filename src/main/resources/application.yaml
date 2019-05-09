@@ -3,6 +3,8 @@ server:
   port: 8080
   servlet:
     path: /
+  tomcat:
+    uri-encoding: UTF-8
 #设置日志的显示级别,level中是以<k,v>存储的
 logging:
   level:
@@ -23,8 +25,18 @@ spring:
     suffix: .html #注意加一个点鸭
     servlet:
       content-type: text/html
+  aop:
+    auto: true
+    proxy-target-class: true
+  http:
+    #字符编码设置
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 mybatis:
   configuration:
     map-underscore-to-camel-case: true  #设置驼峰
   mapper-locations: classpath:mapping/*.xml #设置mapper xml文件夹[如果使用通用mapper则不需要配置了]
   type-aliases-package: com.huse.pojo #设置别名包
+

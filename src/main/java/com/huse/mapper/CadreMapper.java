@@ -23,4 +23,6 @@ public interface CadreMapper {
     int count();
 
     List<Cadre> fuzzyQuery(@Param("info") String info);
+
+    Cadre selectByName(String name);
 }

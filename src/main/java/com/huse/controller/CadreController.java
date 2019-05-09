@@ -154,4 +154,12 @@ public class CadreController {
         ajaxResult.setRes(true);
         return ajaxResult;
     }
+
+    @RequestMapping("cadre/cadreInfo")
+    public String cadreInfo(Integer id,ModelMap mmp){
+        System.out.println(id);
+        Cadre cadre = cadreService.selectByPrimaryKey(id);
+        mmp.addAttribute("cadre",cadre);
+        return "cadrePage/cadre-info";
+    }
 }

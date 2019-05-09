@@ -22,4 +22,6 @@ public interface CadreService {
     int count();
 
     List<Cadre> fuzzyQuery(String info);
+
+    Cadre selectByName(String name);
 }

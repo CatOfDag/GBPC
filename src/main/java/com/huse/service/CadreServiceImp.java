@@ -57,4 +57,9 @@ public class CadreServiceImp implements CadreService{
     public List<Cadre> fuzzyQuery(String info){
         return cadreMapper.fuzzyQuery(info);
     }
+
+    @Override
+    public Cadre selectByName(String name) {
+        return cadreMapper.selectByName(name);
+    }
 }

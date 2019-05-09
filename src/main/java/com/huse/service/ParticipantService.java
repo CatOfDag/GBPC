@@ -20,4 +20,6 @@ public interface ParticipantService {
     List<Participant> getParticipantLists(int startRows,int limit);
 
     int count();
+
+    int forbidden(int state);
 }

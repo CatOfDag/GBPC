@@ -52,4 +52,9 @@ public class ParticipantServiceImp implements ParticipantService {
     public int count() {
         return participantMapper.count();
     }
+
+    @Override
+    public int forbidden(int state) {
+        return participantMapper.forbidden(state);
+    }
 }

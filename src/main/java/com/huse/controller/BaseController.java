@@ -1,23 +1,47 @@
 package com.huse.controller;
 
+import com.huse.pojo.Admin;
+import com.huse.pojo.Cadre;
+import com.huse.service.AdminService;
+import com.huse.service.CadreService;
+import com.huse.service.ParticipantService;
+import com.huse.service.VoteService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /*
  * 基础控制器--控制如登录类的基础功能
  */
 @Controller
 public class BaseController {
+
+    @Autowired
+    private CadreService cadreService;
+    @Autowired
+    private ParticipantService participantService;
+    @Autowired
+    private VoteService voteService;
+    @Autowired
+    private AdminService adminService;
+
     //    登录页面
-    @GetMapping("adminLogin")
+    @GetMapping("login")
     public String loginPage() {
-        return "admin_login";
+        return "login";
+    }
+
+    //退出系统
+    @RequestMapping("logout")
+    public String logout(){
+        return "logout";
     }
 
     //    用户中心
@@ -27,14 +51,23 @@ public class BaseController {
     }
 
     //    index页面
-    @GetMapping("index")
+//    @RequiresRoles({"su","user"})
+    @RequestMapping({"index","/"})
     public String indexPage() {
         return "index";
     }
 
     //    welcome
     @GetMapping("welcome")
-    public String welcomePage() {
+    public String welcomePage(ModelMap mp) {
+        int cadreCount = cadreService.count();
+        int parCount = participantService.count();
+        int fbCount = participantService.forbidden(0);
+        int voteCount = voteService.count();
+        mp.addAttribute("cadreCount",cadreCount);
+        mp.addAttribute("parCount",parCount);
+        mp.addAttribute("fbCount",fbCount);
+        mp.addAttribute("voteCount",voteCount);
         return "welcome";
     }
 
@@ -44,47 +77,43 @@ public class BaseController {
         return "errorPage/403";
     }
 
-    //登录认证 https://blog.csdn.net/qq_28988969/article/details/78190869
+    //管理员的登录认证
     @RequestMapping("verification")
     public String loginCheck(String username, String password, boolean rememberMe, ModelMap mmp) {
-        System.out.println("传入的用户名是:" + username + "--传入的密码是" + password);
         Subject subject = SecurityUtils.getSubject();
         // 自己创建一个令牌，输入用户名和密码
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password,rememberMe);
         try {
             subject.login(usernamePasswordToken);
-            return "redirect:/index";
+            Admin admin = adminService.selectByName(username);
+            Cadre cadre = cadreService.selectByName(username);
+            if (admin!=null && (admin.getRole().equals("user") || admin.getRole().equals("su"))){
+                return "redirect:/index";
+            }
+            if(cadre!=null && !(cadre.getRole().equals("user") || cadre.getRole().equals("su"))){
+                return "redirect:/cadre/cadreInfo?id="+cadre.getId();
+            }
         } catch (UnknownAccountException e) {
-            e.printStackTrace();
             mmp.addAttribute("state","账号不存在！");
-            System.out.println("账号不存在！");
 
         } catch (LockedAccountException e) {
-            e.printStackTrace();
             mmp.addAttribute("state","账号被锁定！");
-            System.out.println("账号被锁定！");
 
         } catch (DisabledAccountException e) {
-            e.printStackTrace();
             mmp.addAttribute("state","账号被禁用！");
-            System.out.println("账号被禁用！");
 
         } catch (IncorrectCredentialsException e) {
-            e.printStackTrace();
             mmp.addAttribute("state","密码错误！");
-            System.out.println("密码错误！");
 
         } catch (ExpiredCredentialsException e) {
-            e.printStackTrace();
             mmp.addAttribute("state","密码过期！");
-            System.out.println("密码过期！");
 
         } catch (ExcessiveAttemptsException e) {
-            e.printStackTrace();
             mmp.addAttribute("state","登录失败次数过多！");
-            System.out.println("登录失败次数过多！");
-
+        }catch (AuthenticationException e){
+            mmp.addAttribute("state","请输入正确的帐号和信息！");
         }
-        return "admin_login";
+        return "login";
     }
+
 }

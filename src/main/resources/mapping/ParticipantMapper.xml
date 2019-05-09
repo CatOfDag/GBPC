@@ -107,4 +107,7 @@
   <select id="count" resultType="java.lang.Integer">
     select count(*) from huse_participant;
   </select>
+  <select id="forbidden" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    SELECT count(*) from huse_participant WHERE state=#{state};
+  </select>
 </mapper>

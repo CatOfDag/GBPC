@@ -20,4 +20,6 @@ public interface ParticipantMapper {
     List<Participant> getParticipantLists(int start, int limit);
 
     int count();
+
+    int forbidden(int state);
 }
