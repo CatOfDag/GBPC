@@ -11,11 +11,33 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 04/05/2019 21:41:53
+ Date: 10/05/2019 22:05:36
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for cadre_info
+-- ----------------------------
+DROP TABLE IF EXISTS `cadre_info`;
+CREATE TABLE `cadre_info`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文件名',
+  `header_pic` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像',
+  `file_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文件储存的路径',
+  `time` datetime NULL DEFAULT NULL COMMENT '保存的时间',
+  `card_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '外键干部名',
+  `info` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '个人信息',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `huse_file_ibfk_1`(`card_name`) USING BTREE,
+  CONSTRAINT `cadre_info_ibfk_1` FOREIGN KEY (`card_name`) REFERENCES `huse_cadre` (`cadre_name`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of cadre_info
+-- ----------------------------
+INSERT INTO `cadre_info` VALUES (1, 'xxxx', '12345', '1233', '2019-05-07 18:09:12', '王子', '萨达萨达撒');
 
 -- ----------------------------
 -- Table structure for huse_admin
@@ -30,7 +52,7 @@ CREATE TABLE `huse_admin`  (
   `desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
   `role` enum('user','su') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of huse_admin
@@ -43,9 +65,9 @@ INSERT INTO `huse_admin` VALUES (5, 'qd', '123', '18222222222', 1, '冯亮兄弟
 INSERT INTO `huse_admin` VALUES (7, 'xb', 'xbbb', '13967421654', 1, '冯亮兄弟之小白', 'user');
 INSERT INTO `huse_admin` VALUES (8, 'lx', 'lx888', '15844489773', 1, '小帅哥雷新', 'user');
 INSERT INTO `huse_admin` VALUES (9, 'wzx', 'wzx111', '13599384211', 1, '王子小帅哥', 'user');
-INSERT INTO `huse_admin` VALUES (20, '桂佳文', 'cool', '15874653211', 1, '龟甲文', 'user');
-INSERT INTO `huse_admin` VALUES (21, '李子健', 'shabi', '15688887724', 1, '撒上大声地撒', 'user');
+INSERT INTO `huse_admin` VALUES (21, '李子健', 'shabi', '15688887724', 1, '撒上大声地撒傻逼', 'user');
 INSERT INTO `huse_admin` VALUES (24, 'sbs', 'dsadas', '15707472222', 1, '打撒大撒', 'user');
+INSERT INTO `huse_admin` VALUES (26, '王刚帅', '12345', '13574654080', 1, '就是他a', 'user');
 
 -- ----------------------------
 -- Table structure for huse_cadre
@@ -64,41 +86,25 @@ CREATE TABLE `huse_cadre`  (
   INDEX `cadre_name`(`cadre_name`) USING BTREE,
   INDEX `avote_lias`(`avote_lias`) USING BTREE,
   CONSTRAINT `huse_cadre_ibfk_1` FOREIGN KEY (`avote_lias`) REFERENCES `huse_vote` (`alias`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of huse_cadre
 -- ----------------------------
-INSERT INTO `huse_cadre` VALUES (1, '王干子', '呼呼呼', 0, '我是一个爱打lol和王者的嘤嘤怪', 'ssss', '干部', '19投票');
+INSERT INTO `huse_cadre` VALUES (1, '王子', '呼呼呼', 0, '我是一个爱打lol和王者的嘤嘤怪', 'ssss', '干部', '19投票');
 INSERT INTO `huse_cadre` VALUES (2, '二马亮', '网吧经理', 1, '他是网吧经理', '2222', '干部', '19投票');
-INSERT INTO `huse_cadre` VALUES (3, '钟组新', '网吧网名', 1, '普通人啦', '22222', '干部', '19投票');
 INSERT INTO `huse_cadre` VALUES (4, '杠子健', '网吧试喷员', 1, '傻吊一个', '3333', '干部', '19投票');
 INSERT INTO `huse_cadre` VALUES (5, 'wk', '凯特威公子', 1, '牛逼', 'wkkk', '干部', '19投票');
 INSERT INTO `huse_cadre` VALUES (6, 'zjj', 'hotel男神', 0, '你知道加州招待所吗', 'adsad', '干部', '18投票');
 INSERT INTO `huse_cadre` VALUES (7, '黑岩', '学习小霸王', 0, 'java牛逼', 'study', '干部', '18投票');
 INSERT INTO `huse_cadre` VALUES (8, 'mmw', '富两代', 1, '虽然我很有钱但是我也爱学习,考托福的男人', 'rich', '干部', '18投票');
 INSERT INTO `huse_cadre` VALUES (9, 'ltw', '学习黑岩', 1, '向黑岩学习', 'lwt', '干部', '18投票');
-INSERT INTO `huse_cadre` VALUES (18, '王子轩', '厕所委员', 1, '哈哈', '1236544', '干部', '18投票');
 INSERT INTO `huse_cadre` VALUES (19, '假乃亮', '绿帽社社长', 1, 'PGone他是我弟弟', 'jll', '干部', '18投票');
 INSERT INTO `huse_cadre` VALUES (23, '张二毛', '战忽局部长', 1, '印度流批', '12222', '干部', '19投票');
-INSERT INTO `huse_cadre` VALUES (24, '戴狗蛋', '学习委员', 1, '爱学习哟', 'gd888', '干部', '19投票');
-INSERT INTO `huse_cadre` VALUES (25, '王二狗', '团鸡书', 1, '我系团支书', 'bg250', '干部', '19投票');
-
--- ----------------------------
--- Table structure for huse_file
--- ----------------------------
-DROP TABLE IF EXISTS `huse_file`;
-CREATE TABLE `huse_file`  (
-  `id` int(11) NOT NULL,
-  `file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文件名',
-  `header_pic` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像',
-  `file_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文件储存的路径',
-  `time` datetime NULL DEFAULT NULL COMMENT '保存的时间',
-  `card_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '外键干部名',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `huse_file_ibfk_1`(`card_name`) USING BTREE,
-  CONSTRAINT `huse_file_ibfk_1` FOREIGN KEY (`card_name`) REFERENCES `huse_cadre` (`cadre_name`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+INSERT INTO `huse_cadre` VALUES (32, 'DMW', '厉害', 1, '打撒大撒', '2016060', '干部', '19投票');
+INSERT INTO `huse_cadre` VALUES (35, '随手一写aa', '邋遢大王a', 0, '我就是邋遢大王八aaa', '123333', '干部', '19投票');
+INSERT INTO `huse_cadre` VALUES (36, '王三麻', '厂长', 0, '爱学习哟', 'gd888', '干部', '19投票');
+INSERT INTO `huse_cadre` VALUES (37, '杨洋洋', '厂长的表哥', 0, '我系团支书', 'bg250', '干部', '19投票');
 
 -- ----------------------------
 -- Table structure for huse_log
@@ -119,7 +125,7 @@ DROP TABLE IF EXISTS `huse_participant`;
 CREATE TABLE `huse_participant`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `PIN` varchar(8) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '个人识别码',
-  `role` enum('校长','干部','教师','群众') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '参与者类型',
+  `role` enum('校领导','干部','教师','群众') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '参与者类型',
   `endtime` datetime NOT NULL COMMENT '有效截止时间',
   `state` tinyint(1) NOT NULL COMMENT '是否投票',
   `vote_alias` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '投票别名',
@@ -127,18 +133,27 @@ CREATE TABLE `huse_participant`  (
   INDEX `PIN`(`PIN`) USING BTREE,
   INDEX `vote_alias`(`vote_alias`) USING BTREE,
   CONSTRAINT `huse_participant_ibfk_1` FOREIGN KEY (`vote_alias`) REFERENCES `huse_vote` (`alias`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of huse_participant
 -- ----------------------------
-INSERT INTO `huse_participant` VALUES (17, 'ASDFGHJK', '校长', '2019-04-28 16:19:02', 1, '19投票');
-INSERT INTO `huse_participant` VALUES (18, 'AAAAAAAA', '校长', '2020-04-28 00:00:00', 1, '19投票');
-INSERT INTO `huse_participant` VALUES (19, 'QWEREASD', '校长', '2019-05-24 00:00:00', 1, '19投票');
+INSERT INTO `huse_participant` VALUES (17, 'ASDFGHJK', '校领导', '2019-06-08 16:19:02', 1, '19投票');
+INSERT INTO `huse_participant` VALUES (18, 'AAAAAAAA', '校领导', '2020-04-28 00:00:00', 1, '19投票');
+INSERT INTO `huse_participant` VALUES (19, 'QWEREASD', '校领导', '2019-05-24 00:00:00', 1, '19投票');
 INSERT INTO `huse_participant` VALUES (20, 'ASADZXCX', '教师', '2019-04-29 10:25:56', 1, '19投票');
 INSERT INTO `huse_participant` VALUES (21, 'SADASDDD', '教师', '2019-04-29 10:26:28', 1, '19投票');
 INSERT INTO `huse_participant` VALUES (22, 'ZXCVVCXZ', '干部', '2019-04-29 10:26:52', 1, '19投票');
-INSERT INTO `huse_participant` VALUES (23, 'ZXCVBNMC', '校长', '2019-04-29 00:00:00', 1, '19投票');
+INSERT INTO `huse_participant` VALUES (23, 'ZXCVBNMC', '校领导', '2019-04-29 00:00:00', 1, '19投票');
+INSERT INTO `huse_participant` VALUES (24, '12345678', '校领导', '2019-05-06 00:00:00', 1, '19投票');
+INSERT INTO `huse_participant` VALUES (25, 'PUYGFGD', '校领导', '2019-06-05 00:00:00', 1, '19投票');
+INSERT INTO `huse_participant` VALUES (26, 'PPDDDDPP', '干部', '2019-06-06 00:00:00', 0, '19投票');
+INSERT INTO `huse_participant` VALUES (27, 'QWEEEASA', '校领导', '2019-05-05 00:00:00', 1, '19投票');
+INSERT INTO `huse_participant` VALUES (28, 'PUYGFGD', '校领导', '2019-06-05 00:00:00', 1, '19投票');
+INSERT INTO `huse_participant` VALUES (29, 'PPDDDDPP', '干部', '2019-06-06 00:00:00', 0, '19投票');
+INSERT INTO `huse_participant` VALUES (30, '88888888', '校领导', '2019-05-30 00:00:00', 1, '19投票');
+INSERT INTO `huse_participant` VALUES (31, 'PUYGFGD', '校领导', '2019-06-05 00:00:00', 1, '19投票');
+INSERT INTO `huse_participant` VALUES (32, 'PPDDDDPP', '干部', '2019-06-06 00:00:00', 0, '19投票');
 
 -- ----------------------------
 -- Table structure for huse_score
@@ -167,12 +182,12 @@ CREATE TABLE `huse_score`  (
 -- ----------------------------
 -- Records of huse_score
 -- ----------------------------
-INSERT INTO `huse_score` VALUES (1, 'ASDFGHJK', '王干子', '19投票', '2019-04-29 15:15:04', 2, 3, 3, 3, 1);
-INSERT INTO `huse_score` VALUES (2, 'AAAAAAAA', '王干子', '19投票', '2019-04-29 10:27:58', 1, 2, 4, 1, 1);
-INSERT INTO `huse_score` VALUES (3, 'QWEREASD', '王干子', '19投票', '2019-04-29 10:28:25', 3, 1, 2, 1, 2);
-INSERT INTO `huse_score` VALUES (4, 'ASADZXCX', '王干子', '19投票', '2019-04-29 10:28:49', 2, 1, 1, 1, 3);
-INSERT INTO `huse_score` VALUES (5, 'SADASDDD', '王干子', '19投票', '2019-04-29 10:29:15', 3, 2, 1, 2, 1);
-INSERT INTO `huse_score` VALUES (6, 'ZXCVVCXZ', '王干子', '19投票', '2019-04-29 10:29:40', 2, 3, 1, 2, 1);
+INSERT INTO `huse_score` VALUES (1, 'ASDFGHJK', '王子', '19投票', '2019-04-29 15:15:04', 2, 3, 3, 3, 1);
+INSERT INTO `huse_score` VALUES (2, 'AAAAAAAA', '王子', '19投票', '2019-04-29 10:27:58', 1, 2, 4, 1, 1);
+INSERT INTO `huse_score` VALUES (3, 'QWEREASD', '王子', '19投票', '2019-04-29 10:28:25', 3, 1, 2, 1, 2);
+INSERT INTO `huse_score` VALUES (4, 'ASADZXCX', '王子', '19投票', '2019-04-29 10:28:49', 2, 1, 1, 1, 3);
+INSERT INTO `huse_score` VALUES (5, 'SADASDDD', '王子', '19投票', '2019-04-29 10:29:15', 3, 2, 1, 2, 1);
+INSERT INTO `huse_score` VALUES (6, 'ZXCVVCXZ', '王子', '19投票', '2019-04-29 10:29:40', 2, 3, 1, 2, 1);
 INSERT INTO `huse_score` VALUES (7, 'ASDFGHJK', '二马亮', '19投票', '2019-04-29 10:53:14', 3, 3, 3, 3, 3);
 INSERT INTO `huse_score` VALUES (8, 'AAAAAAAA', '二马亮', '19投票', '2019-04-30 15:28:49', 3, 3, 3, 3, 3);
 INSERT INTO `huse_score` VALUES (9, 'QWEREASD', '二马亮', '19投票', '2019-04-29 15:29:20', 2, 2, 2, 2, 2);
@@ -193,22 +208,22 @@ CREATE TABLE `huse_vote`  (
   `state` tinyint(1) NOT NULL COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `alias`(`alias`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of huse_vote
 -- ----------------------------
-INSERT INTO `huse_vote` VALUES (4, '18民主投票', '19投票', '2019-04-28 16:03:42', '2019-05-28 00:00:00', '18民主投票', 1);
+INSERT INTO `huse_vote` VALUES (4, '19民主投票', '19投票', '2019-04-28 16:03:42', '2019-05-28 00:00:00', '18民主投票', 1);
 INSERT INTO `huse_vote` VALUES (5, '18民主投票', '18投票', '2019-04-28 16:03:42', '2019-05-28 00:00:00', '18民主投票', 1);
-INSERT INTO `huse_vote` VALUES (6, '20民主投票', '20', '2019-04-28 16:05:32', '2019-06-28 16:05:35', '20', 1);
 INSERT INTO `huse_vote` VALUES (7, '19下民主投票', '大三', '2019-04-26 00:00:00', '2019-07-28 00:00:00', '打撒大撒', 1);
 INSERT INTO `huse_vote` VALUES (9, '究极无敌测试', 'ahah', '2019-04-25 00:00:00', '2019-06-28 00:00:00', '测试更改', 1);
 INSERT INTO `huse_vote` VALUES (10, '盛大的撒', 'dsad', '2019-04-25 00:00:00', '2019-04-30 00:00:00', '打撒大撒', 1);
 INSERT INTO `huse_vote` VALUES (11, '撕答案', 'dsa', '2019-04-10 00:00:00', '2019-05-03 00:00:00', '', 1);
 INSERT INTO `huse_vote` VALUES (12, '的撒大', 'asdsa', '2019-04-19 00:00:00', '2019-06-20 00:00:00', 'sadsa', 1);
 INSERT INTO `huse_vote` VALUES (13, 'dsadas', 'das', '2019-04-30 00:00:00', '2019-04-30 00:00:00', '', 1);
-INSERT INTO `huse_vote` VALUES (15, '测试', 'test', '2019-04-28 20:07:26', '2020-04-28 00:00:00', '打撒大撒', 1);
-INSERT INTO `huse_vote` VALUES (16, '新增一个投票', 'new', '2019-04-28 00:00:00', '2019-07-28 23:59:59', '测试而已莫慌', 1);
+INSERT INTO `huse_vote` VALUES (16, '新增一个投票', 'new', '2019-04-28 00:00:00', '2019-07-28 23:59:59', '测试而已莫慌', 0);
+INSERT INTO `huse_vote` VALUES (17, '今晚测试', '测试就推码云', '2019-05-10 22:00:52', '2019-05-23 00:00:00', '12345', 1);
+INSERT INTO `huse_vote` VALUES (18, '再来一个测试a', 'ԅ(¯㉨¯ԅ)', '2021-05-10 00:00:00', '2019-05-30 00:00:00', '哈哈', 1);
 
 -- ----------------------------
 -- Table structure for t_user

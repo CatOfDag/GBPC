@@ -17,6 +17,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.net.URLEncoder;
+
 /*
  * 基础控制器--控制如登录类的基础功能
  */
@@ -79,7 +81,7 @@ public class BaseController {
 
     //管理员的登录认证
     @RequestMapping("verification")
-    public String loginCheck(String username, String password, boolean rememberMe, ModelMap mmp) {
+    public String loginCheck(String username, String password, boolean rememberMe, ModelMap mmp) throws Exception{
         Subject subject = SecurityUtils.getSubject();
         // 自己创建一个令牌，输入用户名和密码
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password,rememberMe);
@@ -91,7 +93,10 @@ public class BaseController {
                 return "redirect:/index";
             }
             if(cadre!=null && !(cadre.getRole().equals("user") || cadre.getRole().equals("su"))){
-                return "redirect:/cadre/cadreInfo?id="+cadre.getId();
+                String cadreName = cadre.getCadreName();
+                System.out.println("姓名是"+cadreName);
+                //解决Springboot重定向参数乱码问题.
+                return "redirect:/cadre/cadreInfo?id="+cadre.getId()+"&username="+ URLEncoder.encode(cadre.getCadreName(),"UTF-8");
             }
         } catch (UnknownAccountException e) {
             mmp.addAttribute("state","账号不存在！");

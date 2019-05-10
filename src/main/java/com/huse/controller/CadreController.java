@@ -1,7 +1,9 @@
 package com.huse.controller;
 
 import com.huse.pojo.Cadre;
+import com.huse.pojo.Info;
 import com.huse.service.CadreService;
+import com.huse.service.InfoService;
 import com.huse.utils.AjaxResult;
 import com.huse.utils.Laytable;
 import com.huse.utils.MyException;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -36,6 +39,8 @@ public class CadreController {
     private CadreService cadreService;
     @Autowired
     private AjaxResult ajaxResult;
+    @Autowired
+    private InfoService infoService;
 
     @GetMapping("cadre/cadrelist")
     public String cadrePage() {
@@ -155,9 +160,14 @@ public class CadreController {
         return ajaxResult;
     }
 
-    @RequestMapping("cadre/cadreInfo")
-    public String cadreInfo(Integer id,ModelMap mmp){
-        System.out.println(id);
+    @RequestMapping(value = "cadre/cadreInfo",method = RequestMethod.GET)
+    public String cadreInfo(Integer id,ModelMap mmp,String username){
+        Info cadreInfo = infoService.selectByCadreName(username);
+        if (cadreInfo==null){
+            mmp.addAttribute("warning","该页面尚未编辑,如果您是此用户请编辑!");
+            System.out.println("这是空的,快到哥这里来");
+        }
+        mmp.addAttribute("cadreInfo",cadreInfo);
         Cadre cadre = cadreService.selectByPrimaryKey(id);
         mmp.addAttribute("cadre",cadre);
         return "cadrePage/cadre-info";

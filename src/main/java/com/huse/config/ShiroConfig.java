@@ -152,7 +152,6 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/verification", "anon");
         // 配置退出过滤器
         filterChainDefinitionMap.put("/logout", "logout");
-        //设置访问权限
         filterChainDefinitionMap.put("/index","roles[su,user]");
         filterChainDefinitionMap.put("/","roles[su,user]");
         filterChainDefinitionMap.put("/**", "user");

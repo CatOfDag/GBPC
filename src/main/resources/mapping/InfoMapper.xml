@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huse.mapper.InfoMapper" >
+  <resultMap id="BaseResultMap" type="com.huse.pojo.Info" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="header_pic" property="headerPic" jdbcType="VARCHAR" />
+    <result column="file_path" property="filePath" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="card_name" property="cardName" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.huse.pojo.Info" extends="BaseResultMap" >
+    <result column="info" property="info" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, file_name, header_pic, file_path, time, card_name
+  </sql>
+  <sql id="Blob_Column_List" >
+    info
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cadre_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cadre_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.huse.pojo.Info" >
+    insert into cadre_info (id, file_name, header_pic, 
+      file_path, time, card_name, 
+      info)
+    values (#{id,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, #{headerPic,jdbcType=VARCHAR}, 
+      #{filePath,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{cardName,jdbcType=VARCHAR}, 
+      #{info,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huse.pojo.Info" >
+    insert into cadre_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fileName != null" >
+        file_name,
+      </if>
+      <if test="headerPic != null" >
+        header_pic,
+      </if>
+      <if test="filePath != null" >
+        file_path,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="cardName != null" >
+        card_name,
+      </if>
+      <if test="info != null" >
+        info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="headerPic != null" >
+        #{headerPic,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null" >
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cardName != null" >
+        #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="info != null" >
+        #{info,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huse.pojo.Info" >
+    update cadre_info
+    <set >
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="headerPic != null" >
+        header_pic = #{headerPic,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null" >
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cardName != null" >
+        card_name = #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="info != null" >
+        info = #{info,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.huse.pojo.Info" >
+    update cadre_info
+    set file_name = #{fileName,jdbcType=VARCHAR},
+      header_pic = #{headerPic,jdbcType=VARCHAR},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      card_name = #{cardName,jdbcType=VARCHAR},
+      info = #{info,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huse.pojo.Info" >
+    update cadre_info
+    set file_name = #{fileName,jdbcType=VARCHAR},
+      header_pic = #{headerPic,jdbcType=VARCHAR},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      card_name = #{cardName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByCadreName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT * FROM cadre_info where card_name = #{cadreName}
+  </select>
+</mapper>
