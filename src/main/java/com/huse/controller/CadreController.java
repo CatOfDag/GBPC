@@ -165,11 +165,15 @@ public class CadreController {
         Info cadreInfo = infoService.selectByCadreName(username);
         if (cadreInfo==null){
             mmp.addAttribute("warning","该页面尚未编辑,如果您是此用户请编辑!");
-            System.out.println("这是空的,快到哥这里来");
         }
         mmp.addAttribute("cadreInfo",cadreInfo);
         Cadre cadre = cadreService.selectByPrimaryKey(id);
         mmp.addAttribute("cadre",cadre);
         return "cadrePage/cadre-info";
+    }
+
+    @RequestMapping("cadre/cadreInfoEdit")
+    public String cadreInfoEdit(){
+        return "cadrePage/cadre-infoEdit";
     }
 }

@@ -17,6 +17,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /*
@@ -36,13 +39,25 @@ public class BaseController {
 
     //    登录页面
     @GetMapping("login")
-    public String loginPage() {
+    public String loginPage(HttpSession session,ModelMap mmp) throws UnsupportedEncodingException {
+        Admin admin = (Admin) session.getAttribute("admin");
+        Cadre cadre = (Cadre) session.getAttribute("cadre");
+        if (admin!=null){
+            mmp.addAttribute("admin",admin);
+            return "index";
+        }
+        if (cadre!=null){
+            mmp.addAttribute("cadre",cadre);
+            return "redirect:/cadre/cadreInfo?id="+cadre.getId()+"&username="+ URLEncoder.encode(cadre.getCadreName(),"UTF-8");
+        }
         return "login";
     }
 
     //退出系统
     @RequestMapping("logout")
-    public String logout(){
+    public String logout(HttpSession session){
+        session.removeAttribute("cadre");
+        session.removeAttribute("admin");
         return "logout";
     }
 
@@ -81,20 +96,21 @@ public class BaseController {
 
     //管理员的登录认证
     @RequestMapping("verification")
-    public String loginCheck(String username, String password, boolean rememberMe, ModelMap mmp) throws Exception{
+    public String loginCheck(String username, String password, boolean rememberMe, ModelMap mmp,HttpSession session ) throws Exception{
         Subject subject = SecurityUtils.getSubject();
         // 自己创建一个令牌，输入用户名和密码
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password,rememberMe);
+        ;
         try {
             subject.login(usernamePasswordToken);
             Admin admin = adminService.selectByName(username);
             Cadre cadre = cadreService.selectByName(username);
             if (admin!=null && (admin.getRole().equals("user") || admin.getRole().equals("su"))){
+                session.setAttribute("admin",admin);
                 return "redirect:/index";
             }
             if(cadre!=null && !(cadre.getRole().equals("user") || cadre.getRole().equals("su"))){
-                String cadreName = cadre.getCadreName();
-                System.out.println("姓名是"+cadreName);
+                session.setAttribute("cadre",cadre);
                 //解决Springboot重定向参数乱码问题.
                 return "redirect:/cadre/cadreInfo?id="+cadre.getId()+"&username="+ URLEncoder.encode(cadre.getCadreName(),"UTF-8");
             }

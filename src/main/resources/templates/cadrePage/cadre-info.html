@@ -10,13 +10,19 @@
 <div class="layui-header" style="background: #393d49">
     <p style="color: white;font-size: 30px;padding-top: 7px">湖南科技学院中层干部年度考核测评系统</p>
     <ul class="layui-nav layui-layout-right">
-        <li class="layui-nav-item"><a href="javascript:void(0)" id="logout">退出</a></li>
+        <li class="layui-nav-item"><a href="/logout">退出</a></li>
     </ul>
 </div>
 <div class="layui-col-md6 layui-col-xs12 layui-col-lg-offset3">
     <blockquote class="layui-elem-quote">
         <span class="x-red" th:text="${cadre.cadreName}"></span> 的信息页面！
         <span class="x-red" style="color: red" th:text="${warning}"></span>
+        <div style="float: right">
+            <button class="layui-btn" id="editCadre">
+                <i class="layui-icon">&#xe61f;</i>编辑信息
+            </button>
+        </div>
+
     </blockquote>
     <table class="layui-table">
         <colgroup>
@@ -25,7 +31,7 @@
         </colgroup>
         <tbody>
         <tr>
-            <td colspan="2"><p align="center"><img src="imgs/qq.jpeg" width="250px" height="170px"></p></td>
+            <td colspan="2"><p align="center"><img th:src="@{/static/user/cadreinfo/headportrait/nopic.png}" width="250px" height="170px"></p></td>
         </tr>
         <tr>
             <td>姓名</td>
@@ -45,7 +51,34 @@
         </tr>
         </tbody>
     </table>
+
 </div>
+<script>
+    layui.use(["element", "table", "form", "jquery", "laydate","upload"], function () {
+        var table = layui.table;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var upload = layui.upload;
+
+        $("#editCadre").click(function () {
+            layer.open({
+                title: "编辑个人信息",
+                type: 2,
+                shade: false,
+                maxmin: true,
+                shade: 0.5,
+                anim: 4,
+                area: ["40%", "75%"],
+                content: "cadreInfoEdit",
+                zIndex: layer.zIndex,
+                end: function () {
+                    $(".layui-laypage-btn")[0].click();
+                }
+            });
+        })
+    });
+
+</script>
 
 </body>
 </html>

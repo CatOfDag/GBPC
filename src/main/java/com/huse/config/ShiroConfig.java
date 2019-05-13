@@ -154,6 +154,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/logout", "logout");
         filterChainDefinitionMap.put("/index","roles[su,user]");
         filterChainDefinitionMap.put("/","roles[su,user]");
+        filterChainDefinitionMap.put("/cadre/cadreInfoEdit","roles[cadre]");
         filterChainDefinitionMap.put("/**", "user");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
