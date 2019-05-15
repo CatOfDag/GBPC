@@ -18,4 +18,8 @@ public interface InfoService {
     int updateByPrimaryKey(Info record);
 
     Info selectByCadreName(String cadreName);
+
+    int insertCadreName(String cadreName);
+
+    int updateByCadreName(Info info);
 }

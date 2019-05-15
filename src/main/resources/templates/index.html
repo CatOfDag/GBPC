@@ -28,7 +28,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="../static/imgs/inco.jpg" class="layui-nav-img">
-                    admin
+                    <span th:text="${admin.adminName}"></span>
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="javascript:;" path="userCenter" tab-id="0-1">个人中心<span class="layui-badge-dot"></span></a></dd>
@@ -41,7 +41,7 @@
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <ul class="layui-nav layui-nav-tree" lay-shrink="all" lay-filter="">
-                <li class="layui-nav-item">
+                <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;">
                         <i class="iconfont icon-xiazai"></i> 投票管理
                     </a>
@@ -70,7 +70,7 @@
                     </dl>
                 </li>
 
-                <li class="layui-nav-item layui-nav-itemed">
+                <li class="layui-nav-item" th:if="${admin.role == 'su'}">
                     <a class="" href="javascript:;">
                         <i class="iconfont icon-huiyuan"></i> 系统用户管理
                     </a>
@@ -108,7 +108,7 @@
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
-                    <iframe src="welcome" frameborder="0" scrolling="yes" width="100%" height="100%"></iframe>
+                    <iframe frameborder="0" scrolling="yes" width="100%" height="100%" src="/welcome"></iframe>
                 </div>
             </div>
         </div>
@@ -121,6 +121,12 @@
 <div class="yy"></div>
 <!--js逻辑-->
 <script>
+    //防止页面后退
+    history.pushState(null, null, document.URL);
+    window.addEventListener('popstate', function () {
+        history.pushState(null, null, document.URL);
+    });
+
     console.log("后台模板采用:\n"
         +"       _                     _       _       \n" +
         "      | |                   | |     (_)      \n" +
@@ -132,9 +138,5 @@
         "版本：v1.0  作者：bobi\n" +
         "描述：一个很赞的，扁平化风格的，响应式布局的后台管理模版.")
 </script>
-<!--<script th:src="@{/static/lib/layui/layui.js}"></script>-->
-<!--<script th:src="@{/static/lib/nprogress/nprogress.js}"></script>-->
-<!--<script th:src="@{/static/js/okadmin.js}"></script>-->
-<!--天气预报插件-->
 </body>
 </html>

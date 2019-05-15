@@ -87,6 +87,9 @@
       </if>
     </trim>
   </insert>
+  <insert id="insertCadreName" parameterType="java.lang.String">
+    INSERT INTO cadre_info (card_name,time) VALUES (#{cadreName},NOW());
+  </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.huse.pojo.Info" >
     update cadre_info
     <set >
@@ -129,6 +132,24 @@
       time = #{time,jdbcType=TIMESTAMP},
       card_name = #{cardName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByCadreName" parameterType="com.huse.pojo.Info">
+    update cadre_info
+    <set >
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="headerPic != null" >
+        header_pic = #{headerPic,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null" >
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="info != null" >
+        info = #{info,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where card_name = #{cardName,jdbcType=VARCHAR}
   </update>
   <select id="selectByCadreName" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT * FROM cadre_info where card_name = #{cadreName}

@@ -18,4 +18,9 @@ public interface InfoMapper {
     int updateByPrimaryKey(Info record);
 
     Info selectByCadreName(String cadreName);
+
+    //在表中插入用户名
+    int insertCadreName(String cadreName);
+
+    int updateByCadreName(Info info);
 }

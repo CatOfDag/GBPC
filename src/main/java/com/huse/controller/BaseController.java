@@ -70,7 +70,10 @@ public class BaseController {
     //    index页面
 //    @RequiresRoles({"su","user"})
     @RequestMapping({"index","/"})
-    public String indexPage() {
+    public String indexPage(Integer id,ModelMap mmp) {
+        mmp.addAttribute("adminId",id);
+        Admin admin = adminService.selectByPrimaryKey(id);
+        mmp.addAttribute("admin",admin);
         return "index";
     }
 
@@ -107,7 +110,7 @@ public class BaseController {
             Cadre cadre = cadreService.selectByName(username);
             if (admin!=null && (admin.getRole().equals("user") || admin.getRole().equals("su"))){
                 session.setAttribute("admin",admin);
-                return "redirect:/index";
+                return "redirect:/index?id="+admin.getId();
             }
             if(cadre!=null && !(cadre.getRole().equals("user") || cadre.getRole().equals("su"))){
                 session.setAttribute("cadre",cadre);

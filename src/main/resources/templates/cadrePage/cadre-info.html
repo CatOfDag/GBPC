@@ -22,7 +22,6 @@
                 <i class="layui-icon">&#xe61f;</i>编辑信息
             </button>
         </div>
-
     </blockquote>
     <table class="layui-table">
         <colgroup>
@@ -31,7 +30,16 @@
         </colgroup>
         <tbody>
         <tr>
-            <td colspan="2"><p align="center"><img th:src="@{/static/user/cadreinfo/headportrait/nopic.png}" width="250px" height="170px"></p></td>
+            <td colspan="2">
+                <p align="center">
+                    <span th:if="${cadreInfo==null or cadreInfo.headerPic==null}">
+                        <img th:src="@{/headpic/nopic.png}" height="170px">
+                    </span>
+                    <span th:if="${cadreInfo != null and cadreInfo.headerPic!=null}">
+                        <img  th:src="@{/headpic/{headpic}(headpic=${cadreInfo.headerPic})}" height="170px">
+                    </span>
+                </p>
+            </td>
         </tr>
         <tr>
             <td>姓名</td>
@@ -46,15 +54,29 @@
             <td th:text="${cadreInfo?.info}"></td>
         </tr>
         <tr>
-            <td>附件信息</td>
-            <td th:text="${cadreInfo?.fileName}"></td>
+            <td>附件下载</td>
+            <td>
+
+                <span th:if="${cadreInfo==null or cadreInfo.filePath==null}">
+                        <a>无附件</a>
+                    </span>
+                <span th:if="${cadreInfo != null and cadreInfo.filePath!=null}">
+                        <a th:href="@{/doc/{doc}(doc=${cadreInfo?.filePath})}" style="color: #0B61A4">下载附件</a>
+                    </span>
+            </td>
         </tr>
         </tbody>
     </table>
 
 </div>
-<script>
-    layui.use(["element", "table", "form", "jquery", "laydate","upload"], function () {
+<script th:inline="javascript">
+    //防止页面后退
+    history.pushState(null, null, document.URL);
+    window.addEventListener('popstate', function () {
+        history.pushState(null, null, document.URL);
+    });
+
+    layui.use(["element", "table", "form", "jquery", "laydate", "upload"], function () {
         var table = layui.table;
         var form = layui.form;
         var laydate = layui.laydate;
@@ -69,7 +91,7 @@
                 shade: 0.5,
                 anim: 4,
                 area: ["40%", "75%"],
-                content: "cadreInfoEdit",
+                content: "cadreInfoEdit?cadreName=" + [[${cadre.cadreName}]] + "&job=" + [[${cadre.job}]],
                 zIndex: layer.zIndex,
                 end: function () {
                     $(".layui-laypage-btn")[0].click();

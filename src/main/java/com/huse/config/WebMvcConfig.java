@@ -11,5 +11,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         //将所有/static/** 访问都映射到classpath:/static/ 目录下
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+        //设置虚拟路径映射,这样SpringBoot就可以访问本地资源了
+        //草泥马必须得这个狗比格式,恶几把心
+        registry.addResourceHandler("/headpic/**").addResourceLocations("file:E:/HUSEFile/headportrait/");
+        registry.addResourceHandler("/doc/**").addResourceLocations("file:E:/HUSEFile/doc/");
     }
 }

@@ -49,4 +49,14 @@ public class InfoServiceImp implements InfoService {
     public Info selectByCadreName(String cadreName) {
         return infoMapper.selectByCadreName(cadreName);
     }
+
+    @Override
+    public int insertCadreName(String cadreName) {
+        return infoMapper.insertCadreName(cadreName);
+    }
+
+    @Override
+    public int updateByCadreName(Info info) {
+        return infoMapper.updateByCadreName(info);
+    }
 }

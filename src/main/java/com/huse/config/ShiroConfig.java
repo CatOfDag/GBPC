@@ -148,6 +148,7 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         //静态资源
         filterChainDefinitionMap.put("/static/**", "anon");
+        filterChainDefinitionMap.put("/headpic/**", "anon");
         //验证帐号和密码
         filterChainDefinitionMap.put("/verification", "anon");
         // 配置退出过滤器
