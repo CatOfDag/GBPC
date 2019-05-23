@@ -1,6 +1,8 @@
 package com.huse.pojo;
 
-public class Cadre {
+import java.io.Serializable;
+
+public class Cadre implements Serializable {
     private Integer id;
 
     private String cadreName;

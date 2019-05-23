@@ -7,4 +7,5 @@ import org.springframework.stereotype.Component;
 @Data
 public class AjaxResult {
     private boolean res;
+    private String info;
 }

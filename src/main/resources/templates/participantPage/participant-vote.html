@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>干部列表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style>
+        #vote_tb {
+
+        }
+
+    </style>
+</head>
+<body>
+<div>
+    <!--引入模板-->
+    <div th:include="publictemplate :: css"></div>
+    <div class="layui-header" style="background: #393d49">
+        <p style="color: white;font-size: 30px;padding-top: 7px">湖南科技学院中层干部年度考核测评系统</p>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item"><a id="explain"><i class="layui-icon">&#xe702;</i></a></li>
+            <li class="layui-nav-item"><a href="/logout">退出</a></li>
+        </ul>
+    </div>
+    <div class="layui-col-md10 layui-col-xs12 layui-col-lg-offset1">
+        <blockquote class="layui-elem-quote">
+            请投票！&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前投票: <span style="color: #0B61A4">19投票</span>
+        </blockquote>
+        <form class="layui-form" action="">
+            <table class="layui-table">
+                <tbody id="vote_tb">
+                <tr>
+                    <td>姓名</td>
+                    <td>职务</td>
+                    <td>德</td>
+                    <td>能</td>
+                    <td>勤</td>
+                    <td>绩</td>
+                    <td>廉</td>
+                    <td>总分</td>
+                </tr>
+                <tr>
+                    <td>王小轩</td>
+                    <td>lol职业选手</td>
+                    <td>
+                        <select name="virtue">
+                            <option value=""></option>
+                            <option value="0">好</option>
+                            <option value="1">较好</option>
+                            <option value="2">一般</option>
+                            <option value="3">好</option>
+                            <option value="4">差</option>
+                        </select>
+
+                    </td>
+                    <td>
+                        <select name="ability">
+                            <option value=""></option>
+                            <option value="0">好</option>
+                            <option value="1">较好</option>
+                            <option value="2">一般</option>
+                            <option value="3">好</option>
+                            <option value="4">差</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="diligence">
+                            <option value=""></option>
+                            <option value="0">好</option>
+                            <option value="1">较好</option>
+                            <option value="2">一般</option>
+                            <option value="3">好</option>
+                            <option value="4">差</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="feats">
+                            <option value=""></option>
+                            <option value="0">好</option>
+                            <option value="1">较好</option>
+                            <option value="2">一般</option>
+                            <option value="3">好</option>
+                            <option value="4">差</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="honest">
+                            <option value=""></option>
+                            <option value="0">好</option>
+                            <option value="1">较好</option>
+                            <option value="2">一般</option>
+                            <option value="3">好</option>
+                            <option value="4">差</option>
+                        </select>
+                    </td>
+                    <td>分数</td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <script src="lib/layui/layui.js"></script>
+    <script src="lib/nprogress/nprogress.js"></script>
+    <script src="js/okadmin.js"></script>
+    <script type="text/javascript"></script>
+    <script>
+        //Demo
+        layui.use(['form','layer'], function(){
+            var form = layui.form;
+            var $ = layui.jquery;
+
+            //监听提交
+            form.on('submit(formDemo)', function(data){
+                layer.msg(JSON.stringify(data.field));
+                return false;
+            });
+
+            $("#explain").click(function () {
+                layer.open({
+                    type: 1
+                    ,title: false //不显示标题栏
+                    ,closeBtn: false
+                    ,area: '300px;'
+                    ,shade: 0.8
+                    ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    ,resize: false
+                    ,btn: ['我知道了']
+                    ,btnAlign: 'c'
+                    ,moveType: 1 //拖拽模式，0或者1
+                    ,content: '<div style="height: 170px;width: 280px;font-size: 15px;margin: 50px 10px"><p>1.您在评测时每项只能选择一个结果</p><hr>' +
+                        '<p>2.对某一测评项目的情况不了解,可以不选择</p><hr><p>3.如果有效的测评项目全为差,则测评无效,需要重新选择</p><hr><p>4.每个人只有一次提交投票机会,如果您暂时不想投票可以选择右上角的退出投票.</p><hr></div>'
+                    // ,success: function(layero){
+                    //     var btn = layero.find('.layui-layer-btn');
+                    //     btn.find('.layui-layer-btn0').attr({
+                    //         href: 'http://www.layui.com/'
+                    //         ,target: '_blank'
+                    //     });
+                    // }
+                });
+            })
+        });
+    </script>
+</div>
+</body>
+</html>

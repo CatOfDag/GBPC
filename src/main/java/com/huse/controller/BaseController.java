@@ -1,7 +1,10 @@
 package com.huse.controller;
 
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import com.huse.pojo.Admin;
 import com.huse.pojo.Cadre;
+import com.huse.pojo.Participant;
 import com.huse.service.AdminService;
 import com.huse.service.CadreService;
 import com.huse.service.ParticipantService;
@@ -21,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.UUID;
 
 /*
  * 基础控制器--控制如登录类的基础功能
@@ -40,17 +44,24 @@ public class BaseController {
     //    登录页面
     @GetMapping("login")
     public String loginPage(HttpSession session,ModelMap mmp) throws UnsupportedEncodingException {
-        Admin admin = (Admin) session.getAttribute("admin");
-        Cadre cadre = (Cadre) session.getAttribute("cadre");
-        if (admin!=null){
+        Subject sub = SecurityUtils.getSubject();
+        Object obj = sub.getPrincipal();
+        if (obj==null){
+            return "login";
+        }
+        try{
+            Admin admin = (Admin) obj;
             mmp.addAttribute("admin",admin);
             return "index";
+        }catch (ClassCastException e){
+            try{
+                Cadre cadre = (Cadre) obj;
+                return "redirect:/cadre/cadreInfo";
+            }catch (ClassCastException f){
+                Participant par = (Participant) obj;
+                return "login";
+            }
         }
-        if (cadre!=null){
-            mmp.addAttribute("cadre",cadre);
-            return "redirect:/cadre/cadreInfo?id="+cadre.getId()+"&username="+ URLEncoder.encode(cadre.getCadreName(),"UTF-8");
-        }
-        return "login";
     }
 
     //退出系统
@@ -67,13 +78,13 @@ public class BaseController {
         return "user";
     }
 
-    //    index页面
-//    @RequiresRoles({"su","user"})
+    //index页面
     @RequestMapping({"index","/"})
-    public String indexPage(Integer id,ModelMap mmp) {
-        mmp.addAttribute("adminId",id);
-        Admin admin = adminService.selectByPrimaryKey(id);
-        mmp.addAttribute("admin",admin);
+    public String indexPage(HttpSession session,ModelMap mmp) {
+        //获得当前登录的用户信息
+        Subject sub = SecurityUtils.getSubject();
+        Admin obj = (Admin) sub.getPrincipal();
+        mmp.addAttribute("admin",obj);
         return "index";
     }
 
@@ -103,25 +114,23 @@ public class BaseController {
         Subject subject = SecurityUtils.getSubject();
         // 自己创建一个令牌，输入用户名和密码
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password,rememberMe);
-        ;
+
         try {
             subject.login(usernamePasswordToken);
             Admin admin = adminService.selectByName(username);
             Cadre cadre = cadreService.selectByName(username);
             if (admin!=null && (admin.getRole().equals("user") || admin.getRole().equals("su"))){
-                session.setAttribute("admin",admin);
-                return "redirect:/index?id="+admin.getId();
+                return "redirect:/index";
             }
             if(cadre!=null && !(cadre.getRole().equals("user") || cadre.getRole().equals("su"))){
-                session.setAttribute("cadre",cadre);
                 //解决Springboot重定向参数乱码问题.
-                return "redirect:/cadre/cadreInfo?id="+cadre.getId()+"&username="+ URLEncoder.encode(cadre.getCadreName(),"UTF-8");
+                return "redirect:cadre/cadreInfo";
             }
         } catch (UnknownAccountException e) {
             mmp.addAttribute("state","账号不存在！");
 
         } catch (LockedAccountException e) {
-            mmp.addAttribute("state","账号被锁定！");
+            mmp.addAttribute("state","账号被锁定，联系超级管理员开启！");
 
         } catch (DisabledAccountException e) {
             mmp.addAttribute("state","账号被禁用！");

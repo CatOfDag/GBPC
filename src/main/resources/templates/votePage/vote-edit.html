@@ -106,7 +106,7 @@
             dataType: 'json',
             async: false,
             error: function (data) {
-                layer.msg("错误!ERR:001,请检查输入信息的有效性")
+                layer.msg("输入信息有误,请重试!")
             },
             success: function (data) {
                 if (data.res) {

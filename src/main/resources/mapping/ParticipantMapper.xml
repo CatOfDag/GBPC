@@ -110,4 +110,7 @@
   <select id="forbidden" resultType="java.lang.Integer" parameterType="java.lang.Integer">
     SELECT count(*) from huse_participant WHERE state=#{state};
   </select>
+  <select id="selectByPIN" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT * FROM huse_participant WHERE PIN = #{PIN}
+  </select>
 </mapper>

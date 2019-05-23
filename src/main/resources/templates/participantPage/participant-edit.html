@@ -44,7 +44,9 @@
             <div class="layui-input-block">
                 <select name="voteAlias" lay-filter="voteAlias" lay-verify="required">
                     <option value=""></option>
-                    <option value="19投票">19投票</option>
+                    <span th:each="v : ${votes}">
+                        <option th:value="${v.alias}"><span th:text="${v.alias}"></span></option>
+                    </span>
                 </select>
             </div>
         </div>
@@ -103,7 +105,7 @@
                 }
             },
             error: function (data) {
-                layer.msg("系统故障,请稍候再试!")
+                layer.msg("输入信息有误,请重试!")
             }
         })
 

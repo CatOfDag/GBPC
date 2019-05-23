@@ -2,7 +2,9 @@ package com.huse.controller;
 
 import com.huse.pojo.Cadre;
 import com.huse.pojo.Participant;
+import com.huse.pojo.Vote;
 import com.huse.service.ParticipantService;
+import com.huse.service.VoteService;
 import com.huse.utils.AjaxResult;
 import com.huse.utils.Laytable;
 import com.huse.utils.MyException;
@@ -11,6 +13,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -32,6 +39,9 @@ public class ParticipantController {
     private ParticipantService participantService;
     @Autowired
     private AjaxResult ajaxResult;
+    @Autowired
+    private VoteService voteService;
+
 
     @RequestMapping("participant/participantlist")
     public String participantPage() {
@@ -39,14 +49,20 @@ public class ParticipantController {
     }
 
     @RequestMapping("participant/add")
-    public String addParticipant() {
+    public String addParticipant(ModelMap mmp) {
+        List<Vote> votes = voteService.selectAllVote();
+        mmp.addAttribute("votes",votes);
         return "participantPage/participant-add";
     }
 
     @RequestMapping("participant/edit")
     public String editParticipant(int id, ModelMap mp) {
+        //根据id查询对象
         Participant participant = participantService.selectByPrimaryKey(id);
         mp.addAttribute("participant", participant);
+        //查询所有的投票项目
+        List<Vote> votes = voteService.selectAllVote();
+        mp.addAttribute("votes",votes);
         return "participantPage/participant-edit";
     }
 
@@ -139,6 +155,35 @@ public class ParticipantController {
         }
         ajaxResult.setRes(true);
         return ajaxResult;
+    }
+
+    @RequestMapping("participant/checkPIN")
+    @ResponseBody
+    public AjaxResult checkPIN(String PIN){
+        boolean flag = false;
+        Subject subject = SecurityUtils.getSubject();
+        // 自己创建一个令牌，输入用户名和密码
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(PIN, "",false);
+        try{
+            subject.login(usernamePasswordToken);
+            flag=true;
+            ajaxResult.setInfo("participant/parVote?PIN="+PIN);
+        }catch (UnknownAccountException e) {
+            ajaxResult.setInfo("帐号不存在!");
+            flag=false;
+
+        } catch (LockedAccountException e) {
+            ajaxResult.setInfo("帐号已失效!");
+            flag=false;
+
+        }
+        ajaxResult.setRes(flag);
+        return ajaxResult;
+    }
+    //参与者登录成功跳转的页面
+    @RequestMapping("participant/parVote")
+    public String parVote(){
+        return "participantPage/participant-vote";
     }
 
 }

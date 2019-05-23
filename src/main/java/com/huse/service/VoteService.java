@@ -20,4 +20,6 @@ public interface VoteService {
     List<Vote> getVoteList(int start,int limit);
 
     int count();
+
+    List<Vote> selectAllVote();
 }

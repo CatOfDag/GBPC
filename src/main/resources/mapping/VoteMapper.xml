@@ -120,4 +120,7 @@
   <select id="count" resultType="java.lang.Integer">
     SELECT count(*) FROM huse_vote
   </select>
+  <select id="selectAllVote" resultMap="BaseResultMap">
+    select * from huse_vote
+  </select>
 </mapper>

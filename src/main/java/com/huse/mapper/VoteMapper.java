@@ -19,5 +19,7 @@ public interface VoteMapper {
 
     List<Vote> getVoteList(int start,int limit);
 
+    List<Vote> selectAllVote();
+
     int count();
 }

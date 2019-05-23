@@ -16,7 +16,11 @@
 <div class="layui-col-md6 layui-col-xs12 layui-col-lg-offset3">
     <blockquote class="layui-elem-quote">
         <span class="x-red" th:text="${cadre.cadreName}"></span> 的信息页面！
-        <span class="x-red" style="color: red" th:text="${warning}"></span>
+        <span class="x-red" style="color: red" th:text="${warning1}"></span>
+        <a th:if="${warning1 == null}">
+            <span class="x-red" style="color: red" th:text="${warning}"></span>
+        </a>
+
         <div style="float: right">
             <button class="layui-btn" id="editCadre">
                 <i class="layui-icon">&#xe61f;</i>编辑信息
@@ -43,11 +47,11 @@
         </tr>
         <tr>
             <td>姓名</td>
-            <td th:text="${cadre.cadreName}"></td>
+            <td th:text="${cadre?.cadreName}"></td>
         </tr>
         <tr>
             <td>职务</td>
-            <td th:text="${cadre.job}"></td>
+            <td th:text="${cadre?.job}"></td>
         </tr>
         <tr>
             <td>个人简介</td>

@@ -57,4 +57,9 @@ public class ParticipantServiceImp implements ParticipantService {
     public int forbidden(int state) {
         return participantMapper.forbidden(state);
     }
+
+    @Override
+    public Participant selectByPIN(String PIN) {
+        return participantMapper.selectByPIN(PIN);
+    }
 }

@@ -6,12 +6,12 @@
 </head>
 <body class="login-body">
 <div th:include="publictemplate :: css"></div>
-<div class="login-box animated rotateIn" style="height: 386px">
+<div class="login-box animated rotateIn" style="height: 363px">
     <div class="head"><p style="color: white;font-size:23px;">您好,请登录!</p></div>
-    <div class="layui-tab layui-tab-card">
+    <div class="layui-tab layui-tab-card" style="margin: 0px">
         <ul class="layui-tab-title">
-            <li class="layui-this">管理员入口</li>
-            <li>干部入口</li>
+            <li class="layui-this">管理员&干部入口</li>
+<!--            <li>干部入口</li>-->
             <li>投票入口</li>
         </ul>
         <div class="layui-tab-content" style="height: 300px;">
@@ -31,25 +31,28 @@
                     </form>
                 </div>
             </div>
-            <div class="layui-tab-item">
-                <div class="input-box">
-                    <form class="layui-form" action="verification" method="post">
-                        <input type="text" name="username" required lay-verify="required" placeholder="账号" autocomplete="off" class="layui-input">
-                        <input type="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">
-                        <div class="remember-me">
-                            <span>记住我：</span>
-                            <input type="checkbox" name="rememberme" lay-skin="switch" lay-text="是|否">
-                        </div>
-                        <input type="submit" value="登 录" lay-submit lay-filter="login">
-                    </form>
-                </div>
-            </div>
+<!--            <div class="layui-tab-item">-->
+<!--                <div class="input-box">-->
+<!--                    <form class="layui-form" action="verification" method="post">-->
+<!--                        <input type="text" name="username" required lay-verify="required" placeholder="账号" autocomplete="off" class="layui-input">-->
+<!--                        <input type="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">-->
+<!--                        <div class="remember-me">-->
+<!--                            <span>记住我：</span>-->
+<!--                            <input type="checkbox" name="rememberme" lay-skin="switch" lay-text="是|否">-->
+<!--                        </div>-->
+<!--                        <input type="submit" value="登 录" lay-submit lay-filter="login">-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="layui-tab-item">
                 <div class="input-box">
                     <form class="layui-form" action="">
-                        <input type="text" name="username" required lay-verify="required" placeholder="PIN码" autocomplete="off" class="layui-input">
-                        <input type="submit" value="确认" lay-submit lay-filter="login">
-                    </form>
+                        <input type="text" name="PIN" required lay-verify="required" placeholder="PIN码" autocomplete="off" class="layui-input" id="PIN">
+<!--                        <input type="submit" value="登 录" lay-submit lay-filter="login">-->
+                 </form>
+                    <div style="margin:15px auto;width: 64px;height: 38px">
+                        <button class="layui-btn" onclick="checkPIN()">登录</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -62,6 +65,26 @@
         var $ = layui.jquery;
 
     });
+
+    function checkPIN() {
+        $.ajax({
+            data:{'PIN':$("#PIN").val()},
+            url:"participant/checkPIN",
+            type:"POST",
+            dataType:"json",
+            async:false,
+            success: function (data) {
+                if (data.res) {
+                    window.location.href = data.info;
+                }else {
+                    layer.msg(data.info);
+                }
+            },
+            error: function (data) {
+                layer.msg("输入信息有误,请重试!")
+            }
+        })
+    }
 </script>
 </body>
 </html>

@@ -52,4 +52,9 @@ public class VoteServiceImp implements VoteService {
     public int count() {
         return voteMapper.count();
     }
+
+    @Override
+    public List<Vote> selectAllVote() {
+        return voteMapper.selectAllVote();
+    }
 }

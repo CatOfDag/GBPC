@@ -2,8 +2,10 @@ package com.huse.controller;
 
 import com.huse.pojo.Cadre;
 import com.huse.pojo.Info;
+import com.huse.pojo.Vote;
 import com.huse.service.CadreService;
 import com.huse.service.InfoService;
+import com.huse.service.VoteService;
 import com.huse.utils.AjaxResult;
 import com.huse.utils.Laytable;
 import com.huse.utils.MyException;
@@ -13,6 +15,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +44,8 @@ public class CadreController {
     private AjaxResult ajaxResult;
     @Autowired
     private InfoService infoService;
+    @Autowired
+    private VoteService voteService;
 
     @GetMapping("cadre/cadrelist")
     public String cadrePage() {
@@ -47,14 +53,20 @@ public class CadreController {
     }
 
     @GetMapping("cadre/add")
-    public String addCadre() {
+    public String addCadre(ModelMap mmp) {
+        List<Vote> votes = voteService.selectAllVote();
+        mmp.addAttribute("votes", votes);
         return "cadrePage/cadre-add";
     }
 
     @GetMapping("cadre/edit")
     public String editCadre(int id, ModelMap mp) {
+        //根据id查询干部对象
         Cadre cadre = cadreService.selectByPrimaryKey(id);
         mp.addAttribute("cadre", cadre);
+        //查询所有的投票
+        List<Vote> votes = voteService.selectAllVote();
+        mp.addAttribute("votes", votes);
         return "cadrePage/cadre-edit";
     }
 
@@ -158,30 +170,32 @@ public class CadreController {
         return ajaxResult;
     }
 
-    @RequestMapping(value = "cadre/cadreInfo", method = RequestMethod.GET)
-    public String cadreInfo(Integer id, ModelMap mmp, String username) {
-        Info cadreInfo = infoService.selectByCadreName(username);
+    @RequestMapping(value = "cadre/cadreInfo")
+    public String cadreInfo(ModelMap mmp) {
+        //获取当前登录对象
+        Subject sub = SecurityUtils.getSubject();
+        Cadre cadre = (Cadre) sub.getPrincipal();
+        mmp.addAttribute("cadre", cadre);
+        Info cadreInfo = infoService.selectByCadreName(cadre.getCadreName());
         if (cadreInfo == null) {
             mmp.addAttribute("warning", "该页面尚未编辑,如果您是此用户请编辑!");
         }
         mmp.addAttribute("cadreInfo", cadreInfo);
-        Cadre cadre = cadreService.selectByPrimaryKey(id);
-        mmp.addAttribute("cadre", cadre);
         return "cadrePage/cadre-info";
     }
 
     @RequestMapping("cadre/cadreInfoEdit")
     public String cadreInfoEdit(String cadreName, String job, ModelMap mmp) {
         //将名字和职务传递到cadreInfoEdit页面
-        System.out.println(cadreName+"----"+job);
+        System.out.println(cadreName + "----" + job);
         mmp.addAttribute("cadreName", cadreName);
         mmp.addAttribute("job", job);
         //如果表中没有记录,新建一条记录
         Info info = infoService.selectByCadreName(cadreName);
         if (info == null) {
             infoService.insertCadreName(cadreName);
-        }else {
-            mmp.addAttribute("infoDesc",info.getInfo());
+        } else {
+            mmp.addAttribute("infoDesc", info.getInfo());
         }
 
         return "cadrePage/cadre-infoEdit";
@@ -226,6 +240,7 @@ public class CadreController {
         ajaxResult.setRes(true);
         return ajaxResult;
     }
+
 
     @RequestMapping("cadre/updateInfo")
     @ResponseBody

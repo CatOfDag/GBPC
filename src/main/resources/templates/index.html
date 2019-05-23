@@ -28,7 +28,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="../static/imgs/inco.jpg" class="layui-nav-img">
-                    <span th:text="${admin.adminName}"></span>
+                    <span th:text="${admin?.adminName}"></span>
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="javascript:;" path="userCenter" tab-id="0-1">个人中心<span class="layui-badge-dot"></span></a></dd>
@@ -70,7 +70,7 @@
                     </dl>
                 </li>
 
-                <li class="layui-nav-item" th:if="${admin.role == 'su'}">
+                <li class="layui-nav-item" th:if="${admin?.role == 'su'}">
                     <a class="" href="javascript:;">
                         <i class="iconfont icon-huiyuan"></i> 系统用户管理
                     </a>
