@@ -24,4 +24,6 @@ public interface CadreService {
     List<Cadre> fuzzyQuery(String info);
 
     Cadre selectByName(String name);
+    //按投票别名查找
+    List<Cadre> selectByAlias(String alias);
 }

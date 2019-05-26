@@ -138,5 +138,8 @@
   <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
     SELECT * FROM huse_cadre where cadre_name = #{name}
   </select>
+  <select id="selectByAlias" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT * FROM huse_cadre where avote_lias = #{alias}
+  </select>
 
 </mapper>

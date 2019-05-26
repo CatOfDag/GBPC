@@ -3,6 +3,7 @@ package com.huse.controller;
 import com.huse.pojo.Cadre;
 import com.huse.pojo.Participant;
 import com.huse.pojo.Vote;
+import com.huse.service.CadreService;
 import com.huse.service.ParticipantService;
 import com.huse.service.VoteService;
 import com.huse.utils.AjaxResult;
@@ -14,6 +15,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.ExpiredCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -41,6 +43,8 @@ public class ParticipantController {
     private AjaxResult ajaxResult;
     @Autowired
     private VoteService voteService;
+    @Autowired
+    private CadreService cadreService;
 
 
     @RequestMapping("participant/participantlist")
@@ -167,7 +171,7 @@ public class ParticipantController {
         try{
             subject.login(usernamePasswordToken);
             flag=true;
-            ajaxResult.setInfo("participant/parVote?PIN="+PIN);
+            ajaxResult.setInfo("participant/parVote");
         }catch (UnknownAccountException e) {
             ajaxResult.setInfo("帐号不存在!");
             flag=false;
@@ -175,14 +179,21 @@ public class ParticipantController {
         } catch (LockedAccountException e) {
             ajaxResult.setInfo("帐号已失效!");
             flag=false;
-
         }
         ajaxResult.setRes(flag);
         return ajaxResult;
     }
     //参与者登录成功跳转的页面
     @RequestMapping("participant/parVote")
-    public String parVote(){
+    public String parVote(ModelMap mmp){
+        //获取当前登录用户的信息
+        Subject sub = SecurityUtils.getSubject();
+        Participant obj = (Participant) sub.getPrincipal();
+        System.out.println(obj.getVoteAlias());
+        mmp.addAttribute("participant",obj);
+        //查询与当前用户关联的信息
+        List<Cadre> cadres = cadreService.selectByAlias(obj.getVoteAlias());
+        mmp.addAttribute("cadreByAlias",cadres);
         return "participantPage/participant-vote";
     }
 

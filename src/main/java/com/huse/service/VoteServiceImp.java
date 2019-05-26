@@ -57,4 +57,9 @@ public class VoteServiceImp implements VoteService {
     public List<Vote> selectAllVote() {
         return voteMapper.selectAllVote();
     }
+
+    @Override
+    public Vote selectByAlisa(String alisa) {
+        return voteMapper.selectByAlisa(alisa);
+    }
 }

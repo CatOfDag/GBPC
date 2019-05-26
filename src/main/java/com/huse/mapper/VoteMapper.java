@@ -22,4 +22,6 @@ public interface VoteMapper {
     List<Vote> selectAllVote();
 
     int count();
+
+    Vote selectByAlisa(String alisa);
 }

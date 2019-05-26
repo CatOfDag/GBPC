@@ -123,4 +123,7 @@
   <select id="selectAllVote" resultMap="BaseResultMap">
     select * from huse_vote
   </select>
+  <select id="selectByAlisa" resultMap="BaseResultMap" resultType="java.lang.String">
+    SELECT * FROM huse_vote WHERE alias = #{alisa}
+  </select>
 </mapper>

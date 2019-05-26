@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org" lang="zh">
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
 <head>
     <meta charset="UTF-8">
     <title>干部列表</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <!--<link rel="stylesheet" th:href="@{/static/css/okadmin.css}">-->
-    <!--<link rel="stylesheet" th:href="@{/static/lib/nprogress/nprogress.css}">-->
 </head>
 <body>
 <!--引入模板-->
@@ -42,6 +40,8 @@
         <button class="layui-btn" id="addUser">
             <i class="layui-icon">&#xe61f;</i>添加干部
         </button>
+        <a th:href="@{/sys_file/gb.xlsx}" style="display: block;float: right;line-height: 40px;width: 100px;height: 40px;
+    color: #1c20d0;text-decoration: underline;">导入模板下载</a>
     </okToolbar>
     <!--数据表格-->
     <table class="layui-hide" id="tableId" lay-filter="tableFilter"></table>
@@ -51,7 +51,7 @@
     window.onload = function () {
         NProgress.done();
     }
-    layui.use(["element", "table", "form", "jquery", "laydate","upload"], function () {
+    layui.use(["element", "table", "form", "jquery", "laydate", "upload"], function () {
         var table = layui.table;
         var form = layui.form;
         var laydate = layui.laydate;
@@ -63,7 +63,7 @@
             , url: '/cadre/batchImport'
             , accept: 'file' //普通文件
             , done: function (res) {
-                if(res.res){
+                if (res.res) {
                     layer.msg("导入成功")
                     table.reload('tableId', {
                         url: "getCadreLists"
@@ -106,12 +106,12 @@
         });
 
         form.on("submit(search)", function () {
-            adminListUrl="getCadreLists?info="+$("#info").val();
+            adminListUrl = "getCadreLists?info=" + $("#info").val();
             table.reload('tableId', {
                 url: adminListUrl
-                ,where: {}
+                , where: {}
             });
-            var index = layer.load(2, {time: 1*1000});
+            var index = layer.load(2, {time: 1 * 1000});
             return false;
         });
 
@@ -127,7 +127,7 @@
                     maxmin: true,
                     shade: 0.5,
                     area: ["40%", "70%"],
-                    content: "/cadre/edit?id="+JSON.stringify(data.id),
+                    content: "/cadre/edit?id=" + JSON.stringify(data.id),
                     zIndex: layer.zIndex,
                     end: function () {
                         $(".layui-laypage-btn")[0].click();
@@ -139,14 +139,14 @@
                         cache: true,//缓存
                         type: "POST",//提交类型
                         url: '/cadre/deleteByPK',
-                        data: {id:data.id},// 你的formid
+                        data: {id: data.id},// 你的formid
                         dataType: 'json',
                         async: false,
                         error: function (data) {
                             console.log("失败")
                         },
                         success: function (data) {
-                            if (data.res){
+                            if (data.res) {
                                 layer.msg("删除成功", {icon: 1, time: 1000});
                                 table.reload('tableId', {
                                     url: "getCadreLists?id="

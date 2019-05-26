@@ -5,8 +5,31 @@
     <title>干部列表</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <style>
-        #vote_tb {
+        .tbd tr td {
+            width: 180px;
+        }
 
+        .color_block {
+            float: right;
+            display: block;
+            height: 22px;
+            width: 250px;
+        }
+
+        .color_block ul li {
+            display: block;
+            height: 20px;
+            width: 20px;
+            float: left;
+            margin-left: 5px;
+        }
+
+        .color_block ul span {
+            display: block;
+            height: 20px;
+            width: 30px;
+            float: left;
+            margin-left: 5px;
         }
 
     </style>
@@ -24,11 +47,22 @@
     </div>
     <div class="layui-col-md10 layui-col-xs12 layui-col-lg-offset1">
         <blockquote class="layui-elem-quote">
-            请投票！&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前投票: <span style="color: #0B61A4">19投票</span>
+            请投票！&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前投票:
+            <span style="color: #0B61A4" th:text="${participant.voteAlias}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            您当前的身份是:<span style="color: #0B61A4" th:text="${participant.role}"></span>
+            <input type="hidden" th:value="${participant.pin}">
+            <span class="color_block">
+           <ul>
+               <li style="background: #ffffff"></li><span>好</span>
+               <li style="background: #ffcc99"></li><span>较好</span>
+               <li style="background: #ff9900;"></li><span>一般</span>
+               <li style="background: #ff3300"></li><span>差</span>
+           </ul>
+        </span>
         </blockquote>
-        <form class="layui-form" action="">
+        <form class="layui-form" action="" id="voteData">
             <table class="layui-table">
-                <tbody id="vote_tb">
+                <tbody class="tbd" id="tbd">
                 <tr>
                     <td>姓名</td>
                     <td>职务</td>
@@ -37,108 +71,204 @@
                     <td>勤</td>
                     <td>绩</td>
                     <td>廉</td>
-                    <td>总分</td>
+                    <td>得分</td>
+
                 </tr>
-                <tr>
-                    <td>王小轩</td>
-                    <td>lol职业选手</td>
-                    <td>
+                <span th:each="c,userStat : ${cadreByAlias}">
+                    <tr class="select">
+                    <td th:text="${userStat.index+1+'. '+c.cadreName}"></td>
+                    <td th:text="${c.job}"></td>
+                    <td onmouseover="check()">
                         <select name="virtue">
                             <option value=""></option>
-                            <option value="0">好</option>
-                            <option value="1">较好</option>
-                            <option value="2">一般</option>
-                            <option value="3">好</option>
+                            <option value="1">好</option>
+                            <option value="2" selected>较好</option>
+                            <option value="3">一般</option>
                             <option value="4">差</option>
                         </select>
 
                     </td>
-                    <td>
+                    <td onmouseover="check()">
                         <select name="ability">
                             <option value=""></option>
-                            <option value="0">好</option>
-                            <option value="1">较好</option>
-                            <option value="2">一般</option>
-                            <option value="3">好</option>
+                            <option value="1">好</option>
+                            <option value="2" selected>较好</option>
+                            <option value="3">一般</option>
                             <option value="4">差</option>
                         </select>
                     </td>
-                    <td>
+                    <td onmouseover="check()">
                         <select name="diligence">
                             <option value=""></option>
-                            <option value="0">好</option>
-                            <option value="1">较好</option>
-                            <option value="2">一般</option>
-                            <option value="3">好</option>
+                            <option value="1">好</option>
+                            <option value="2" selected>较好</option>
+                            <option value="3">一般</option>
                             <option value="4">差</option>
                         </select>
                     </td>
-                    <td>
+                    <td onmouseover="check()">
                         <select name="feats">
                             <option value=""></option>
-                            <option value="0">好</option>
-                            <option value="1">较好</option>
-                            <option value="2">一般</option>
-                            <option value="3">好</option>
+                            <option value="1">好</option>
+                            <option value="2" selected>较好</option>
+                            <option value="3">一般</option>
                             <option value="4">差</option>
                         </select>
                     </td>
-                    <td>
+                    <td onmouseover="check()">
                         <select name="honest">
                             <option value=""></option>
-                            <option value="0">好</option>
-                            <option value="1">较好</option>
-                            <option value="2">一般</option>
-                            <option value="3">好</option>
+                            <option value="1">好</option>
+                            <option value="2" selected>较好</option>
+                            <option value="3">一般</option>
                             <option value="4">差</option>
                         </select>
                     </td>
-                    <td>分数</td>
+                    <td>0</td>
                 </tr>
+                </span>
                 </tbody>
             </table>
+            <div style="width: 116px;height: 46px;margin: 15px auto" >
+                <button class="layui-btn layui-btn-lg " lay-submit lay-filter="votesubmit" type="button" id="submitVote" style="display: block">
+                    立即提交</button>
+                <button class="layui-btn layui-btn-lg layui-btn-disabled" type="button" id="hiddenbutton" style="display: none">
+                    立即提交</button>
+            </div>
+
         </form>
     </div>
-    <script src="lib/layui/layui.js"></script>
-    <script src="lib/nprogress/nprogress.js"></script>
-    <script src="js/okadmin.js"></script>
-    <script type="text/javascript"></script>
-    <script>
+    <script th:inline="javascript">
         //Demo
-        layui.use(['form','layer'], function(){
+        layui.use(['form', 'layer'], function () {
             var form = layui.form;
             var $ = layui.jquery;
-
             //监听提交
-            form.on('submit(formDemo)', function(data){
-                layer.msg(JSON.stringify(data.field));
+            form.on("submit(votesubmit)", function (data) {
+                submit();
                 return false;
             });
-
             $("#explain").click(function () {
                 layer.open({
                     type: 1
-                    ,title: false //不显示标题栏
-                    ,closeBtn: false
-                    ,area: '300px;'
-                    ,shade: 0.8
-                    ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-                    ,resize: false
-                    ,btn: ['我知道了']
-                    ,btnAlign: 'c'
-                    ,moveType: 1 //拖拽模式，0或者1
-                    ,content: '<div style="height: 170px;width: 280px;font-size: 15px;margin: 50px 10px"><p>1.您在评测时每项只能选择一个结果</p><hr>' +
+                    , title: false //不显示标题栏
+                    , closeBtn: false
+                    , area: '300px;'
+                    , title: '温馨提示:'
+                    , shade: 0.8
+                    , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    , resize: false
+                    , btn: ['我知道了']
+                    , btnAlign: 'c'
+                    , moveType: 1 //拖拽模式，0或者1
+                    , content: '<div style="height: 170px;width: 280px;font-size: 15px;margin: 50px 10px"><p>1.您在评测时每项只能选择一个结果</p><hr>' +
                         '<p>2.对某一测评项目的情况不了解,可以不选择</p><hr><p>3.如果有效的测评项目全为差,则测评无效,需要重新选择</p><hr><p>4.每个人只有一次提交投票机会,如果您暂时不想投票可以选择右上角的退出投票.</p><hr></div>'
-                    // ,success: function(layero){
-                    //     var btn = layero.find('.layui-layer-btn');
-                    //     btn.find('.layui-layer-btn0').attr({
-                    //         href: 'http://www.layui.com/'
-                    //         ,target: '_blank'
-                    //     });
-                    // }
                 });
             })
         });
+
+        var tb_tr = document.querySelectorAll("#tbd tr");
+        var len = tb_tr.length;
+        //设置隔行变色
+        for (var i = 0; i < len; i++) {
+            if (i % 2 == 0) {
+                tb_tr[i].style.backgroundColor = "#f2f2f2";
+            }
+        }
+
+        window.onload = check();
+
+
+        //获取所有的列,并赋予每个表格颜色
+        function check() {
+            var tb_td = document.querySelectorAll(".select");
+            var len = tb_td.length, k = 0;
+            for (; k <= len; k++) {
+                var j = 2, count = 5,score = 0;
+                for (j; j <= 6; j++) {
+                    var index = tb_td[k].children[j].children[0].selectedIndex;
+                    if (index == "1") {
+                        tb_td[k].children[j].style.backgroundColor = "#ffffff"
+                        score += 100;
+                    } else if (index == "2") {
+                        tb_td[k].children[j].style.backgroundColor = "#ffcc99"
+                        score += 85;
+                    } else if (index == "3") {
+                        tb_td[k].children[j].style.backgroundColor = "#ff9900"
+                        score += 70;
+                    } else if (index == "4") {
+                        tb_td[k].children[j].style.backgroundColor = "#ff3300"
+                        score += 50;
+                    } else {
+                        count--;
+                        tb_td[k].children[j].style.backgroundColor = "rgba(23,23,23,0.45)"
+                    }
+                }
+                // 判断是否存在无效的投票
+                if (score / count <= 50) {
+                    layer.msg("第" + (k + 1) + "列的投票无效,请重新选择!");
+                    $("#submitVote").hide();
+                    $("#hiddenbutton").show();
+                }else {
+                    $("#submitVote").show();
+                    $("#hiddenbutton").hide();
+                }
+
+                tb_td[k].children[7].innerHTML = score / count;
+            }
+        }
+
+        function submit() {
+            var tb_td = document.querySelectorAll(".select");
+            var len = tb_td.length, k = 0;
+            var pin = [[${participant.pin}]], alias = [[${participant.voteAlias}]];
+            for (; k <= len; k++) {
+                var scorelist = [];
+                var virtue = 0, ability = 0, diligence = 0, feats = 0, honest = 0;
+                var cadreName, job;
+                // var temp_Score={};
+                cadreName = tb_td[k].children[0].innerHTML;
+                job = tb_td[k].children[1].innerHTML;
+                virtue = tb_td[k].children[2].children[0].selectedIndex;
+                ability = tb_td[k].children[3].children[0].selectedIndex;
+                diligence = tb_td[k].children[4].children[0].selectedIndex;
+                feats = tb_td[k].children[5].children[0].selectedIndex;
+                honest = tb_td[k].children[6].children[0].selectedIndex;
+                scorelist.push({
+                    "pin": pin,
+                    "cadreName": cadreName,
+                    "alias": alias,
+                    "virtue": virtue,
+                    "ability": ability,
+                    "diligence": diligence,
+                    "feats": feats,
+                    "honest": honest
+                });
+                console.log(JSON.stringify(scorelist));
+
+            $.ajax({
+                url: "/vote/insertVote",
+                async: false,
+                data: JSON.stringify(scorelist),
+                type: "POST",
+                dataType: 'json',
+                contentType:'application/json',
+                success: function (data) {
+                    if (data.res) {
+                        layer.msg("投票成功！", {icon: 6, time: 1000, anim: 4}, function () {
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));
+                        })
+                    }else{
+                        layer.msg(data.info)
+                    }
+                },
+                error: function (data) {
+                    layer.msg("输入信息有误,请重试!")
+                }
+
+            })
+        }
+        }
     </script>
 </div>
 </body>

@@ -1,5 +1,6 @@
 package com.huse.controller;
 
+import com.huse.pojo.QueryVo;
 import com.huse.pojo.Score;
 import com.huse.pojo.Vote;
 import com.huse.service.ScoreService;
@@ -9,12 +10,10 @@ import com.huse.utils.Laytable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.xml.ws.soap.Addressing;
+import java.util.Date;
 import java.util.List;
 
 /*投票控制器,管理投票相关的业务*/
@@ -109,5 +108,29 @@ public class VoteController {
             laytable.setData(scores);
         }
         return laytable;
+    }
+    @RequestMapping("vote/insertVote")
+    @ResponseBody
+    public AjaxResult insertVote(@RequestBody(required = false) List<Score> score){
+        Score score1 = score.get(0);
+        Vote vote = voteService.selectByAlisa(score1.getAlias());
+        System.out.println(score1.toString());
+        Date nowTime = new Date();
+//        如果在开始之前
+        if (nowTime.before(vote.getBeginTime())){
+            ajaxResult.setRes(false);
+            ajaxResult.setInfo("投票还未开始，请开始后再投");
+            return ajaxResult;
+        }
+//        如果在开始之后
+        if(vote.getEndTime().before(nowTime)){
+            ajaxResult.setInfo("投票已经结束，无法投票");
+            ajaxResult.setRes(false);
+            return ajaxResult;
+        }
+//        如果处于正在投票期间
+        ajaxResult.setRes(true);
+        ajaxResult.setInfo("投票成功");
+        return ajaxResult;
     }
 }

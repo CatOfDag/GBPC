@@ -62,4 +62,9 @@ public class CadreServiceImp implements CadreService{
     public Cadre selectByName(String name) {
         return cadreMapper.selectByName(name);
     }
+
+    @Override
+    public List<Cadre> selectByAlias(String alias) {
+        return cadreMapper.selectByAlias(alias);
+    }
 }

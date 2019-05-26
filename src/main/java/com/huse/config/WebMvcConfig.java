@@ -15,5 +15,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         //草泥马必须得这个狗比格式,恶几把心
         registry.addResourceHandler("/headpic/**").addResourceLocations("file:E:/HUSEFile/headportrait/");
         registry.addResourceHandler("/doc/**").addResourceLocations("file:E:/HUSEFile/doc/");
+        registry.addResourceHandler("/sys_file/**").addResourceLocations("file:E:/HUSEFile/sys_file/");
+
     }
 }

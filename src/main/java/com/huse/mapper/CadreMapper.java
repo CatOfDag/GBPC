@@ -25,4 +25,6 @@ public interface CadreMapper {
     List<Cadre> fuzzyQuery(@Param("info") String info);
 
     Cadre selectByName(String name);
+
+    List<Cadre> selectByAlias(String alias);
 }

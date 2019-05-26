@@ -15,6 +15,9 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 
+import javax.xml.crypto.Data;
+import java.util.Date;
+
 public class UserRealm extends AuthorizingRealm {
 
     @Autowired
@@ -56,7 +59,7 @@ public class UserRealm extends AuthorizingRealm {
         cadre = cadreService.selectByName(token.getUsername());
         Participant participant;
         participant = participantService.selectByPIN(token.getUsername());
-        System.out.println("认证获得用户名"+token.getUsername());
+//        System.out.println("认证获得用户名"+token.getUsername());
 
 
         //如果admin信息为空
@@ -67,8 +70,13 @@ public class UserRealm extends AuthorizingRealm {
                 if (participant==null){
                     return null;
                 }else{
-                    System.out.println("现在处于认证中"+participant.toString());
-                    return new SimpleAuthenticationInfo(participant,"",getName());
+                    Date nowTime = new Date();
+                    //如果超过截止日期或者账户被锁定了
+                    if (participant.getState()&& !participant.getEndtime().before(nowTime)){
+                        return new SimpleAuthenticationInfo(participant,"",getName());
+                    }else {
+                        throw new LockedAccountException("帐号已过期");
+                    }
                 }
             }else {
                 return new SimpleAuthenticationInfo(cadre, cadre.getPassword().toCharArray(), getName());
