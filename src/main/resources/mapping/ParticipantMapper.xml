@@ -101,6 +101,30 @@
       vote_alias = #{voteAlias,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+<!--  按照用户的名字更新-->
+  <update id="updateByPIN" parameterType="com.huse.pojo.Participant" >
+    update huse_participant
+    <set >
+      <if test="pin != null" >
+        PIN = #{pin,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        role = #{role,jdbcType=CHAR},
+      </if>
+      <if test="endtime != null" >
+        endtime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=BIT},
+      </if>
+      <if test="voteAlias != null" >
+        vote_alias = #{voteAlias,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PIN =#{pin,jdbcType=VARCHAR}
+  </update>
+
   <select id="getParticipantLists" resultMap="BaseResultMap">
     select * from huse_participant limit #{start},#{limit};
   </select>

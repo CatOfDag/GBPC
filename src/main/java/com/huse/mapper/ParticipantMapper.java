@@ -5,6 +5,7 @@ import com.huse.pojo.Participant;
 import java.util.List;
 
 public interface ParticipantMapper {
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(Participant record);
@@ -24,4 +25,6 @@ public interface ParticipantMapper {
     int forbidden(int state);
 
     Participant selectByPIN(String PIN);
+//    按照PIN更新
+    int updateByPIN(Participant record);
 }

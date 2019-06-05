@@ -27,12 +27,12 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.huse.pojo.Score" >
-    insert into huse_score (id, PIN, cadre_name, 
+    insert into huse_score (PIN, cadre_name,
       alias, vote_time, virtue, 
       ability, diligence, feats, 
       honest)
-    values (#{id,jdbcType=INTEGER}, #{pin,jdbcType=VARCHAR}, #{cadreName,jdbcType=VARCHAR}, 
-      #{alias,jdbcType=VARCHAR}, #{voteTime,jdbcType=TIMESTAMP}, #{virtue,jdbcType=INTEGER}, 
+    values (#{pin,jdbcType=VARCHAR}, #{cadreName,jdbcType=VARCHAR},
+      #{alias,jdbcType=VARCHAR}, NOW(), #{virtue,jdbcType=INTEGER},
       #{ability,jdbcType=INTEGER}, #{diligence,jdbcType=INTEGER}, #{feats,jdbcType=INTEGER}, 
       #{honest,jdbcType=INTEGER})
   </insert>
@@ -155,8 +155,30 @@
   <select id="count" resultType="java.lang.Integer">
     select count(*) from huse_score
   </select>
+
   <select id="fuzzyQuery" resultMap="BaseResultMap" parameterType="java.lang.String">
-    SELECT * FROM huse_score where cadre_name like '%${info}%'
+    SELECT * FROM huse_score
+    <where>
+      <if test="info !=null and info !=''">
+        cadre_name like '%${info}%'
+      </if>
+
+      <if test="alias != null and alias !=''">
+        and alias = #{alias};
+      </if>
+    </where>
+  </select>
+
+  <select id="selectAllCadreName" resultType="java.lang.String" parameterType="java.lang.String">
+    SELECT DISTINCT cadre_name FROM  huse_score
+    <where>
+      <if test=" alias != null and alias !=''">
+        alias = #{alias}
+      </if>
+    </where>
+  </select>
+  <select id="selectByCadreName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT * FROM huse_score WHERE cadre_name = #{cadreName}
   </select>
 
 </mapper>

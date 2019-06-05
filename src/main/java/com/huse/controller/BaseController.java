@@ -1,5 +1,6 @@
 package com.huse.controller;
 
+import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import com.huse.pojo.Admin;
@@ -74,7 +75,10 @@ public class BaseController {
 
     //    用户中心
     @GetMapping("userCenter")
-    public String userCenterPage() {
+    public String userCenterPage(ModelMap mmp) {
+        Subject sub = SecurityUtils.getSubject();
+        Admin obj = (Admin) sub.getPrincipal();
+        mmp.addAttribute("userInfo",obj);
         return "user";
     }
 

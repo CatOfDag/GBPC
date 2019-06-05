@@ -23,9 +23,9 @@
     </div>
     <!--工具栏-->
     <okToolbar>
-        <button class="layui-btn layui-btn-danger" id="batchDel">
-            <i class="layui-icon layui-icon-delete"></i>批量删除
-        </button>
+<!--        <button class="layui-btn layui-btn-danger" id="batchDel">-->
+<!--            <i class="layui-icon layui-icon-delete"></i>批量删除-->
+<!--        </button>-->
         <button class="layui-btn" id="addUser">
             <i class="layui-icon">&#xe61f;</i>新建投票项目
         </button>
@@ -60,7 +60,7 @@
             limit: 10,
             page: true,
             cols: [[
-                {type: "checkbox"},
+                // {type: "checkbox"},
                 {field: "id", title: "ID", width: 80, sort: true},
                 {field: "name", title: "投票名称", width: 300},
                 {field: "alias", title: "投票简称", width: 200},
@@ -93,7 +93,7 @@
                     }
                 });
             } else if (layEvent === "del") {
-                layer.confirm("若删除该投票,与之关联用户的信息也被删除,确定要删除吗？", {skin: "layui-layer-lan", icon: 2, title: "提示", anim: 6}, function () {
+                layer.confirm("若删除该投票,与之关联干部的信息、投票者信息、投票详情、投票结果也被删除且不可恢复,确定要删除吗？", {skin: "layui-layer-lan", icon: 2, title: "提示", anim: 6}, function () {
                     $.ajax({
                         cache: true,//缓存
                         type: "POST",//提交类型

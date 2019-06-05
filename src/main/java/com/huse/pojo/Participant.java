@@ -2,9 +2,11 @@ package com.huse.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Component
 public class Participant {
     private Integer id;
 

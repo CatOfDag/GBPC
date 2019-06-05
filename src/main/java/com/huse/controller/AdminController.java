@@ -91,5 +91,19 @@ public class AdminController {
         ajaxResult.setRes(flag);
         return ajaxResult;
     }
+    @RequestMapping("admin/updateInfo")
+    @ResponseBody
+    public AjaxResult updateInfo(Admin admin){
+        System.out.println(admin);
+        int i = adminService.updateByPrimaryKey(admin);
+        if (i>0){
+            ajaxResult.setRes(true);
+            ajaxResult.setInfo("修改成功,密码将在下一次登录时更新!");
+        }else {
+            ajaxResult.setInfo("修改失败,请重试!");
+            ajaxResult.setRes(false);
+        }
+        return ajaxResult;
+    }
 
 }

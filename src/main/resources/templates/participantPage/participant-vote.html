@@ -64,6 +64,7 @@
             <table class="layui-table">
                 <tbody class="tbd" id="tbd">
                 <tr>
+                    <td>序号</td>
                     <td>姓名</td>
                     <td>职务</td>
                     <td>德</td>
@@ -76,7 +77,9 @@
                 </tr>
                 <span th:each="c,userStat : ${cadreByAlias}">
                     <tr class="select">
-                    <td th:text="${userStat.index+1+'. '+c.cadreName}"></td>
+                    <td th:text="${userStat.index+1}"></td>
+                        <td><a th:href="@{'/vote/showInfo?id='+${c.id}+'&name='+${c.cadreName}}"
+                               th:text="${c.cadreName}" target="_blank" style="color: #01AAED;text-decoration: underline;"></a></td>
                     <td th:text="${c.job}"></td>
                     <td onmouseover="check()">
                         <select name="virtue">
@@ -129,11 +132,15 @@
                 </span>
                 </tbody>
             </table>
-            <div style="width: 116px;height: 46px;margin: 15px auto" >
-                <button class="layui-btn layui-btn-lg " lay-submit lay-filter="votesubmit" type="button" id="submitVote" style="display: block">
-                    立即提交</button>
-                <button class="layui-btn layui-btn-lg layui-btn-disabled" type="button" id="hiddenbutton" style="display: none">
-                    立即提交</button>
+            <div style="width: 116px;height: 46px;margin: 15px auto">
+                <button class="layui-btn layui-btn-lg " lay-submit lay-filter="votesubmit" type="button" id="submitVote"
+                        style="display: block">
+                    立即提交
+                </button>
+                <button class="layui-btn layui-btn-lg layui-btn-disabled" type="button" id="hiddenbutton"
+                        style="display: none">
+                    立即提交
+                </button>
             </div>
 
         </form>
@@ -145,23 +152,61 @@
             var $ = layui.jquery;
             //监听提交
             form.on("submit(votesubmit)", function (data) {
-                submit();
+                document.getElementById("submitVote").style.display = "none";
+                document.getElementById("hiddenbutton").style.display = "block";
+                var tb_td = document.querySelectorAll(".select");
+                var len = tb_td.length, k = 0;
+                var pin = [[${participant.pin}]], alias = [[${participant.voteAlias}]];
+                var scorelist = [];
+                for (; k <= len-1; k++) {
+                    var virtue = 0, ability = 0, diligence = 0, feats = 0, honest = 0;
+                    var cadreName = tb_td[k].children[1].textContent;
+                    var job = tb_td[k].children[2].innerHTML;
+                    virtue = tb_td[k].children[3].children[0].selectedIndex;
+                    ability = tb_td[k].children[4].children[0].selectedIndex;
+                    diligence = tb_td[k].children[5].children[0].selectedIndex;
+                    feats = tb_td[k].children[6].children[0].selectedIndex;
+                    honest = tb_td[k].children[7].children[0].selectedIndex;
+                    scorelist.push({
+                        "pin": pin,
+                        "cadreName": cadreName,
+                        "alias": alias,
+                        "virtue": virtue,
+                        "ability": ability,
+                        "diligence": diligence,
+                        "feats": feats,
+                        "honest": honest
+                    });
+                }
+                var s = JSON.stringify(scorelist);
+                    submit(s);
                 return false;
             });
             $("#explain").click(function () {
                 layer.open({
                     type: 1
-                    , title: false //不显示标题栏
-                    , closeBtn: false
-                    , area: '300px;'
-                    , title: '温馨提示:'
-                    , shade: 0.8
-                    , id: 'LAY_layuipro' //设定一个id，防止重复弹出
-                    , resize: false
-                    , btn: ['我知道了']
-                    , btnAlign: 'c'
-                    , moveType: 1 //拖拽模式，0或者1
-                    , content: '<div style="height: 170px;width: 280px;font-size: 15px;margin: 50px 10px"><p>1.您在评测时每项只能选择一个结果</p><hr>' +
+                    ,
+                    title: false //不显示标题栏
+                    ,
+                    closeBtn: false
+                    ,
+                    area: '300px;'
+                    ,
+                    title: '温馨提示:'
+                    ,
+                    shade: 0.8
+                    ,
+                    id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    ,
+                    resize: false
+                    ,
+                    btn: ['我知道了']
+                    ,
+                    btnAlign: 'c'
+                    ,
+                    moveType: 1 //拖拽模式，0或者1
+                    ,
+                    content: '<div style="height: 170px;width: 280px;font-size: 15px;margin: 50px 10px"><p>1.您在评测时每项只能选择一个结果</p><hr>' +
                         '<p>2.对某一测评项目的情况不了解,可以不选择</p><hr><p>3.如果有效的测评项目全为差,则测评无效,需要重新选择</p><hr><p>4.每个人只有一次提交投票机会,如果您暂时不想投票可以选择右上角的退出投票.</p><hr></div>'
                 });
             })
@@ -184,8 +229,8 @@
             var tb_td = document.querySelectorAll(".select");
             var len = tb_td.length, k = 0;
             for (; k <= len; k++) {
-                var j = 2, count = 5,score = 0;
-                for (j; j <= 6; j++) {
+                var j = 3, count = 5, score = 0;
+                for (j; j <= 7; j++) {
                     var index = tb_td[k].children[j].children[0].selectedIndex;
                     if (index == "1") {
                         tb_td[k].children[j].style.backgroundColor = "#ffffff"
@@ -207,67 +252,42 @@
                 // 判断是否存在无效的投票
                 if (score / count <= 50) {
                     layer.msg("第" + (k + 1) + "列的投票无效,请重新选择!");
-                    $("#submitVote").hide();
-                    $("#hiddenbutton").show();
-                }else {
+                    //无效的投票设置按钮不可点击
+                    document.getElementById("submitVote").style.display = "none";
+                    document.getElementById("hiddenbutton").style.display = "block";
+                } else {
+                    // 设置按钮可点击
                     $("#submitVote").show();
                     $("#hiddenbutton").hide();
                 }
 
-                tb_td[k].children[7].innerHTML = score / count;
+                tb_td[k].children[8].innerHTML = score / count;
             }
         }
 
-        function submit() {
-            var tb_td = document.querySelectorAll(".select");
-            var len = tb_td.length, k = 0;
-            var pin = [[${participant.pin}]], alias = [[${participant.voteAlias}]];
-            for (; k <= len; k++) {
-                var scorelist = [];
-                var virtue = 0, ability = 0, diligence = 0, feats = 0, honest = 0;
-                var cadreName, job;
-                // var temp_Score={};
-                cadreName = tb_td[k].children[0].innerHTML;
-                job = tb_td[k].children[1].innerHTML;
-                virtue = tb_td[k].children[2].children[0].selectedIndex;
-                ability = tb_td[k].children[3].children[0].selectedIndex;
-                diligence = tb_td[k].children[4].children[0].selectedIndex;
-                feats = tb_td[k].children[5].children[0].selectedIndex;
-                honest = tb_td[k].children[6].children[0].selectedIndex;
-                scorelist.push({
-                    "pin": pin,
-                    "cadreName": cadreName,
-                    "alias": alias,
-                    "virtue": virtue,
-                    "ability": ability,
-                    "diligence": diligence,
-                    "feats": feats,
-                    "honest": honest
-                });
-                console.log(JSON.stringify(scorelist));
+        function submit(s) {
+                $.ajax({
+                    url: "/vote/insertVote",
+                    async: false,
+                    data: s,
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        if (data.res) {
+                            layer.msg("投票成功！", {icon: 6, time: 1000, anim: 4}, function () {
+                                parent.layer.close(parent.layer.getFrameIndex(window.name));
+                            });
 
-            $.ajax({
-                url: "/vote/insertVote",
-                async: false,
-                data: JSON.stringify(scorelist),
-                type: "POST",
-                dataType: 'json',
-                contentType:'application/json',
-                success: function (data) {
-                    if (data.res) {
-                        layer.msg("投票成功！", {icon: 6, time: 1000, anim: 4}, function () {
-                            parent.layer.close(parent.layer.getFrameIndex(window.name));
-                        })
-                    }else{
-                        layer.msg(data.info)
+                        } else {
+                            layer.msg(data.info)
+                        }
+                    },
+                    error: function (data) {
+                        layer.msg("输入信息有误,请重试!")
                     }
-                },
-                error: function (data) {
-                    layer.msg("输入信息有误,请重试!")
-                }
 
-            })
-        }
+                })
         }
     </script>
 </div>

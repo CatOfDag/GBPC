@@ -20,18 +20,20 @@
         </a>
     </div>
     <!--form表单-->
-    <form class="layui-form ok-form">
+    <form class="layui-form ok-form" lay-filter="userInfo" id="userInfo">
+        <input type="hidden" name="id" th:value="${userInfo.id}">
+        <input type="hidden" name="state" th:value="${userInfo.state}">
         <div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
             <div class="layui-input-block">
-                <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input"
+                <input type="text" name="adminName" placeholder="请输入用户名" autocomplete="off" class="layui-input layui-disabled"
                        lay-verify="required">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">真实姓名</label>
+            <label class="layui-form-label">密码</label>
             <div class="layui-input-block">
-                <input type="text" name="reallyName" placeholder="请输入真实姓名" autocomplete="off" class="layui-input"
+                <input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input"
                        lay-verify="required">
             </div>
         </div>
@@ -43,52 +45,69 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">邮箱</label>
+            <label class="layui-form-label">用户身份</label>
             <div class="layui-input-block">
-                <input type="text" name="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input"
-                       lay-verify="email">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">密码</label>
-            <div class="layui-input-block">
-                <input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input"
+                <input type="text" name="role" placeholder="用户身份" autocomplete="off" class="layui-input layui-disabled"
                        lay-verify="required">
             </div>
         </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">简要描述</label>
+            <div class="layui-input-block">
+                <input type="text" name="desc" placeholder="请输入简要描述" autocomplete="off" class="layui-input">
+            </div>
+        </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="edit">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button class="layui-btn" lay-submit lay-filter="edit">修改信息</button>
             </div>
         </div>
     </form>
 </div>
-<!--js逻辑-->
-<!--<script th:src="@{/lib/layui/layui.js}"></script>-->
-<script>
+<script th:inline="JavaScript">
     layui.use(["element", "form", "jquery", "laydate"], function () {
         var form = layui.form;
         var $ = layui.jquery;
         var laydate = layui.laydate;
-
-        laydate.render({
-            elem: "#birthday",
-            type: "datetime"
-        });
-
-        form.verify({
-            birthdayVerify: [/^((((1[6-9]|[2-9]\d)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\d|3[01]))|(((1[6-9]|[2-9]\d)\d{2})-(0?[13456789]|1[012])-(0?[1-9]|[12]\d|30))|(((1[6-9]|[2-9]\d)\d{2})-0?2-(0?[1-9]|1\d|2[0-8]))|(((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))-0?2-29-))(\s(([01]\d{1})|(2[0123])):([0-5]\d):([0-5]\d))?$/, '日期格式不正确']
-        });
-
         form.on("submit(edit)", function (data) {
-            console.log(data.field);
-            layer.msg("编辑成功！", {icon: 6, time: 1000, anim: 4}, function () {
-                parent.layer.close(parent.layer.getFrameIndex(window.name));
-            });
+            submit();
             return false;
         });
+
+        form.val('userInfo', {
+            /*<![CDATA[*/
+            "adminName": [[${userInfo.adminName}]]
+            ,"password": [[${userInfo.password}]]
+            ,"phone": [[${userInfo.phone}]]
+            ,"role":[[${userInfo.role}]]
+            ,"desc": [[${userInfo.desc}]]
+            /*]]>*/
+        })
+
+        function submit() {
+            $.ajax({
+                type:"POST",
+                url:"/admin/updateInfo",
+                data:$("#userInfo").serialize(),
+                dataType:"json",
+                async:false,
+                success: function (data) {
+                    if (data.res) {
+                        layer.msg(data.info, {icon: 6, time: 1000, anim: 4}, function () {
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));
+                        })
+                    }else{
+                        layer.msg(data.info);
+                    }
+                },
+                error: function (data) {
+                    layer.msg("输入信息有误,请重试!")
+                }
+            })
+        }
     })
 </script>
+
 </body>
 </html>

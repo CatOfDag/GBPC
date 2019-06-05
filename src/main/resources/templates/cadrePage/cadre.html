@@ -134,7 +134,7 @@
                     }
                 });
             } else if (layEvent === "del") {
-                layer.confirm("确定要删除吗？", {skin: "layui-layer-lan", icon: 2, title: "提示", anim: 6}, function () {
+                layer.confirm("若删除该投票,与之关联投票详情、投票结果也被删除且不可恢复,确定要删除吗？", {skin: "layui-layer-lan", icon: 2, title: "提示", anim: 6}, function () {
                     $.ajax({
                         cache: true,//缓存
                         type: "POST",//提交类型

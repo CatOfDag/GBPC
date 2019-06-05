@@ -38,13 +38,15 @@
         <div class="layui-form-item">
             <label class="layui-form-label">名字</label>
             <div class="layui-input-block">
-                <input type="text" name="username"  autocomplete="off" class="layui-input"  readonly="readonly" th:value="${cadreName}">
+                <input type="text" name="username"  autocomplete="off" class="layui-input layui-disabled"
+                       readonly="readonly" th:value="${cadreName}">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">职务</label>
             <div class="layui-input-block">
-                <input type="text" name="job"  autocomplete="off" class="layui-input" readonly="readonly" th:value="${job}">
+                <input type="text" name="job"  autocomplete="off" class="layui-input layui-disabled"
+                       readonly="readonly" th:value="${job}">
             </div>
         </div>
     <form class="layui-form layui-form-pane ok-form" id="info">

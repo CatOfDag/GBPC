@@ -24,4 +24,6 @@ public interface ParticipantService {
     int forbidden(int state);
 
     Participant selectByPIN(String PIN);
+
+    int updateByPIN(Participant record);
 }

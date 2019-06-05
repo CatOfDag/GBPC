@@ -22,5 +22,11 @@ public interface ScoreService {
 
     int count();
 
-    List<Score> fuzzyQuery(@Param("info") String info);
+    List<Score> fuzzyQuery(@Param("info") String info,String alias);
+
+    //查找所有的干部姓名
+    List<String> selectAllCadreName(String alias);
+
+    //按照干部的姓名查找得分情况
+    List<Score> selectByCadreName(String cadreName);
 }

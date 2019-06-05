@@ -23,17 +23,24 @@
     <!--模糊搜索区域-->
     <div class="layui-row">
         <form class="layui-form layui-col-md12 ok-search">
+            <select name="alias" id="alias_select">
+                <option value=""></option>
+                <span th:each="v : ${votes}">
+                    <option th:value="${v.alias}"><span th:text="${v.alias}"></span></option>
+                </span>
+            </select>
             <input class="layui-input" placeholder="输入用户名搜索" autocomplete="off" id="info">
             <button class="layui-btn" lay-submit="" lay-filter="search">
                 <i class="layui-icon layui-icon-search"></i>
             </button>
         </form>
     </div>
+
     <!--数据表格-->
     <table class="layui-hide" id="test" lay-filter="test"></table>
 
     <script type="text/html" id="toolbarDemo">
-        <p>说明:各项中1,2,3,4分别对应"好","较好","一般","差"</p>
+        <p>说明:各项中1,2,3,4分别对应"好","较好","一般","差"。列表示每一分项的等级。</p>
     </script>
 
     <script th:inline="none">
@@ -44,7 +51,7 @@
 
             form.on("submit(search)", function () {
                 table.reload('test', {
-                    url: "/vote/getScoreList?info="+$("#info").val()
+                    url: "/vote/getScoreList?info="+$("#info").val()+"&alisa="+$("#alias_select").val()
                     ,where: {}
                 });
                 var index = layer.load(2, {time: 1*1000});

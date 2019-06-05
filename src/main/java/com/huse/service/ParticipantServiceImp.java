@@ -62,4 +62,9 @@ public class ParticipantServiceImp implements ParticipantService {
     public Participant selectByPIN(String PIN) {
         return participantMapper.selectByPIN(PIN);
     }
+
+    @Override
+    public int updateByPIN(Participant record) {
+        return participantMapper.updateByPIN(record);
+    }
 }

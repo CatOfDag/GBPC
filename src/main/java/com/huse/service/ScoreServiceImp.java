@@ -54,7 +54,19 @@ public class ScoreServiceImp implements ScoreService {
     }
 
     @Override
-    public List<Score> fuzzyQuery(String info) {
-        return scoreMapper.fuzzyQuery(info);
+    public List<Score> fuzzyQuery(String info,String alisa) {
+        return scoreMapper.fuzzyQuery(info,alisa);
     }
+
+    @Override
+    public List<String> selectAllCadreName(String alias) {
+        return scoreMapper.selectAllCadreName(alias);
+    }
+
+    @Override
+    public List<Score> selectByCadreName(String cadreName) {
+        return scoreMapper.selectByCadreName(cadreName);
+    }
+
+
 }

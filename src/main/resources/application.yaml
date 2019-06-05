@@ -8,7 +8,7 @@ server:
 #设置日志的显示级别,level中是以<k,v>存储的
 logging:
   level:
-    cn.cyan: debug
+    com.huse.mapper: debug
 #配置数据库的连接
 spring:
   datasource:

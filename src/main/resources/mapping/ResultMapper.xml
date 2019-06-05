@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huse.mapper.ResultMapper" >
+  <resultMap id="BaseResultMap" type="com.huse.pojo.Result" >
+    <result column="cadrename" property="cadrename" jdbcType="VARCHAR" />
+    <result column="v1count" property="v1count" jdbcType="INTEGER" />
+    <result column="v2count" property="v2count" jdbcType="INTEGER" />
+    <result column="v3count" property="v3count" jdbcType="INTEGER" />
+    <result column="v4count" property="v4count" jdbcType="INTEGER" />
+    <result column="a1count" property="a1count" jdbcType="INTEGER" />
+    <result column="a2count" property="a2count" jdbcType="INTEGER" />
+    <result column="a3count" property="a3count" jdbcType="INTEGER" />
+    <result column="a4count" property="a4count" jdbcType="INTEGER" />
+    <result column="d1count" property="d1count" jdbcType="INTEGER" />
+    <result column="d2count" property="d2count" jdbcType="INTEGER" />
+    <result column="d3count" property="d3count" jdbcType="INTEGER" />
+    <result column="d4count" property="d4count" jdbcType="INTEGER" />
+    <result column="f1count" property="f1count" jdbcType="INTEGER" />
+    <result column="f2count" property="f2count" jdbcType="INTEGER" />
+    <result column="f3count" property="f3count" jdbcType="INTEGER" />
+    <result column="f4count" property="f4count" jdbcType="INTEGER" />
+    <result column="h1count" property="h1count" jdbcType="INTEGER" />
+    <result column="h2count" property="h2count" jdbcType="INTEGER" />
+    <result column="h3count" property="h3count" jdbcType="INTEGER" />
+    <result column="h4count" property="h4count" jdbcType="INTEGER" />
+    <result column="score" property="score" jdbcType="REAL" />
+    <result column="votealias" property="votealias" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.huse.pojo.Result" >
+    insert into huse_result (cadrename, v1count, v2count, 
+      v3count, v4count, a1count, 
+      a2count, a3count, a4count, 
+      d1count, d2count, d3count, 
+      d4count, f1count, f2count, 
+      f3count, f4count, h1count, 
+      h2count, h3count, h4count, 
+      score, votealias)
+    values (#{cadrename,jdbcType=VARCHAR}, #{v1count,jdbcType=INTEGER}, #{v2count,jdbcType=INTEGER}, 
+      #{v3count,jdbcType=INTEGER}, #{v4count,jdbcType=INTEGER}, #{a1count,jdbcType=INTEGER}, 
+      #{a2count,jdbcType=INTEGER}, #{a3count,jdbcType=INTEGER}, #{a4count,jdbcType=INTEGER}, 
+      #{d1count,jdbcType=INTEGER}, #{d2count,jdbcType=INTEGER}, #{d3count,jdbcType=INTEGER}, 
+      #{d4count,jdbcType=INTEGER}, #{f1count,jdbcType=INTEGER}, #{f2count,jdbcType=INTEGER}, 
+      #{f3count,jdbcType=INTEGER}, #{f4count,jdbcType=INTEGER}, #{h1count,jdbcType=INTEGER}, 
+      #{h2count,jdbcType=INTEGER}, #{h3count,jdbcType=INTEGER}, #{h4count,jdbcType=INTEGER}, 
+      #{score,jdbcType=REAL}, #{votealias,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huse.pojo.Result" >
+    insert into huse_result
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cadrename != null" >
+        cadrename,
+      </if>
+      <if test="v1count != null" >
+        v1count,
+      </if>
+      <if test="v2count != null" >
+        v2count,
+      </if>
+      <if test="v3count != null" >
+        v3count,
+      </if>
+      <if test="v4count != null" >
+        v4count,
+      </if>
+      <if test="a1count != null" >
+        a1count,
+      </if>
+      <if test="a2count != null" >
+        a2count,
+      </if>
+      <if test="a3count != null" >
+        a3count,
+      </if>
+      <if test="a4count != null" >
+        a4count,
+      </if>
+      <if test="d1count != null" >
+        d1count,
+      </if>
+      <if test="d2count != null" >
+        d2count,
+      </if>
+      <if test="d3count != null" >
+        d3count,
+      </if>
+      <if test="d4count != null" >
+        d4count,
+      </if>
+      <if test="f1count != null" >
+        f1count,
+      </if>
+      <if test="f2count != null" >
+        f2count,
+      </if>
+      <if test="f3count != null" >
+        f3count,
+      </if>
+      <if test="f4count != null" >
+        f4count,
+      </if>
+      <if test="h1count != null" >
+        h1count,
+      </if>
+      <if test="h2count != null" >
+        h2count,
+      </if>
+      <if test="h3count != null" >
+        h3count,
+      </if>
+      <if test="h4count != null" >
+        h4count,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="votealias != null" >
+        votealias,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cadrename != null" >
+        #{cadrename,jdbcType=VARCHAR},
+      </if>
+      <if test="v1count != null" >
+        #{v1count,jdbcType=INTEGER},
+      </if>
+      <if test="v2count != null" >
+        #{v2count,jdbcType=INTEGER},
+      </if>
+      <if test="v3count != null" >
+        #{v3count,jdbcType=INTEGER},
+      </if>
+      <if test="v4count != null" >
+        #{v4count,jdbcType=INTEGER},
+      </if>
+      <if test="a1count != null" >
+        #{a1count,jdbcType=INTEGER},
+      </if>
+      <if test="a2count != null" >
+        #{a2count,jdbcType=INTEGER},
+      </if>
+      <if test="a3count != null" >
+        #{a3count,jdbcType=INTEGER},
+      </if>
+      <if test="a4count != null" >
+        #{a4count,jdbcType=INTEGER},
+      </if>
+      <if test="d1count != null" >
+        #{d1count,jdbcType=INTEGER},
+      </if>
+      <if test="d2count != null" >
+        #{d2count,jdbcType=INTEGER},
+      </if>
+      <if test="d3count != null" >
+        #{d3count,jdbcType=INTEGER},
+      </if>
+      <if test="d4count != null" >
+        #{d4count,jdbcType=INTEGER},
+      </if>
+      <if test="f1count != null" >
+        #{f1count,jdbcType=INTEGER},
+      </if>
+      <if test="f2count != null" >
+        #{f2count,jdbcType=INTEGER},
+      </if>
+      <if test="f3count != null" >
+        #{f3count,jdbcType=INTEGER},
+      </if>
+      <if test="f4count != null" >
+        #{f4count,jdbcType=INTEGER},
+      </if>
+      <if test="h1count != null" >
+        #{h1count,jdbcType=INTEGER},
+      </if>
+      <if test="h2count != null" >
+        #{h2count,jdbcType=INTEGER},
+      </if>
+      <if test="h3count != null" >
+        #{h3count,jdbcType=INTEGER},
+      </if>
+      <if test="h4count != null" >
+        #{h4count,jdbcType=INTEGER},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=REAL},
+      </if>
+      <if test="votealias != null" >
+        #{votealias,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

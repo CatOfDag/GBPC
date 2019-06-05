@@ -22,5 +22,9 @@ public interface ScoreMapper {
 
     int count();
 
-    List<Score> fuzzyQuery(@Param("info") String info);
+    List<Score> fuzzyQuery(@Param("info") String info,String alias);
+
+    List<String> selectAllCadreName(@Param("alias") String alias);
+
+    List<Score> selectByCadreName(String cadreName);
 }
