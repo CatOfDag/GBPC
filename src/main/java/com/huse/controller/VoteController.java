@@ -152,10 +152,12 @@ public class VoteController {
 //        如果处于正在投票期间
         for (Score tempScore : score) {
             scoreService.insert(tempScore);
+            System.out.println(tempScore.toString());
         }
 
 //        投票成功
         participant.setPin(score1.getPin());
+
         participant.setState(false);
         participantService.updateByPIN(participant);
         ajaxResult.setRes(true);

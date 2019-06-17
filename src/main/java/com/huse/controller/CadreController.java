@@ -201,6 +201,7 @@ public class CadreController {
         return "cadrePage/cadre-infoEdit";
     }
 
+    //文件的上传
     @RequestMapping("cadre/upload")
     @ResponseBody
     @Transactional
@@ -215,7 +216,8 @@ public class CadreController {
         String saveName = uuid + suffix;
         //上传的如果是图片
         if (suffix.equals(".jpg") || suffix.equals(".png")) {
-            String picPath = "E:/HUSEFile/headportrait/" + saveName;//如果当前文件已经存在则会覆盖旧的.
+//            String picPath = "E:/HUSEFile/headportrait/" + saveName;//如果当前文件已经存在则会覆盖旧的.
+            String picPath = "/root/usr/local/HUSEFile/headportrait/" + saveName;//如果当前文件已经存在则会覆盖旧的.
             try {
                 file.transferTo(new File(picPath));
                 info.setHeaderPic(saveName);
@@ -227,7 +229,8 @@ public class CadreController {
         }
         //如果上传的是doc或docx文件
         if (suffix.equals(".doc") || suffix.equals(".docx")) {
-            String docPath = "E:/HUSEFile/doc/" + saveName;
+//            String docPath = "E:/HUSEFile/doc/" + saveName;
+            String docPath = "/root/usr/local/HUSEFile/doc/" + saveName;
             try {
                 file.transferTo(new File(docPath));
                 info.setFilePath(saveName);
@@ -251,6 +254,20 @@ public class CadreController {
         int i = infoService.updateByCadreName(infoDomain);
         boolean flag = i > 0 ? true : false;
         ajaxResult.setRes(flag);
+        return ajaxResult;
+    }
+
+    @RequestMapping("cadre/batchDeletion")
+    @ResponseBody
+    @Transactional
+    public AjaxResult batchDeletion(@RequestBody(required = false)List<Integer> ids){
+        System.out.println("开始执行...");
+        for (Integer id : ids) {
+            System.out.println(id);
+            cadreService.deleteByPrimaryKey(id);
+        }
+        ajaxResult.setRes(true);
+        ajaxResult.setInfo("删除成功");
         return ajaxResult;
     }
 }

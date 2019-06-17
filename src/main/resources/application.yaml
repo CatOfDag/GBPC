@@ -1,6 +1,6 @@
 #服务器配置相当于web.xml
 server:
-  port: 8080
+  port: 80
   servlet:
     path: /
   tomcat:
@@ -13,9 +13,9 @@ logging:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/huse
+    url: jdbc:mysql://localhost:3306/huse?useUnicode=true&characterEncoding=UTF-8
     username: root
-    password: 1234
+    password: zxzboy
   #thymeleaf的配置
   thymeleaf:
     cache: false

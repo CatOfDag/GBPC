@@ -22,7 +22,9 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -195,6 +197,19 @@ public class ParticipantController {
         List<Cadre> cadres = cadreService.selectByAlias(obj.getVoteAlias());
         mmp.addAttribute("cadreByAlias",cadres);
         return "participantPage/participant-vote";
+    }
+
+    //批量删除参与者
+    @RequestMapping("participant/batchDeletion")
+    @ResponseBody
+    @Transactional
+    public AjaxResult batchDeletion(@RequestBody(required = false)List<Integer> ids){
+        for (Integer id : ids) {
+            participantService.deleteByPrimaryKey(id);
+        }
+        ajaxResult.setRes(true);
+        ajaxResult.setInfo("删除成功");
+        return ajaxResult;
     }
 
 }

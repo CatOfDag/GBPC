@@ -32,9 +32,8 @@
     </div>
     <!--工具栏-->
     <okToolbar>
-        <button class="layui-btn layui-btn-danger" id="batchDel">
-            <i class="layui-icon layui-icon-delete"></i>批量删除
-        </button>
+<!--        <button c
+-->
         <button class="layui-btn" id="addUser">
             <i class="layui-icon">&#xe61f;</i>添加用户
         </button>
@@ -70,7 +69,6 @@
             limit: 10,
             page: true,
             cols: [[
-                {type: "checkbox"},
                 {field: "id", title: "ID", width: 80, sort: true},
                 {field: "adminName", title: "用户名", width: 150},
                 {field: "password", title: "密码", width: 150},
@@ -139,27 +137,24 @@
             }
         });
 
-        $("#batchDel").click(function () {
-            layer.confirm("确定要批量删除吗？", {skin: "layui-layer-lan", icon: 2, title: "提示", anim: 6}, function () {
-                var checkStatus = table.checkStatus("tableId");
-                var rows = checkStatus.data.length;
-                if (rows > 0) {
-                    var idsStr = "";
-                    for (var i = 0; i < checkStatus.data.length; i++) {
-                        idsStr += checkStatus.data[i].id + ",";
-                    }
-                    console.log("选择的id-->" + idsStr);
-                    layer.msg("操作成功！", {icon: 1, time: 1000}, function () {
-                        $(".layui-laypage-btn")[0].click();
-                    });
-                } else {
-                    layer.msg("未选择有效数据", {
-                        offset: "t",
-                        anim: 6
-                    });
-                }
-            });
-        })
+        // $("#batchDel").click(function () {
+        //     layer.confirm("确定要批量删除吗？", {skin: "layui-layer-lan", icon: 2, title: "提示", anim: 6}, function () {
+        //         var checkStatus = table.checkStatus("tableId");
+        //         var rows = checkStatus.data.length;
+        //         if (rows > 0) {
+        //             var idsStr = [];
+        //             for (var i = 0; i < checkStatus.data.length; i++) {
+        //                 idsStr.push(checkStatus.data[i].id);
+        //             }
+        //             console.log(idsStr);
+        //         } else {
+        //             layer.msg("未选择有效数据", {
+        //                 offset: "t",
+        //                 anim: 6
+        //             });
+        //         }
+        //     });
+        // })
 
         $("#addUser").click(function () {
             layer.open({

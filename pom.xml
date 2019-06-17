@@ -5,7 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>huse</groupId>
     <artifactId>huse</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>2.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <!--引入父工程-->
     <parent>
@@ -94,7 +95,8 @@
     </dependencies>
 
     <build>
-        <!--指定Mybatis xml文件地址-->
+<!--        一般情况下，我们用到的资源文件（各种xml，properties，xsd文件）都放在src/main/resources下面，利用maven打包时，
+maven能把这些资源文件打包到相应的jar或者war里。-->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -102,6 +104,7 @@
         </resources>
 
         <plugins>
+            <!--Maven打包-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -117,6 +120,7 @@
                     <verbose>true</verbose>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
