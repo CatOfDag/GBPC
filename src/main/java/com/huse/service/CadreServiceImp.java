@@ -64,7 +64,18 @@ public class CadreServiceImp implements CadreService{
     }
 
     @Override
+    public Cadre selectByNameID(String name, String id) {
+        return cadreMapper.selectByNameID(name,id);
+    }
+
+    @Override
     public List<Cadre> selectByAlias(String alias) {
         return cadreMapper.selectByAlias(alias);
+    }
+
+
+    @Override
+    public int updateHuseCadreJob(String newpost,String cadre_name) {
+        return cadreMapper.updateHuseCadreJob(newpost,cadre_name);
     }
 }

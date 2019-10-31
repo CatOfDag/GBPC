@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑用户</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/static/css/okadmin.css}">
+</head>
+
+<body>
+<div class="ok-body">
+    <!--引入模板-->
+    <div th:include="publictemplate :: css"></div>
+    <!--面包屑导航区域-->
+    <div class="ok-body-breadcrumb">
+        <span class="layui-breadcrumb">
+            <a><cite>首页</cite></a>
+            <a><cite>参评干部管理</cite></a>
+            <a><cite>参评干部列表</cite></a>
+            <a><cite>参评干部详细信息</cite></a>
+        </span>
+        <a class="layui-btn layui-btn-sm" href="javascript:location.replace(location.href);" title="刷新">
+            <i class="layui-icon layui-icon-refresh"></i>
+        </a>
+    </div>
+    <!--form表单-->
+    <form class="layui-form layui-form-pane ok-form" style="margin-top: 15px;" id="modifyInfo" lay-filter="modifyEdit">
+        <input type="text" hidden name="id">
+        <table class="modify" cellspacing="0px">
+            <tr>
+                <td class="modify-td">姓名</td><td><input type="test" name="cadre_name" ay-verify="required"></td>
+                <td class="modify-td">性别</td><td><input type="test" name="sex" ay-verify="required"></td>
+                <td class="modify-td">出生年月</td><td><input type="test" name="birth" ></td>
+            </tr>
+            <tr>
+                <td class="modify-td">民族</td><td><input type="test" name="nation" ></td>
+                <td class="modify-td">籍贯</td><td><input type="test" name="nativeplace" ></td>
+                <td class="modify-td">出生地</td><td><input type="test" name="brithplace" ></td>
+            </tr>
+            <tr>
+                <td class="modify-td">入党时间</td><td><input type="test" name="nativetytime" ></td>
+                <td class="modify-td">参加工作时间</td><td><input type="test" name="worktime" ></td>
+                <td class="modify-td">健康状况</td><td><input type="test" name="health" ></td>
+            </tr>
+            <tr>
+                <td class="modify-td">专业技术职务</td><td><input type="test" name="majorpost" ay-verify="required"></td>
+                <td class="modify-td">熟悉专业有何专长</td>
+                <td colspan="3"><input type="test" name="expertise" style="width: 378px" lay-verify="required"></td>
+            </tr>
+            <tr>
+                <td rowspan="2" class="modify-td">学历学位</td>
+                <td class="modify-td">全日制教育</td><td><input type="text" name="seducation" ay-verify="required"></td>
+                <td class="modify-td">毕业院校系及专业</td><td colspan="2">
+                <input type="text" name="seducationdetail" style="width: 232px" lay-verify="required"></td>
+            </tr>
+            <tr>
+                <td class="modify-td">在职教育</td><td><input type="text" name="weducation" ></td>
+                <td class="modify-td">毕业院校系及专业</td><td colspan="2">
+                <input type="text" name="weducationdetail" style="width: 232px" ></td>
+            </tr>
+            <tr><td class="modify-td">现任职务</td><td colspan="5"><input type="text" name="newpost" style="width: 670px" lay-verify="required"></td></tr>
+            <tr><td class="modify-td">拟任职务</td><td colspan="5"><input type="text" name="wantpost" style="width: 670px" lay-verify="required"></td></tr>
+            <tr><td class="modify-td">拟免职务</td><td colspan="5"><input type="text" name="falsepost" style="width: 670px" lay-verify="required"></td></tr>
+            <tr><td class="modify-td">简&nbsp&nbsp&nbsp&nbsp&nbsp历</td><td colspan="5"><textarea class="textarea_1" name="resume" lay-verify="required"></textarea></td></tr>
+            <tr><td class="modify-td">惩奖情况</td><td colspan="5"><textarea class="textarea_2" name="punishaward" lay-verify="required"></textarea></td></tr>
+            <tr><td class="modify-td">年度考核结果</td><td colspan="5"><input type="text" name="annualass" style="width: 670px" lay-verify="required"></td></tr>
+            <tr><td class="modify-td">任免理由</td><td colspan="5"><input type="text" name="reason" style="width: 670px" ></td></tr>
+        </table>
+        <div class="layui-form-item">
+            <div class="modify-div">
+
+                <button class="modify-btn" lay-submit lay-filter="modify">立即提交</button>
+                <button type="reset" class="modify-btn">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script th:inline="javascript">
+    layui.use(["element", "form", "jquery", "laydate","upload"], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var laydate = layui.laydate;
+        form.val('modifyEdit', {
+            "id": [[${cadreDatail.id}]]
+            , "cadre_name": [[${cadreDatail.cadre_name}]]
+            , "sex": [[${cadreDatail.sex}]]
+            , "birth": [[${cadreDatail.birth}]]
+            , "nation": [[${cadreDatail.nation}]]
+            , "nativeplace": [[${cadreDatail.nativeplace}]]
+            , "brithplace": [[${cadreDatail.brithplace}]]
+            , "nativetytime": [[${cadreDatail.nativetytime}]]
+            , "worktime": [[${cadreDatail.worktime}]]
+            , "health": [[${cadreDatail.health}]]
+            , "majorpost": [[${cadreDatail.majorpost}]]
+            , "expertise": [[${cadreDatail.expertise}]]
+            , "seducation": [[${cadreDatail.seducation}]]
+            , "seducationdetail": [[${cadreDatail.seducationdetail}]]
+            , "weducation": [[${cadreDatail.weducation}]]
+            , "weducationdetail": [[${cadreDatail.weducationdetail}]]
+            , "newpost": [[${cadreDatail.newpost}]]
+            , "wantpost": [[${cadreDatail.wantpost}]]
+            , "falsepost": [[${cadreDatail.falsepost}]]
+            , "resume": [[${cadreDatail.resume}]]
+            , "punishaward": [[${cadreDatail.punishaward}]]
+            , "annualass": [[${cadreDatail.annualass}]]
+            , "reason": [[${cadreDatail.reason}]]
+        });
+
+        form.on("submit(modify)", function (data) {
+            submit();
+            return false;
+        });
+
+        /*upload.render({
+            elem: '#detailimport'
+            , url: '/cadre/detailimport'
+            , accept: 'file' //普通文件
+            , done: function (res) {
+                if (res.res) {
+                    layer.msg("导入成功")
+                    table.reload('tableId', {
+                        url: "getCadreLists"
+                    });
+                }
+            }
+        });*/
+    })
+    function submit() {
+        $.ajax({
+            url: "/cadre/detailUpdateByPK",
+            async: false,
+            data: $("#modifyInfo").serialize(),
+            type: "POST",
+            dataType: 'json',
+            success: function (data) {
+                if (data.res) {
+                    layer.msg("修改成功！", {icon: 6, time: 1000, anim: 4}, function () {
+                        parent.layer.close(parent.layer.getFrameIndex(window.name));
+                    })
+                }
+            },
+            error: function (data) {
+                layer.msg("输入信息有误,请重试!")
+            }
+        });
+    }
+</script>
+</body>
+</html>

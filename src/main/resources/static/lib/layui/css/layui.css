@@ -1507,6 +1507,7 @@ a cite {
 }
 
 .layui-elem-quote {
+    width: 100%;
     margin-bottom: 10px;
     padding: 15px;
     line-height: 22px;

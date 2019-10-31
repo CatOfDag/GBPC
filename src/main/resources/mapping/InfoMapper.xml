@@ -151,6 +151,10 @@
     </set>
     where card_name = #{cardName,jdbcType=VARCHAR}
   </update>
+  <select id="selectByCadreID" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT * FROM cadre_info where id = #{id}
+  </select>
+
   <select id="selectByCadreName" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT * FROM cadre_info where card_name = #{cadreName}
   </select>

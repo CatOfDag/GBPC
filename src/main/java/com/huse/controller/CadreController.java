@@ -1,15 +1,16 @@
 package com.huse.controller;
 
 import com.huse.pojo.Cadre;
+import com.huse.pojo.CadreDatail;
 import com.huse.pojo.Info;
 import com.huse.pojo.Vote;
+import com.huse.service.CadreDatailService;
 import com.huse.service.CadreService;
 import com.huse.service.InfoService;
 import com.huse.service.VoteService;
 import com.huse.utils.AjaxResult;
 import com.huse.utils.Laytable;
 import com.huse.utils.MyException;
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -18,16 +19,14 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -41,6 +40,8 @@ public class CadreController {
     @Autowired
     private CadreService cadreService;
     @Autowired
+    private CadreDatailService cadreDatailService;
+    @Autowired
     private AjaxResult ajaxResult;
     @Autowired
     private InfoService infoService;
@@ -51,6 +52,7 @@ public class CadreController {
     public String cadrePage() {
         return "cadrePage/cadre";
     }
+
 
     @GetMapping("cadre/add")
     public String addCadre(ModelMap mmp) {
@@ -92,16 +94,18 @@ public class CadreController {
     @RequestMapping("cadre/addCadre")
     @ResponseBody
     public AjaxResult addCadre(Cadre cadre) {
+        System.out.println("add");
         final int insert = cadreService.insert(cadre);
-        boolean flag = insert > 0 ? true : false;
+        boolean flag = insert > 0 ? true : false;//控制是否输入错误
         ajaxResult.setRes(flag);
+        System.out.println(ajaxResult);
         return ajaxResult;
-
     }
 
     @RequestMapping("cadre/updateByPK")
     @ResponseBody
     public AjaxResult updateByPK(Cadre cadre) {
+        System.out.println("upadateByPK");
         int i = cadreService.updateByPrimaryKeySelective(cadre);
         boolean flag = i > 0 ? true : false;
         ajaxResult.setRes(flag);
@@ -175,19 +179,27 @@ public class CadreController {
         //获取当前登录对象
         Subject sub = SecurityUtils.getSubject();
         Cadre cadre = (Cadre) sub.getPrincipal();
-        mmp.addAttribute("cadre", cadre);
-        Info cadreInfo = infoService.selectByCadreName(cadre.getCadreName());
-        if (cadreInfo == null) {
-            mmp.addAttribute("warning", "该页面尚未编辑,如果您是此用户请编辑!");
+        CadreDatail cadreDatail = cadreDatailService.selectByPrimaryKey(cadre.getId());
+        mmp.addAttribute("cadre", cadreDatail);
+        if(cadreDatail == null) {
+            return "errorPage/Unedited_pages.html";
         }
-        mmp.addAttribute("cadreInfo", cadreInfo);
-        return "cadrePage/cadre-info";
+        else{
+            Info cadreInfo = infoService.selectByCadreName(cadre.getCadreName());
+            System.out.println("cadreInfo:"+cadreInfo);
+            if (cadreDatail == null && cadreInfo == null) {
+                return "errorPage/Unedited_pages.html";
+            }
+            else{
+                mmp.addAttribute("cadreInfo", cadreInfo);
+                return "cadrePage/cadre-info";
+            }
+        }
     }
 
     @RequestMapping("cadre/cadreInfoEdit")
     public String cadreInfoEdit(String cadreName, String job, ModelMap mmp) {
         //将名字和职务传递到cadreInfoEdit页面
-        System.out.println(cadreName + "----" + job);
         mmp.addAttribute("cadreName", cadreName);
         mmp.addAttribute("job", job);
         //如果表中没有记录,新建一条记录
@@ -210,14 +222,15 @@ public class CadreController {
         info.setCardName(cadreName);
         String fileName = file.getOriginalFilename();
         String suffix = fileName.substring(fileName.lastIndexOf("."));
-        //产生一个8位的UUID,将文件名称改为UUID
-        String uuid = UUID.randomUUID().toString().substring(0, 8);
-//        最终文件名称
-        String saveName = uuid + suffix;
+        /*产生一个8位的UUID,将文件名称改为UUID,可以直接用姓名（不会出现报错）
+        String uuid = UUID.randomUUID().toString().substring(0, 8);*/
+       //最终文件名称
+        String saveName = cadreName + suffix;
         //上传的如果是图片
         if (suffix.equals(".jpg") || suffix.equals(".png")) {
 //            String picPath = "E:/HUSEFile/headportrait/" + saveName;//如果当前文件已经存在则会覆盖旧的.
-            String picPath = "/root/usr/local/HUSEFile/headportrait/" + saveName;//如果当前文件已经存在则会覆盖旧的.
+            /*String picPath = "/root/usr/local/HUSEFile/headportrait/" + saveName;//如果当前文件已经存在则会覆盖旧的.*/
+            String picPath = "E:\\Windows\\Users\\Documents\\Tencent Files\\3223646214\\FileRecv\\HUSE\\HUSE\\src\\main\\resources\\static\\headportrait\\" + saveName;//如果当前文件已经存在则会覆盖旧的.
             try {
                 file.transferTo(new File(picPath));
                 info.setHeaderPic(saveName);

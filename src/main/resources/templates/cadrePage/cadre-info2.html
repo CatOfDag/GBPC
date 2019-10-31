@@ -8,54 +8,63 @@
 <body>
 <div th:include="publictemplate :: css"></div>
 <div class="layui-header" style="background: #393d49">
-    <p style="color: white;font-size: 30px;padding-top: 7px">湖南科技学院中层干部年度考核测评系统</p>
-<!--    <ul class="layui-nav layui-layout-right">-->
-<!--        <li class="layui-nav-item"><a href="/logout">退出</a></li>-->
-<!--    </ul>-->
+    <p style="color: white;font-size: 30px;padding-top: 7px">湖南科技学院干部考核测评系统</p>
 </div>
 <div class="layui-col-md6 layui-col-xs12 layui-col-lg-offset3">
-    <blockquote class="layui-elem-quote">
-        <span class="x-red" th:text="${cadre.cadreName}"></span> 的信息页面！
-
-<!--        <div style="float: right">-->
-<!--            <button class="layui-btn" id="editCadre">-->
-<!--                <i class="layui-icon">&#xe61f;</i>编辑信息-->
-<!--            </button>-->
-<!--        </div>-->
+    <blockquote class="layui-elem-quote" style="text-align: center;">
+        <h2><span class="x-red" th:text="${cadre.cadre_name}"></span> 的信息页面！</h2>
     </blockquote>
-    <table class="layui-table">
-        <colgroup>
-            <col width="300">
-            <col>
-        </colgroup>
+    <table class="layui-table" style="font-size: large;">
+        <colgroup> <col width="250"><col></colgroup>
         <tbody>
         <tr>
-            <td colspan="2">
+            <td class="modify-td">姓名</td><td th:text="${cadre?.cadre_name}"></td>
+            <td class="modify-td">性别</td><td th:text="${cadre?.sex}"></td>
+            <td class="modify-td">出生年月</td><td th:text="${cadre?.birth}"></td>
+            <td colspan="2" rowspan="4">
                 <p align="center">
                     <span th:if="${cadreInfo==null or cadreInfo.headerPic==null}">
                         <img th:src="@{/headpic/nopic.png}" height="170px">
                     </span>
                     <span th:if="${cadreInfo != null and cadreInfo.headerPic!=null}">
-                        <img  th:src="@{/headpic/{headpic}(headpic=${cadreInfo.headerPic})}" height="170px">
+                        <img  th:src="@{/headportrait/{headpic}(headpic=${cadreInfo.headerPic})}" height="170px">
                     </span>
                 </p>
             </td>
         </tr>
         <tr>
-            <td>姓名</td>
-            <td th:text="${cadre?.cadreName}"></td>
+            <td class="modify-td">民族</td><td th:text="${cadre?.nation}"></td>
+            <td class="modify-td">籍贯</td><td th:text="${cadre?.nativeplace}"></td>
+            <td class="modify-td">出生地</td><td th:text="${cadre?.brithplace}"></td>
         </tr>
         <tr>
-            <td>职务</td>
-            <td th:text="${cadre?.job}"></td>
+            <td class="modify-td">入党时间</td><td th:text="${cadre?.nativeplace}"></td>
+            <td class="modify-td">参加工作时间</td><td th:text="${cadre?.worktime}"></td>
+            <td class="modify-td">健康状况</td><td th:text="${cadre?.health}"></td>
         </tr>
         <tr>
-            <td>个人简介</td>
-            <td th:text="${cadreInfo?.info}"></td>
+            <td class="modify-td">专业技术职务</td><td colspan="2" th:text="${cadre?.majorpost}"></td>
+            <td class="modify-td">熟悉专业有何专长</td><td colspan="2" th:text="${cadre?.expertise}"></td>
         </tr>
         <tr>
-            <td>附件下载</td>
-            <td>
+            <td class="modify-td" rowspan="2">学历学位</td>
+            <td class="modify-td">全日制教育</td><td colspan="2" th:text="${cadre?.seducation}"></td>
+            <td class="modify-td">毕业院校系及专业</td><td colspan="2" th:text="${cadre?.seducationdetail}"></td>
+        </tr>
+        <tr>
+            <td class="modify-td">在职教育</td><td colspan="2" th:text="${cadre?.weducation}"></td>
+            <td class="modify-td">毕业院校系及专业</td><td colspan="2" th:text="${cadre?.weducationdetail}"></td>
+        </tr>
+        <tr><td class="modify-td">现任职务</td><td colspan="6" th:text="${cadre?.newpost}"></td><tr>
+        <tr><td class="modify-td">拟任职务</td><td colspan="6" th:text="${cadre?.wantpost}"></td><tr>
+        <tr><td class="modify-td">拟免职务</td><td colspan="6" th:text="${cadre?.falsepost}"></td><tr>
+        <tr><td class="modify-td">简&nbsp&nbsp&nbsp&nbsp&nbsp历</td><td colspan="6" th:text="${cadre?.resume}"></td><tr>
+        <tr><td class="modify-td">惩奖情况</td><td colspan="6" th:text="${cadre?.punishaward}"></td><tr>
+        <tr><td class="modify-td">年度考核结果</td><td colspan="6" th:text="${cadre?.annualass}"></td><tr>
+        <tr><td class="modify-td">任免理由</td><td colspan="6" th:text="${cadre?.reason}"></td></tr>
+        <tr>
+            <td class="modify-td">附件下载</td>
+            <td colspan="6">
 
                 <span th:if="${cadreInfo==null or cadreInfo.filePath==null}">
                         <a>无附件</a>
@@ -67,37 +76,12 @@
         </tr>
         </tbody>
     </table>
-
 </div>
 <script th:inline="javascript">
     //防止页面后退
     history.pushState(null, null, document.URL);
     window.addEventListener('popstate', function () {
         history.pushState(null, null, document.URL);
-    });
-
-    layui.use(["element", "table", "form", "jquery", "laydate", "upload"], function () {
-        var table = layui.table;
-        var form = layui.form;
-        var laydate = layui.laydate;
-        var upload = layui.upload;
-
-        $("#editCadre").click(function () {
-            layer.open({
-                title: "编辑个人信息",
-                type: 2,
-                shade: false,
-                maxmin: true,
-                shade: 0.5,
-                anim: 4,
-                area: ["40%", "75%"],
-                content: "cadreInfoEdit?cadreName=" + [[${cadre.cadreName}]] + "&job=" + [[${cadre.job}]],
-                zIndex: layer.zIndex,
-                end: function () {
-                    $(".layui-laypage-btn")[0].click();
-                }
-            });
-        })
     });
 
 </script>

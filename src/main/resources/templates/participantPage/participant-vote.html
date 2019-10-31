@@ -39,7 +39,7 @@
     <!--引入模板-->
     <div th:include="publictemplate :: css"></div>
     <div class="layui-header" style="background: #393d49">
-        <p style="color: white;font-size: 30px;padding-top: 7px">湖南科技学院中层干部年度考核测评系统</p>
+        <p style="color: white;font-size: 30px;padding-top: 7px">湖南科技学院干部考核测评系统</p>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item"><a id="explain"><i class="layui-icon">&#xe702;</i></a></li>
             <li class="layui-nav-item"><a href="/logout">退出</a></li>
@@ -78,9 +78,12 @@
                 <span th:each="c,userStat : ${cadreByAlias}">
                     <tr class="select">
                     <td th:text="${userStat.index+1}"></td>
-                        <td><a th:href="@{'/vote/showInfo?id='+${c.id}+'&name='+${c.cadreName}}"
-                               th:text="${c.cadreName}" target="_blank"
-                               style="color: #01AAED;text-decoration: underline;"></a></td>
+
+                    <td><a th:href="@{'/vote/showInfo?id='+${c.id}+'&name='+${c.cadreName}}"
+                           th:text="${c.cadreName}" target="_blank"
+                           style="color: #01AAED;text-decoration: underline;"></a>
+                    </td>
+
                     <td th:text="${c.job}"></td>
                     <td onmouseover="check()">
                         <select name="virtue">

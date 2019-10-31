@@ -88,9 +88,10 @@
             success: function (data) {
                 if (data.res) {
                     layer.msg("修改成功！", {icon: 6, time: 1000, anim: 4}, function () {
+                        location.reload();
                         parent.layer.close(parent.layer.getFrameIndex(window.name));
+
                     })
-                    location.reload();
                 }
             },
             error: function (data) {

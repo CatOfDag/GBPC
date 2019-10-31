@@ -24,6 +24,8 @@ public class VoteController {
     @Autowired
     private ScoreService scoreService;
     @Autowired
+    private CadreDatailService cadreDatailService;
+    @Autowired
     private ParticipantService participantService;
     @Autowired
     private Participant participant;
@@ -168,10 +170,15 @@ public class VoteController {
     @RequestMapping(value = "vote/showInfo")
     public String cadreInfo(ModelMap mmp,String name,Integer id) {
         //获取当前登录对象
-        Cadre cadre = cadreService.selectByPrimaryKey(id);
-        mmp.addAttribute("cadre", cadre);
+        CadreDatail cadreDatail = cadreDatailService.selectByPrimaryKey(id);
+        mmp.addAttribute("cadre", cadreDatail);
+        System.out.println("1:"+mmp);
+        if(cadreDatail == null){
+            return "errorPage/Unedited_pages";
+        }
         Info cadreInfo = infoService.selectByCadreName(name);
         mmp.addAttribute("cadreInfo", cadreInfo);
+        System.out.println("2:"+cadreInfo);
         return "cadrePage/cadre-info2";
     }
 }

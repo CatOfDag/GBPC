@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="zh">
 <head>
     <meta charset="UTF-8">
     <title>编辑用户</title>
@@ -14,10 +14,11 @@
     <div class="ok-body-breadcrumb">
         <span class="layui-breadcrumb">
             <a><cite>首页</cite></a>
-            <a><cite>会员管理</cite></a>
+            <a><cite>用户管理</cite></a>
             <a><cite>用户列表</cite></a>
             <a><cite>编辑用户</cite></a>
         </span>
+
         <a class="layui-btn layui-btn-sm" href="javascript:location.replace(location.href);" title="刷新">
             <i class="layui-icon layui-icon-refresh"></i>
         </a>
@@ -89,7 +90,7 @@
     </form>
 </div>
 <script th:inline="javascript">
-    layui.use(["element", "form", "jquery", "laydate"], function () {
+    layui.use(["element", "form", "jquery", "laydate","upload"], function () {
         var form = layui.form;
         var $ = layui.jquery;
         var laydate = layui.laydate;

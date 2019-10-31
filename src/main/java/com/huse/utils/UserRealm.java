@@ -56,7 +56,7 @@ public class UserRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         admin = adminService.selectByName(token.getUsername());
         Cadre cadre;
-        cadre = cadreService.selectByName(token.getUsername());
+        cadre = cadreService.selectByNameID(token.getUsername(),String.valueOf(token.getPassword()));
         Participant participant;
         participant = participantService.selectByPIN(token.getUsername());
 //        System.out.println("认证获得用户名"+token.getUsername());

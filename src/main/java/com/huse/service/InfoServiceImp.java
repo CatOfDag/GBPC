@@ -46,6 +46,11 @@ public class InfoServiceImp implements InfoService {
     }
 
     @Override
+    public Info selectByCadreID(Integer id) {
+        return selectByCadreID(id);
+    }
+
+    @Override
     public Info selectByCadreName(String cadreName) {
         return infoMapper.selectByCadreName(cadreName);
     }

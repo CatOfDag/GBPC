@@ -1,19 +1,11 @@
 package com.huse.controller;
 
-import cn.hutool.crypto.Mode;
-import cn.hutool.crypto.SecureUtil;
-import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import com.huse.pojo.Admin;
 import com.huse.pojo.Cadre;
 import com.huse.pojo.Participant;
-import com.huse.service.AdminService;
-import com.huse.service.CadreService;
-import com.huse.service.ParticipantService;
-import com.huse.service.VoteService;
+import com.huse.service.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.authz.AuthorizationException;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,11 +13,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.UUID;
 
 /*
  * 基础控制器--控制如登录类的基础功能
@@ -41,7 +30,6 @@ public class BaseController {
     private VoteService voteService;
     @Autowired
     private AdminService adminService;
-
     //    登录页面
     @GetMapping("login")
     public String loginPage(HttpSession session,ModelMap mmp) throws UnsupportedEncodingException {
@@ -118,11 +106,11 @@ public class BaseController {
         Subject subject = SecurityUtils.getSubject();
         // 自己创建一个令牌，输入用户名和密码
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password,rememberMe);
-
         try {
             subject.login(usernamePasswordToken);
             Admin admin = adminService.selectByName(username);
-            Cadre cadre = cadreService.selectByName(username);
+            Cadre cadre = cadreService.selectByNameID(username,password);
+
             if (admin!=null && (admin.getRole().equals("user") || admin.getRole().equals("su"))){
                 return "redirect:/index";
             }

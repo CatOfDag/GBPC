@@ -24,6 +24,10 @@ public interface CadreService {
     List<Cadre> fuzzyQuery(String info);
 
     Cadre selectByName(String name);
+
+    Cadre selectByNameID(String name, String id);//手贱，应该是selectByNamePassword()
     //按投票别名查找
     List<Cadre> selectByAlias(String alias);
+
+    int updateHuseCadreJob(String newpost,String cadre_name);//updateByNameJob的附带必要操作
 }

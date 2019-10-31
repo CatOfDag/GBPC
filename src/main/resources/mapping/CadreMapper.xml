@@ -138,8 +138,16 @@
   <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
     SELECT * FROM huse_cadre where cadre_name = #{name}
   </select>
+  <select id="selectByNameID" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT * FROM huse_cadre where (cadre_name,password) IN ((#{name},#{id}))
+  </select>
   <select id="selectByAlias" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT * FROM huse_cadre where avote_lias = #{alias}
   </select>
 
+  <update id="updateHuseCadreJob" parameterType="java.lang.String">
+    update huse_cadre
+    set job = #{job,jdbcType=VARCHAR}
+    where cadre_name = #{cadre_name,jdbcType=VARCHAR}
+  </update>
 </mapper>
