@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+<style type="text/css">
+    .cry {
+        font-size: 16px;
+        margin-top: 5px;
+    }
+    .cry input{
+        width: 300px;
+        height: 30px;
+        float: right;
+    }
+    .cry-div{
+        margin: auto 0px;
+        text-align: justify;
+        text-justify: inter-character;
+        clear: right;
+    }
+</style>
+<body>
+<div th:include="publictemplate :: css"></div>
+<div class="ok-body">
+    <!--面包屑导航区域-->
+    <div class="ok-body-breadcrumb">
+        <span class="layui-breadcrumb">
+            <a><cite>首页</cite></a>
+            <a><cite>干部信息</cite></a>
+            <a><cite>编辑信息</cite></a>
+        </span>
+        <a class="layui-btn layui-btn-sm" href="javascript:location.replace(location.href);" title="刷新">
+            <i class="layui-icon layui-icon-refresh"></i>
+        </a>
+    </div>
+
+    <div class="layui-form-item">
+
+    </div>
+    <!--form表单-->
+
+    <form class="layui-form layui-form-pane ok-form" id="modifyPwd">
+        <div style="width: 380px; height:auto">
+            <div class="layui-form-item">
+                <label style="float: left">账户:</label>
+                <input type="text" class="layui-input" name="cadreName" th:value="${cadreName}" readonly="readonly">
+            </div>
+            <div class="layui-form-item">
+                <label style="float: left">旧密码:</label>
+                <input type="text" class="layui-input" name = "oldpassword" autocomplete="on">
+            </div>
+            <div class="layui-form-item">
+                <label style="float: left">新密码:</label>
+                <input type="password" class="layui-input" name="firstpassword" autocomplete="off" maxlength="16">
+            </div>
+            <div class="layui-form-item">
+                <label style="float: left">二次输入:</label>
+                <input type="password" class="layui-input" name="secondpassword" autocomplete="off" maxlength="16">
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="add">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script th:inline="javascript">
+    layui.use(["element", "form", "jquery", "laydate"], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var laydate = layui.laydate;
+
+        form.val('modifyPwd', {
+            "cadreName": [[${updatePwd.cadreName}]]
+            ,"oldpassword": [[${updatePwd.oldpassword}]]
+            ,"firstpassword": [[${updatePwd.firstpassword}]]
+            ,"secondpassword":[[${updatePwd.secondpassword}]]
+        });
+
+        form.on("submit(add)", function (data) {
+            submit();
+            return false;
+        });
+    })
+    function submit() {
+        $.ajax({
+            url: "/cadre/modifyPwd",
+            async: false,
+            data: $("#modifyPwd").serialize(),
+            type: "POST",
+            dataType: 'json',
+            success: function (data) {
+                if (data.res) {
+                    layer.msg("修改成功！", {icon: 6, time: 1000, anim: 4}, function () {
+                        location.reload();
+                        parent.layer.close(parent.layer.getFrameIndex(window.name));
+
+                    })
+                } else{
+                        layer.msg(data.info, {icon: 5, time: 1500, anim: 4})
+                    }
+            },
+            error: function (data) {
+                layer.msg("系统故障,请稍候再试!")
+            }
+        })
+    }
+</script>
+
+</body>
+</html>

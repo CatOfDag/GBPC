@@ -23,5 +23,7 @@ public interface VoteMapper {
 
     int count();
 
+    String countOperationVote();
+
     Vote selectByAlisa(String alisa);
 }

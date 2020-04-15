@@ -59,19 +59,15 @@
         <tbody>
         <tr>
             <td>本机IP地址</td>
-            <td>127.1.100</td>
+            <td><p id = "ip"></p></td>
         </tr>
         <tr>
             <td>操作系统</td>
-            <td>CentOS</td>
+            <td><p id = "os"></p></td>
         </tr>
         <tr>
             <td>运行环境</td>
             <td>JDK 1.8.0_171</td>
-        </tr>
-        <tr>
-            <td>数据库版本</td>
-            <td>MySQL 5.7</td>
         </tr>
         <tr>
             <td>最大上传限制</td>
@@ -79,6 +75,9 @@
         </tr>
         </tbody>
     </table>
+</div>
+
+
 <script type="text/javascript">
 
     layui.use('util', function () {
@@ -123,6 +122,8 @@
      */
     var weekday = "星期" + "日一二三四五六".charAt(new Date().getDay());
     document.getElementById("weekday").innerHTML = weekday;
+    document.getElementById("ip").innerHTML = location.host;
+    document.getElementById("os").innerHTML = navigator.userAgent;
 </script>
 </body>
 </html>

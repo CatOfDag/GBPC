@@ -20,28 +20,64 @@
             <i class="layui-icon layui-icon-refresh"></i>
         </a>
     </div>
+    <!--模糊搜索区域-->
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 ok-search">
+            <select id="role">
+                <option value=""></option>
+                <option value="校党委委员">校党委委员</option>
+                <option value="各界代表">各界代表</option>
+                <option value="普通中层干部">普通中层干部</option>
+                <option value="特殊中层干部">特殊中层干部</option>
+                <option value="经济与管理学院">经管学院教职工、学生代表</option>
+                <option value="人文与社会科学学院">人文学院教职工、学生代表</option>
+                <option value="马克思主义学院">马思学院教职工、学生代表</option>
+                <option value="体育学院">体育学院教职工、学生代表</option>
+                <option value="外国语学院">外语学院教职工、学生代表</option>
+                <option value="传媒学院">传媒学院教职工、学生代表</option>
+                <option value="理学院">理学院教职工、学生代表</option>
+                <option value="电子与信息工程学院">电信学院教职工、学生代表</option>
+                <option value="土木与环境工程学院">土环学院教职工、学生代表</option>
+                <option value="化学与生物工程学院">化生学院教职工、学生代表</option>
+                <option value="音乐与舞蹈学院">音舞学院教职工、学生代表</option>
+                <option value="美术与艺术设计学院">美术学院教职工、学生代表</option>
+                <option value="旅游与文化产业学院">旅管学院教职工、学生代表</option>
+                <option value="国学院">国学院教职工、学生代表</option>
+            </select>
+            <input class="layui-input" placeholder="输入PIN码搜索" autocomplete="off" id="info">
+            <button class="layui-btn" lay-submit="" lay-filter="search">
+                <i class="layui-icon layui-icon-search"></i>
+            </button>
+        </form>
+    </div>
     <!--工具栏-->
     <okToolbar>
         <button class="layui-btn layui-btn-danger" id="batchDel">
             <i class="layui-icon layui-icon-delete"></i>批量删除
         </button>
-        <button class="layui-btn layui-btn-warm" id="batchimport" style="margin-left: 0px">
-            <i class="layui-icon">&#xe67c;</i>批量导入
+        <button class="layui-btn layui-btn-warm" id="batchimport">
+            <i class="layui-icon">&#xe67c;</i>批量添加参与者
         </button>
         <button class="layui-btn" id="addUser">
             <i class="layui-icon">&#xe61f;</i>添加参与者
         </button>
-        <a th:href="@{/sys_file/qz.xlsx}" style="display: block;float: right;line-height: 40px;width: 100px;height: 40px;
+
+        <a th:href="@{/static/file/民主投票参与者模板.xlsx}" style="display: block;float: right;line-height: 40px;width: 100px;height: 40px;
     color: #1c20d0;text-decoration: underline;">导入模板下载</a>
     </okToolbar>
     <!--数据表格-->
-    <table class="layui-hide" id="tableId" lay-filter="tableFilter"></table>
+    <table class="layui-hide" id="participantsId" lay-filter="tableFilter"></table>
+    <div id="participantScoreDiv">
+        <table class="layui-hide" id="participantScore" lay-filter="tableFilter"></table><!--搜索PIN时，展示给出得成绩-->
+    </div>
+    <script type="text/html" id="toolbarDemo"></script>
 </div>
 <script th:inline="none">
     NProgress.start();
     window.onload = function () {
         NProgress.done();
-    }
+        document.getElementById("participantScoreDiv").style.display = 'none';/*设置成绩展示表隐藏*/
+    };
     layui.use(["element", "table", "form", "jquery", "laydate", "upload"], function () {
         var table = layui.table;
         var form = layui.form;
@@ -49,19 +85,55 @@
         var laydate = layui.laydate;
         var upload = layui.upload;
 
-        //指定允许上传的文件类型
-        upload.render({
-            elem: '#batchimport'
-            , url: '/participant/batchImport'
-            , accept: 'file' //普通文件
-            , done: function (res) {
-                if(res.res){
-                    layer.msg("导入成功");
-                    table.reload('tableId', {
-                        url: "/participant/getParticipantList"
-                    });
+        form.on("submit(search)", function () {
+            if ($("#info").val() === "")/*搜索某一个pin的时候*/
+                document.getElementById("participantScoreDiv").style.display = 'none';
+            else
+                document.getElementById("participantScoreDiv").style.display = 'block';
+
+            table.reload('participantsId', {
+                url: "/participant/selectToParticipant?info="+ $("#info").val()+"&role="+$("#role").val(),
+                ajax: false,
+                done: function () {
+
                 }
-            }
+            });
+            table.render({
+                elem: "#participantScore",
+                url: "/result/PintoScore?pin="+ $("#info").val(),
+                cols: [[
+                    {type: "checkbox"},
+                    {field: "id", title: "id"},
+                    {field: "pin", title: "投票人"},
+                    {field: "cadreName", title: "被投人"},
+                    {field: "alias", title: "投票项目"},
+                    {field: "voteTime", title: "投票时间"},
+                    {field: "virtue", title: "德"},
+                    {field: "ability", title: "能"},
+                    {field: "diligence", title: "勤"},
+                    {field: "feats", title: "绩"},
+                    {field: "honest", title: "廉"}
+                ]]
+            });
+            var index = layer.load(2, {time: 1000});
+            return false;
+        });
+
+
+        $("#batchimport").click(function () {
+            layer.open({
+                title: '批量添加参与者',
+                type: 2,
+                shade: false,
+                maxmin: true,
+                shade: 0.5,
+                anim: 4,
+                area: ["50%", "80%"],
+                content: "volume_add",
+                zIndex: layer.zIndex,
+                end: function () {
+                }
+            })
         });
 
         laydate.render({
@@ -74,19 +146,19 @@
             type: "datetime"
         });
 
+
         table.render({
-            elem: "#tableId",
+            elem: "#participantsId",
             url: "/participant/getParticipantList",
-            limit: 10,
-            page: true,
+            toolbar: '#toolbarDemo',
             cols: [[
                 {type: "checkbox"},
                 {field: "id", title: "ID", width: 80, sort: true},
                 {field: "pin", title: "PIN码", width: 150},
-                {field: "role", title: "身份", width: 150},
+                {field: "role", title: "身份", width: 210},
                 {field: "endtime", title: "有效时间", width: 200},
                 {field: "state", title: "状态", width: 100},
-                {field: "voteAlias", title: "投票项目", width: 100},
+                {field: "voteAlias", title: "投票项目", width: 210},
                 {title: "操作", width: 200, align: 'center', templet: "#operationTpl"}
             ]],
             done: function (res, curr, count) {
@@ -105,7 +177,7 @@
                     shade: false,
                     maxmin: true,
                     shade: 0.5,
-                    area: ["50%", "75%"],
+                    area: ["40%", "60%"],
                     content: "/participant/edit?id=" + data.id,
                     zIndex: layer.zIndex,
                     end: function () {
@@ -127,7 +199,7 @@
                         success: function (data) {
                             if (data.res) {
                                 layer.msg("删除成功", {icon: 1, time: 1000});
-                                table.reload('tableId', {
+                                table.reload('participantsId', {
                                     url: "/participant/getParticipantList"
                                 });
                             }
@@ -138,45 +210,62 @@
         });
 
         $("#batchDel").click(function () {
-            layer.confirm("确定要批量删除吗？若删除这些用户,与之关联的投票详情、投票结果也被删除且不可恢复,确定吗？", {skin: "layui-layer-lan", icon: 2, title: "提示", anim: 6}, function () {
-                var checkStatus = table.checkStatus("tableId");
-                var rows = checkStatus.data.length;
-                if (rows > 0) {
+            layer.confirm("确定要批量删除吗？若删除这些用户,与之关联的投票详情、投票结果也被删除且不可恢复,确定吗？", {
+                    skin: "layui-layer-lan",
+                    icon: 2,
+                    title: "提示",
+                    anim: 6
+                },
+                function () {
+                    var checkStatus = table.checkStatus("participantsId");
+                    var scoreTableCheck = table.checkStatus("participantScore");
+                    var rows = checkStatus.data.length;
+                    var scoreTableRows = scoreTableCheck.data.length;
                     var idsStr = [];
-                    for (var i = 0; i < checkStatus.data.length; i++) {
-                        idsStr.push(checkStatus.data[i].id);
-                    }
-                    console.log(idsStr);
-                    $.ajax({
-                        cache: true,//缓存
-                        type: "POST",//提交类型
-                        url: '/participant/batchDeletion',
-                        data: JSON.stringify(idsStr),
-                        dataType: 'json',
-                        async: false,
-                        contentType: 'application/json',
-                        error: function (data) {
-                            console.log("失败")
-                        },
-                        success: function (data) {
-                            if (data.res) {
-                                layer.msg("操作成功！", {icon: 1, time: 1000}, function () {
-                                    $(".layui-laypage-btn")[0].click();
-                                });
-                                table.reload('tableId', {
-                                    url: "/participant/getParticipantList"
-                                });
-                            }
+                    if (rows > 0 || scoreTableRows > 0) {
+                        for (var i = 0; i < rows; i++) {
+                            idsStr.push(checkStatus.data[i].id);
                         }
-                    });
-                } else {
-                    layer.msg("未选择有效数据", {
-                        offset: "t",
-                        anim: 6
-                    });
+                        if (idsStr.length !== 0)
+                            batchDeletion('/participant/batchDeletion',idsStr);
+
+                        idsStr.splice(0);
+                        for (var i = 0; i < scoreTableRows; i++) {
+                            idsStr.push(scoreTableCheck.data[i].id);
+                        }
+                        if (idsStr.length !== 0)
+                            batchDeletion('/result/deleteToScoreByPin',idsStr)
+                    } else {
+                        layer.msg("未选择有效数据！", {icon: 5, time: 1000});
+                    }
+                });
+        });
+
+        function batchDeletion(path,idsStr) {
+            $.ajax({
+                cache: true,//缓存
+                type: "POST",//提交类型
+                url: path,
+                data: JSON.stringify(idsStr),
+                dataType: 'json',
+                async: false,
+                contentType: 'application/json',
+                error: function (data) {
+                    console.log("失败")
+                },
+                success: function (data) {
+                    if (data.res) {
+                        if (path === '/participant/batchDeletion') {
+                            layer.msg("操作成功！", {icon: 1, time: 1000}, function () {
+                                $(".layui-btn-sm")[0].click();
+                            });
+                        } else {
+                            layer.msg("操作成功！", {icon: 1, time: 1000})
+                        }
+                    }
                 }
             });
-        })
+        }
 
         $("#addUser").click(function () {
             layer.open({
@@ -186,11 +275,11 @@
                 maxmin: true,
                 shade: 0.5,
                 anim: 4,
-                area: ["40%", "70%"],
+                area: ["50%", "80%"],
                 content: "add",
                 zIndex: layer.zIndex,
                 end: function () {
-                    $(".layui-laypage-btn")[0].click();
+                    $(".layui-btn")[0].click();
                 }
             });
         })

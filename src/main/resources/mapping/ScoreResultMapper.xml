@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huse.mapper.ScoreResultMapper" >
+  <resultMap id="BaseResultMap" type="com.huse.pojo.ScoreResult" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cadre_name" property="cadreName" jdbcType="VARCHAR" />
+    <result column="job" property="job" jdbcType="VARCHAR" />
+    <result column="leadervotescore" property="leadervotescore" jdbcType="DOUBLE" />
+    <result column="othervotescore" property="othervotescore" jdbcType="DOUBLE" />
+    <result column="finalyvotescore" property="finalyvotescore" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cadre_name, job, leadervotescore, othervotescore, finalyvotescore
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from huse_scoreresult
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectFVScoreByname" resultType="java.lang.Double" parameterType="java.lang.String">
+    select finalyvotescore
+    from huse_scoreresult
+    where cadre_name = #{cadreName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectLVScoreByname" resultType="java.lang.Double" parameterType="java.lang.String">
+    select leadervotescore
+    from huse_scoreresult
+    where cadre_name = #{cadreName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectOVScoreByname" resultType="java.lang.Double" parameterType="java.lang.String">
+    select othervotescore
+    from huse_scoreresult
+    where cadre_name = #{cadreName,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from huse_scoreresult
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.huse.pojo.ScoreResult" >
+    insert into huse_scoreresult
+    values (#{id,jdbcType=INTEGER},#{vote_alia,jdbcType=VARCHAR}, #{cadreName,jdbcType=VARCHAR},
+     #{job,jdbcType=VARCHAR},#{role,jdbcType=VARCHAR},#{leadervotescore,jdbcType=DOUBLE},
+     #{othervotescore,jdbcType=DOUBLE}, #{finalyvotescore,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.huse.pojo.ScoreResult" >
+    insert into huse_scoreresult
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cadreName != null" >
+        cadre_name,
+      </if>
+      <if test="job != null" >
+        job,
+      </if>
+      <if test="leadervotescore != null" >
+        leadervotescore,
+      </if>
+      <if test="othervotescore != null" >
+        othervotescore,
+      </if>
+      <if test="finalyvotescore != null" >
+        finalyvotescore,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cadreName != null" >
+        #{cadreName,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="leadervotescore != null" >
+        #{leadervotescore,jdbcType=DOUBLE},
+      </if>
+      <if test="othervotescore != null" >
+        #{othervotescore,jdbcType=DOUBLE},
+      </if>
+      <if test="finalyvotescore != null" >
+        #{finalyvotescore,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huse.pojo.ScoreResult" >
+    update huse_scoreresult
+    <set >
+      <if test="cadreName != null" >
+        cadre_name = #{cadreName,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        job = #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="leadervotescore != null" >
+        leadervotescore = #{leadervotescore,jdbcType=DOUBLE},
+      </if>
+      <if test="othervotescore != null" >
+        othervotescore = #{othervotescore,jdbcType=DOUBLE},
+      </if>
+      <if test="finalyvotescore != null" >
+        finalyvotescore = #{finalyvotescore,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huse.pojo.ScoreResult" >
+    update huse_scoreresult
+    set cadre_name = #{cadreName,jdbcType=VARCHAR},
+      job = #{job,jdbcType=VARCHAR},
+      leadervotescore = #{leadervotescore,jdbcType=DOUBLE},
+      othervotescore = #{othervotescore,jdbcType=DOUBLE},
+      finalyvotescore = #{finalyvotescore,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateLVScore" parameterType="com.huse.pojo.ScoreResult">
+    update huse_scoreresult
+    set leadervotescore = #{leadervotescore,jdbcType=DOUBLE}
+    where cadre_name = #{name,jdbcType=VARCHAR}
+  </update>
+  <update id="updateOVScore" parameterType="com.huse.pojo.ScoreResult">
+    update huse_scoreresult
+    set othervotescore = #{othervotescore,jdbcType=DOUBLE}
+    where cadre_name = #{name,jdbcType=VARCHAR}
+  </update>
+  <update id="updateFVScore" parameterType="com.huse.pojo.ScoreResult">
+    update huse_scoreresult
+    set finalyvotescore = #{finalyvotescore,jdbcType=DOUBLE}
+    where cadre_name = #{name,jdbcType=VARCHAR}
+  </update>
+  <select id="getScoreList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from huse_scoreresult limit #{start},#{limit}
+  </select>
+  <select id="fuzzyQuery" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT * FROM huse_scoreresult
+    <where>
+      <if test="info !=null and info !=''">
+        cadre_name like '%${info}%'
+      </if>
+
+      <if test="alisa != null and alisa !=''">
+        and vote_alia = #{alisa};
+      </if>
+    </where>
+  </select>
+  <select id="count" resultType="java.lang.Integer">
+    select count(*)
+    from huse_scoreresult
+  </select>
+  <select id="selectByRole" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select * from huse_scoreresult where role = #{role};
+  </select>
+</mapper>

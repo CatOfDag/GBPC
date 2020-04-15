@@ -18,7 +18,7 @@
         </span>
         <a style="float: right" class="layui-btn layui-btn-sm" href="javascript:location.replace(location.href);" title="刷新">
             <i class="layui-icon layui-icon-refresh"></i>
-        </a><a th:href="@{/sys_file/gb.xlsx}" style="display: block;float: right;line-height: 40px;width: 100px;height: 40px;
+        </a><a th:href="@{/sys_file/参评干部添加信息模板.xlsx}" style="display: block;float: right;line-height: 40px;width: 100px;height: 40px;
     color: #1c20d0;text-decoration: underline;">导入模板下载</a>
     </div>
     <!--模糊搜索区域-->
@@ -32,12 +32,6 @@
                     </button>
                 </form>
             </div>
-            <div style="margin-top:14px;float: right">
-                <button class="layui-btn" onclick="fileimport()">
-                    <i class="layui-icon">&#xe67c;</i>导入文件
-                </button>
-            </div>
-
         </okToobar>
     </div>
 
@@ -66,11 +60,10 @@
                     shade: false,
                     maxmin: true,
                     shade: 0.5,
-                    area: ["45%", "100%"],
+                    area: ["40%", "90%"],
                     content: "/cadre/modify?id=" + JSON.stringify(data.id),
                     zIndex: layer.zIndex,
                     end: function () {
-                        $(".layui-laypage-btn")[0].click();
                     }
                 });
             }
@@ -87,9 +80,9 @@
                 {field: "cadreName", title: "干部姓名", width: 100},
                 {field: "password", title: "密码", width: 120},
                 {field: "job", title: "职务", width: 150},
-                {field: "role", title: "身份", width: 100},
+                {field: "role", title: "身份", width: 190},
                 {field: "state", title: "状态", width: 85},
-                {field: "avoteLias", title: "参与的投票项目", width: 200},
+                {field: "avoteLias", title: "参与的投票项目", width: 170},
                 {field: "desc", title: "简介", width: 200},
                 {title: "操作", width: 200, align: 'center', templet: "#operationTpl"}
             ]],

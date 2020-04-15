@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="zh">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <!--<link rel="stylesheet" th:href="@{/static/css/okadmin.css}">-->
 </head>
+<style>
+    .help:hover{cursor: help}
+</style>
 <body>
 <div class="ok-body">
 <!--引入模板-->
@@ -31,14 +34,28 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">身份</label>
+            <label class="layui-form-label help" id="role" title="帮助">身份</label>
             <div class="layui-input-block">
                 <select name="role" lay-filter="role" lay-verify="required">
                     <option value=""></option>
-                    <option value="校领导">校领导</option>
-                    <option value="干部">干部</option>
-                    <option value="教师">教师</option>
-                    <option value="群众">群众</option>
+                    <option value="校党委委员">校党委委员</option>
+                    <option value="各界代表">各界代表</option>
+                    <option value="普通中层干部">普通中层干部</option>
+                    <option value="特殊中层干部">特殊中层干部</option>
+                    <option value="经济与管理学院">经管学院教职工、学生代表</option>
+                    <option value="人文与社会科学学院">人文学院教职工、学生代表</option>
+                    <option value="马克思主义学院">马思学院教职工、学生代表</option>
+                    <option value="体育学院">体育学院教职工、学生代表</option>
+                    <option value="外国语学院">外语学院教职工、学生代表</option>
+                    <option value="传媒学院">传媒学院教职工、学生代表</option>
+                    <option value="理学院">理学院教职工、学生代表</option>
+                    <option value="电子与信息工程学院">电信学院教职工、学生代表</option>
+                    <option value="土木与环境工程学院">土环学院教职工、学生代表</option>
+                    <option value="化学与生物工程学院">化生学院教职工、学生代表</option>
+                    <option value="音乐与舞蹈学院">音舞学院教职工、学生代表</option>
+                    <option value="美术与艺术设计学院">美术学院教职工、学生代表</option>
+                    <option value="旅游与文化产业学院">旅管学院教职工、学生代表</option>
+                    <option value="国学院">国学院教职工、学生代表</option>
                 </select>
             </div>
         </div>
@@ -92,7 +109,7 @@
             ajax();
             return false;
         });
-    })
+    });
 
     function ajax() {
         $.ajax({
@@ -113,6 +130,26 @@
             }
         });
     }
+
+    $("#role").click(function () {
+        layer.open({
+            type: 1
+            , title: false //不显示标题栏
+            , closeBtn: false
+            , area: '550px;'
+            , title: '温馨提示:'
+            , shade: 0.8
+            , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            , resize: false
+            , btn: ['我知道了']
+            , btnAlign: 'c'
+            , moveType: 1 //拖拽模式，0或者1
+            , content:  '<div style="height: 250px"><table class="layui-table"><tr><td>参评干部</td><td>对应类参评干部投票的角色</td></tr>' +
+                    '<tr><td>行政与教辅单位正职</td><td>校领导、各界代表、中层干部1/2</td></tr>' +
+                    '<tr><td>教学学院正职</td><td>校领导、各界代表、中层干部1/2</td></tr>' +
+                    '<tr><td>教学学院副职</td><td>校领导、各界代表、中层干部2、学院教职工、学生代表</td></tr></table>'+'</div>'
+        });
+    })
 </script>
 </body>
 </html>

@@ -16,7 +16,7 @@
         <span class="layui-breadcrumb">
             <a><cite>首页</cite></a>
             <a><cite>投票结果</cite></a>
-            <a><cite>生成投票结果</cite></a>
+            <a><cite>投票总结果</cite></a>
         </span>
         <a class="layui-btn layui-btn-sm" href="javascript:location.replace(location.href);" title="刷新">
             <i class="layui-icon layui-icon-refresh"></i>
@@ -26,11 +26,21 @@
     <div class="layui-row">
         <form class="layui-form layui-col-md12 ok-search">
             <select name="alias" id="alias">
-                <option value=""></option>
                 <span th:each="v : ${votes}">
-                    <option th:value="${v.alias}"><span th:text="${v.alias}"></span></option>
+                    <option value=""></option>
+                    <option th:value="${v.alias}">
+                        <span th:text="${v.alias}"></span>
+                    </option>
                 </span>
             </select>
+            <select name="role" id = "role">
+                <option value=""></option>
+                <option value="行政与教辅单位正职">行政与教辅单位正职</option>
+                <option value="行政与教辅单位副职">行政与教辅单位副职</option>
+                <option value="教学学院正职">教学学院正职</option>
+                <option value="教学学院副职">教学学院副职</option>
+            </select>
+            <input class="layui-input" placeholder="输入用户名搜索" autocomplete="off" id="info">
             <button class="layui-btn" lay-submit="" lay-filter="search">
                 <i class="layui-icon layui-icon-search"></i>
             </button>
@@ -53,10 +63,10 @@
         var $ = layui.jquery;
         var laydate = layui.laydate;
 
-        //重新渲染表格的书籍
+        //重新渲染表格
         form.on("submit(search)", function () {
             table.reload('tableId', {
-                url: "/result/getScore?alias="+$("#alias").val()
+                url: "/result/getScore?alias="+$("#alias").val()+"&role="+$("#role").val()+"&cadreName="+$("#info").val()
                 ,where: {}
             });
             var index = layer.load(2, {time: 1*1000});

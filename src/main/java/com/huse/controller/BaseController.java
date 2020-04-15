@@ -3,7 +3,10 @@ package com.huse.controller;
 import com.huse.pojo.Admin;
 import com.huse.pojo.Cadre;
 import com.huse.pojo.Participant;
-import com.huse.service.*;
+import com.huse.service.AdminService;
+import com.huse.service.CadreService;
+import com.huse.service.ParticipantService;
+import com.huse.service.VoteService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
@@ -32,7 +35,7 @@ public class BaseController {
     private AdminService adminService;
     //    登录页面
     @GetMapping("login")
-    public String loginPage(HttpSession session,ModelMap mmp) throws UnsupportedEncodingException {
+    public String loginPage(ModelMap mmp) throws UnsupportedEncodingException {
         Subject sub = SecurityUtils.getSubject();
         Object obj = sub.getPrincipal();
         if (obj==null){
@@ -54,11 +57,10 @@ public class BaseController {
     }
 
     //退出系统
-    @RequestMapping("logout")
+    @GetMapping("/log/out")
     public String logout(HttpSession session){
-        session.removeAttribute("cadre");
-        session.removeAttribute("admin");
-        return "logout";
+        session.invalidate();
+        return "login";
     }
 
     //    用户中心
@@ -72,7 +74,7 @@ public class BaseController {
 
     //index页面
     @RequestMapping({"index","/"})
-    public String indexPage(HttpSession session,ModelMap mmp) {
+    public String indexPage(ModelMap mmp) {
         //获得当前登录的用户信息
         Subject sub = SecurityUtils.getSubject();
         Admin obj = (Admin) sub.getPrincipal();
@@ -107,10 +109,11 @@ public class BaseController {
         // 自己创建一个令牌，输入用户名和密码
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password,rememberMe);
         try {
+            System.out.println("------登录用户：" + usernamePasswordToken.getUsername()+"------");
+            subject.getSession().setAttribute(username,subject.getSession());
             subject.login(usernamePasswordToken);
             Admin admin = adminService.selectByName(username);
-            Cadre cadre = cadreService.selectByNameID(username,password);
-
+            Cadre cadre = cadreService.selectByNamePassword(username,password);
             if (admin!=null && (admin.getRole().equals("user") || admin.getRole().equals("su"))){
                 return "redirect:/index";
             }
@@ -118,24 +121,21 @@ public class BaseController {
                 //解决Springboot重定向参数乱码问题.
                 return "redirect:cadre/cadreInfo";
             }
-        } catch (UnknownAccountException e) {
-            mmp.addAttribute("state","账号不存在！");
-
-        } catch (LockedAccountException e) {
-            mmp.addAttribute("state","账号被锁定，联系超级管理员开启！");
-
-        } catch (DisabledAccountException e) {
-            mmp.addAttribute("state","账号被禁用！");
-
         } catch (IncorrectCredentialsException e) {
             mmp.addAttribute("state","密码错误！");
-
+        } catch (UnknownAccountException e) {
+            mmp.addAttribute("state","账号不存在！");
+        } catch (LockedAccountException e) {
+            mmp.addAttribute("state","账号被锁定，联系超级管理员开启！");
+        } catch (DisabledAccountException e) {
+            mmp.addAttribute("state","账号被禁用！");
         } catch (ExpiredCredentialsException e) {
             mmp.addAttribute("state","密码过期！");
-
         } catch (ExcessiveAttemptsException e) {
             mmp.addAttribute("state","登录失败次数过多！");
-        }catch (AuthenticationException e){
+        } catch (AccountException e){
+            mmp.addAttribute("state","账户已登录！");
+        } catch (AuthenticationException e){
             mmp.addAttribute("state","请输入正确的帐号和信息！");
         }
         return "login";

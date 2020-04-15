@@ -25,5 +25,7 @@ public interface ParticipantService {
 
     Participant selectByPIN(String PIN);
 
+    List<Participant> selectByRole(String role);
+
     int updateByPIN(Participant record);
 }

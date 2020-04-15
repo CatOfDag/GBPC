@@ -25,6 +25,8 @@ public interface ParticipantMapper {
     int forbidden(int state);
 
     Participant selectByPIN(String PIN);
+
+    List<Participant> selectByRole(String role);
 //    按照PIN更新
     int updateByPIN(Participant record);
 }

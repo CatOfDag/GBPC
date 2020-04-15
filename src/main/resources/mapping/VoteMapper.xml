@@ -126,4 +126,7 @@
   <select id="selectByAlisa" resultMap="BaseResultMap" resultType="java.lang.String">
     SELECT * FROM huse_vote WHERE alias = #{alisa}
   </select>
+  <select id="countOperationVote" resultType="java.lang.String">
+    SELECT alias as OperationVote FROM huse_vote where state = 1
+  </select>
 </mapper>

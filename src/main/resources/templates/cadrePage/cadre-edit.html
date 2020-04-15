@@ -50,7 +50,10 @@
             <div class="layui-input-block">
                 <select name="role" lay-filter="role" lay-verify="required">
                     <option value=""></option>
-                    <option value="干部" selected="">干部</option>
+                    <option value="行政与教辅单位正职">行政与教辅单位正职</option>
+                    <option value="行政与教辅单位副职">行政与教辅单位副职</option>
+                    <option value="教学学院正职">教学学院正职(院长、书记)</option>
+                    <option value="教学学院副职">教学学院副职(副院长、副书记)</option>
                 </select>
             </div>
         </div>
@@ -95,7 +98,6 @@
         var $ = layui.jquery;
         var laydate = layui.laydate;
         form.val('cadreEdit', {
-            /*<![CDATA[*/
             "id": [[${cadre.id}]]
             ,"cadreName": [[${cadre.cadreName}]]
             ,"password": [[${cadre.password}]]
@@ -104,7 +106,6 @@
             ,"state": [[${cadre.state == true ? 1 : 0}]]
             ,"desc": [[${cadre.desc}]]
             ,"avoteLias":[[${cadre.avoteLias}]]
-            /*]]>*/
         })
 
         form.on("submit(edit)", function (data) {
@@ -122,6 +123,7 @@
             success: function (data) {
                 if (data.res) {
                     layer.msg("修改成功！", {icon: 6, time: 1000, anim: 4}, function () {
+                        location.reload();
                         parent.layer.close(parent.layer.getFrameIndex(window.name));
                     })
                 }

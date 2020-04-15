@@ -1,0 +1,153 @@
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>添加用户</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!--<link rel="stylesheet" th:href="@{/static/css/okadmin.css}">-->
+</head>
+<style>
+    .help:hover{cursor: help}
+</style>
+<body>
+<div class="ok-body">
+<!--引入模板-->
+<div th:include="publictemplate :: css"></div>
+    <!--面包屑导航区域-->
+    <div class="ok-body-breadcrumb">
+        <span class="layui-breadcrumb">
+            <a><cite>首页</cite></a>
+            <a><cite>参评人员管理</cite></a>
+            <a><cite>参评人员列表</cite></a>
+            <a><cite>添加参评人员</cite></a>
+        </span>
+        <a class="layui-btn layui-btn-sm" href="javascript:location.replace(location.href);" title="刷新">
+            <i class="layui-icon layui-icon-refresh"></i>
+        </a>
+        <a th:href="@{/doc/本次生成的Pins.xls}" hidden = "hidden" id="pinloaddown"></a>
+    </div>
+    <!--form表单-->
+    <form class="layui-form layui-form-pane ok-form" id="participant" name="participant">
+        <!--<div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="text" name="pin" placeholder="请输入PIN码" autocomplete="off" class="layui-input" lay-verify="pin">
+            </div>
+        </div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">校党委代表</label>
+            <div class="layui-input-block">
+                <input type="text" name="spcn" placeholder="请输入人数" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">各界代表</label>
+            <div class="layui-input-block">
+                <input type="text" name="rawn" placeholder="请输入人数" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">普通中层干部</label>
+            <div class="layui-input-block">
+                <input type="text" name="omcn" placeholder="请输入人数" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">特殊中层干部</label>
+            <div class="layui-input-block">
+                <input type="text" name="smcn" placeholder="请输入人数" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <!--统一设置各学院人数-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">各学院代表</label>
+            <div class="layui-input-block">
+                <input type="text" name="crn" placeholder="请输入人数" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">参与投票</label>
+            <div class="layui-input-block">
+                <select name="voteAlias" lay-filter="voteAlias" lay-verify="required">
+                    <option value=""></option>
+                    <span th:each="v : ${votes}">
+                        <option th:value="${v.alias}"><span th:text="${v.alias}"></span></option>
+                    </span>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">截止时间</label>
+            <div class="layui-input-block">
+                <input type="text" name="endtime" placeholder="请设设置截止时间" autocomplete="off" class="layui-input" id="end" lay-verify="required">
+            </div>
+        </div>`
+        <!--新建一个用户默认其是启用状态-->
+        <input type="text" hidden name="state" value="1">
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="add">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script>
+    layui.use(["element", "form", "jquery", "laydate"], function () {
+        var form = layui.form;
+        var laydate = layui.laydate;
+
+        laydate.render({
+            elem: "#end",
+            type: "datetime"
+        });
+
+        form.verify({
+            pin: function(value){
+                if(value.length > 8 || value.length < 8 ){
+                    return 'PIN长度只能为8';
+                }
+            }
+        });
+
+        form.on("submit(add)", function (data) {
+            ajax();
+            return false;
+        });
+    });
+
+    function ajax() {
+        var data = {
+            "spcn": participant.spcn.value,
+            "rawn": participant.rawn.value,
+            "omcn": participant.omcn.value,
+            "smcn": participant.smcn.value,
+            "crn":  participant.crn.value,
+            "voteAlias":participant.voteAlias.value,
+            "endtime": participant.endtime.value
+        };
+        $.ajax({
+            type: "POST",//提交类型
+            url: '/participant/volumeAddParticipant',
+            data: JSON.stringify(data),// 你的formid
+            dataType: 'json',
+            contentType: 'application/json',
+            async: false,
+            success: function (data) {
+                if (data.res){
+                    layer.confirm("添加成功!是否下载本次生成的Pin码？",{icon: 6,btn: ['确定', '取消'], title: "提示",async: false, anim: 4},function () {
+                        $("#pinloaddown")[0].click();
+                        parent.layer.close(parent.layer.getFrameIndex(window.name));
+                    },function () {
+                        parent.layer.close(parent.layer.getFrameIndex(window.name));
+                    });
+
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>干部列表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!--<link rel="stylesheet" th:href="@{/static/css/okadmin.css}">-->
+    <!--<link rel="stylesheet" th:href="@{/static/lib/nprogress/nprogress.css}">-->
+</head>
+<body>
+<div class="ok-body">
+    <!--引入模板-->
+    <div th:include="publictemplate :: css"></div>
+    <!--面包屑导航区域-->
+    <div class="ok-body-breadcrumb">
+        <span class="layui-breadcrumb">
+            <a><cite>首页</cite></a>
+            <a><cite>投票结果</cite></a>
+            <a><cite>生成投票结果</cite></a>
+        </span>
+        <a class="layui-btn layui-btn-sm" href="javascript:location.replace(location.href);" title="刷新">
+            <i class="layui-icon layui-icon-refresh"></i>
+        </a>
+    </div>
+    <!--模糊搜索区域-->
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 ok-search">
+            <select name="alias" id="alias">
+                <option value=""></option>
+                <span th:each="v : ${votes}">
+                    <option th:value="${v.alias}"><span th:text="${v.alias}"></span></option>
+                </span>
+            </select>
+            <button class="layui-btn" lay-submit="" lay-filter="search">
+                <i class="layui-icon layui-icon-search"></i>
+            </button>
+        </form>
+    </div>
+    <!--数据表格-->
+    <table class="layui-hide" id="tableId" lay-filter="tableFilter">
+    </table>
+    <script type="text/html" id="toolbarDemo">
+        <p>说明:各项中1,2,3,4分别对应"好","较好","一般","差"。列表示干部每项的票数。</p>
+
+
+    </script>
+</div>
+<script th:inline="none">
+    NProgress.start();
+    window.onload = function () {
+        NProgress.done();
+    }
+    layui.use(["element", "table", "form", "jquery", "laydate"], function () {
+        var table = layui.table;
+        var form = layui.form;
+        var $ = layui.jquery;
+        var laydate = layui.laydate;
+
+        //重新渲染表格的书籍
+        form.on("submit(search)", function () {
+            table.reload('tableId', {
+                url: "/result/AcountCaderVoteNum?alias="+$("#alias").val()
+                ,where: {}
+            });
+            var index = layer.load(2, {time: 1*1000});
+            return false;
+        });
+
+        table.render({
+            elem: "#tableId",
+            url: "/result/AcountOtherVoteNum",
+            toolbar: '#toolbarDemo',
+            cols: [[
+                {field: "name",      title: "姓名", width: 100},
+                {field: "votealias", title: "投票项目", width: 100 },
+                {field: "v1count",   title: "德1", width: 55},
+                {field: "v2count",   title: "德2", width: 55},
+                {field: "v3count",   title: "德3", width: 55},
+                {field: "v4count",   title: "德4", width: 55},
+                {field: "a1count",   title: "能1", width: 55},
+                {field: "a2count",   title: "能2", width: 55},
+                {field: "a3count",   title: "能3", width: 55},
+                {field: "a4count",   title: "能4", width: 55},
+                {field: "d1count",   title: "勤1", width: 55},
+                {field: "d2count",   title: "勤2", width: 55},
+                {field: "d3count",   title: "勤3", width: 55},
+                {field: "d4count",   title: "勤4", width: 55},
+                {field: "f1count",   title: "绩1", width: 55},
+                {field: "f2count",   title: "绩2", width: 55},
+                {field: "f3count",   title: "绩3", width: 55},
+                {field: "f4count",   title: "绩4", width: 55},
+                {field: "h1count",   title: "廉1", width: 55},
+                {field: "h2count",   title: "廉2", width: 55},
+                {field: "h3count",   title: "廉3", width: 55},
+                {field: "h4count",   title: "廉4", width: 55},
+                {field: "score",     title: "分数", width: 80, sort: true}
+            ]],
+            done: function (res, curr, count) {
+                $("#countNum").text(count);
+            }
+        });
+    })
+</script>
+
+</body>
+</html>

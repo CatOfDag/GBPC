@@ -1,14 +1,15 @@
-package com.huse.service;
+package com.huse.service.Impl;
 
 import com.huse.mapper.CadreDatailMapper;
 import com.huse.pojo.CadreDatail;
+import com.huse.service.CadreDatailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class CadreDatailServiceImp implements CadreDatailService{
+public class CadreDatailServiceImp implements CadreDatailService {
 
     @Autowired
     private CadreDatailMapper cadreDatailMapper;
@@ -20,11 +21,6 @@ public class CadreDatailServiceImp implements CadreDatailService{
     @Override
     public int insert(CadreDatail record) {
         return cadreDatailMapper.insert(record);
-    }
-
-    @Override
-    public int insertname(CadreDatail record) {
-        return cadreDatailMapper.insertname(record);
     }
 
     @Override

@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Component
-public class Participant {
+public class Participant implements Serializable {
     private Integer id;
 
     private String pin;

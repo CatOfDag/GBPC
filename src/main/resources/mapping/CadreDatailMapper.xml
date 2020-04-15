@@ -8,29 +8,25 @@
     <result column="birth" property="birth" jdbcType="VARCHAR" />
     <result column="nation" property="nation" jdbcType="VARCHAR" />
     <result column="nativeplace" property="nativeplace" jdbcType="VARCHAR" />
-    <result column="brithplace" property="brithplace" jdbcType="VARCHAR" />
-    <result column="nativetytime" property="nativetytime" jdbcType="VARCHAR" />
-    <result column="worktime" property="worktime" jdbcType="VARCHAR" />
     <result column="health" property="health" jdbcType="VARCHAR" />
+    <result column="politicalface" property="politicalface" jdbcType="VARCHAR" />
+    <result column="worktime" property="worktime" jdbcType="VARCHAR" />
+    <result column="vote_alia" property="vote_alia" jdbcType="VARCHAR" />
     <result column="majorpost" property="majorpost" jdbcType="VARCHAR" />
-    <result column="expertise" property="expertise" jdbcType="VARCHAR" />
     <result column="seducation" property="seducation" jdbcType="VARCHAR" />
     <result column="seducationdetail" property="seducationdetail" jdbcType="VARCHAR" />
     <result column="weducation" property="weducation" jdbcType="VARCHAR" />
     <result column="weducationdetail" property="weducationdetail" jdbcType="VARCHAR" />
     <result column="newpost" property="newpost" jdbcType="VARCHAR" />
     <result column="job" property="newpost" jdbcType="VARCHAR" />
-    <result column="wantpost" property="wantpost" jdbcType="VARCHAR" />
-    <result column="falsepost" property="falsepost" jdbcType="VARCHAR" />
+    <result column="appointtime" property="appointtime" jdbcType="VARCHAR" />
     <result column="resume" property="resume" jdbcType="VARCHAR" />
     <result column="punishaward" property="punishaward" jdbcType="VARCHAR" />
-    <result column="annualass" property="annualass" jdbcType="VARCHAR" />
-    <result column="reason" property="reason" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, cadre_name, sex, birth, nation, nativeplace, brithplace, nativetytime, worktime, 
-    health, majorpost, expertise, seducation, seducationdetail, weducation, weducationdetail, 
-    newpost, wantpost, falsepost, resume, punishaward, annualass, reason
+    id, cadre_name, sex, birth, nation, nativeplace, politicalface, worktime,
+    health, majorpost, seducation, seducationdetail, weducation, weducationdetail,
+    newpost, appointtime, resume, punishaward
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -42,314 +38,42 @@
     delete from cadre_detail
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <update id="insert" parameterType="com.huse.pojo.CadreDatail" >
-    insert into cadre_detail (id, cadre_name, sex, 
-      birth, nation, nativeplace, 
-      brithplace, nativetytime, worktime, 
-      health, majorpost, expertise, 
-      seducation, seducationdetail, weducation, 
-      weducationdetail, newpost, wantpost, 
-      falsepost, resume, punishaward, 
-      annualass, reason)
-    values (#{id,jdbcType=INTEGER}, #{cadre_name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
-      #{birth,jdbcType=VARCHAR}, #{nation,jdbcType=VARCHAR}, #{nativeplace,jdbcType=VARCHAR}, 
-      #{brithplace,jdbcType=VARCHAR}, #{nativetytime,jdbcType=VARCHAR}, #{worktime,jdbcType=VARCHAR}, 
-      #{health,jdbcType=VARCHAR}, #{majorpost,jdbcType=VARCHAR}, #{expertise,jdbcType=VARCHAR}, 
-      #{seducation,jdbcType=VARCHAR}, #{seducationdetail,jdbcType=VARCHAR}, #{weducation,jdbcType=VARCHAR}, 
-      #{weducationdetail,jdbcType=VARCHAR}, #{newpost,jdbcType=VARCHAR}, #{wantpost,jdbcType=VARCHAR}, 
-      #{falsepost,jdbcType=VARCHAR}, #{resume,jdbcType=VARCHAR}, #{punishaward,jdbcType=VARCHAR}, 
-      #{annualass,jdbcType=VARCHAR}, #{reason,jdbcType=VARCHAR})
-  </update>
-  <insert id="insertname" parameterType="com.huse.pojo.CadreDatail" >
-      insert into cadre_detail (cadre_name, sex,
-      birth, nation, nativeplace,
-      brithplace, nativetytime, worktime,
-      health, majorpost, expertise,
-      seducation, seducationdetail, weducation,
-      weducationdetail, newpost, wantpost,
-      falsepost, resume, punishaward,
-      annualass, reason)
-    values (#{cadre_name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR},
-      #{birth,jdbcType=VARCHAR}, #{nation,jdbcType=VARCHAR}, #{nativeplace,jdbcType=VARCHAR},
-      #{brithplace,jdbcType=VARCHAR}, #{nativetytime,jdbcType=VARCHAR}, #{worktime,jdbcType=VARCHAR},
-      #{health,jdbcType=VARCHAR}, #{majorpost,jdbcType=VARCHAR}, #{expertise,jdbcType=VARCHAR},
-      #{seducation,jdbcType=VARCHAR}, #{seducationdetail,jdbcType=VARCHAR}, #{weducation,jdbcType=VARCHAR},
-      #{weducationdetail,jdbcType=VARCHAR}, #{newpost,jdbcType=VARCHAR}, #{wantpost,jdbcType=VARCHAR},
-      #{falsepost,jdbcType=VARCHAR}, #{resume,jdbcType=VARCHAR}, #{punishaward,jdbcType=VARCHAR},
-      #{annualass,jdbcType=VARCHAR}, #{reason,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.huse.pojo.CadreDatail" >
+  <insert id="insert" parameterType="com.huse.pojo.CadreDatail" >
     insert into cadre_detail
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="cadre_name != null" >
-        cadre_name,
-      </if>
-      <if test="sex != null" >
-        sex,
-      </if>
-      <if test="birth != null" >
-        birth,
-      </if>
-      <if test="nation != null" >
-        nation,
-      </if>
-      <if test="nativeplace != null" >
-        nativeplace,
-      </if>
-      <if test="brithplace != null" >
-        brithplace,
-      </if>
-      <if test="nativetytime != null" >
-        nativetytime,
-      </if>
-      <if test="worktime != null" >
-        worktime,
-      </if>
-      <if test="health != null" >
-        health,
-      </if>
-      <if test="majorpost != null" >
-        majorpost,
-      </if>
-      <if test="expertise != null" >
-        expertise,
-      </if>
-      <if test="seducation != null" >
-        seducation,
-      </if>
-      <if test="seducationdetail != null" >
-        seducationdetail,
-      </if>
-      <if test="weducation != null" >
-        weducation,
-      </if>
-      <if test="weducationdetail != null" >
-        weducationdetail,
-      </if>
-      <if test="newpost != null" >
-        newpost,
-      </if>
-      <if test="wantpost != null" >
-        wantpost,
-      </if>
-      <if test="falsepost != null" >
-        falsepost,
-      </if>
-      <if test="resume != null" >
-        resume,
-      </if>
-      <if test="punishaward != null" >
-        punishaward,
-      </if>
-      <if test="annualass != null" >
-        annualass,
-      </if>
-      <if test="reason != null" >
-        reason,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="cadre_name != null" >
-        #{cadre_name,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null" >
-        #{sex,jdbcType=VARCHAR},
-      </if>
-      <if test="birth != null" >
-        #{birth,jdbcType=VARCHAR},
-      </if>
-      <if test="nation != null" >
-        #{nation,jdbcType=VARCHAR},
-      </if>
-      <if test="nativeplace != null" >
-        #{nativeplace,jdbcType=VARCHAR},
-      </if>
-      <if test="brithplace != null" >
-        #{brithplace,jdbcType=VARCHAR},
-      </if>
-      <if test="nativetytime != null" >
-        #{nativetytime,jdbcType=VARCHAR},
-      </if>
-      <if test="worktime != null" >
-        #{worktime,jdbcType=VARCHAR},
-      </if>
-      <if test="health != null" >
-        #{health,jdbcType=VARCHAR},
-      </if>
-      <if test="majorpost != null" >
-        #{majorpost,jdbcType=VARCHAR},
-      </if>
-      <if test="expertise != null" >
-        #{expertise,jdbcType=VARCHAR},
-      </if>
-      <if test="seducation != null" >
-        #{seducation,jdbcType=VARCHAR},
-      </if>
-      <if test="seducationdetail != null" >
-        #{seducationdetail,jdbcType=VARCHAR},
-      </if>
-      <if test="weducation != null" >
-        #{weducation,jdbcType=VARCHAR},
-      </if>
-      <if test="weducationdetail != null" >
-        #{weducationdetail,jdbcType=VARCHAR},
-      </if>
-      <if test="newpost != null" >
-        #{newpost,jdbcType=VARCHAR},
-      </if>
-      <if test="wantpost != null" >
-        #{wantpost,jdbcType=VARCHAR},
-      </if>
-      <if test="falsepost != null" >
-        #{falsepost,jdbcType=VARCHAR},
-      </if>
-      <if test="resume != null" >
-        #{resume,jdbcType=VARCHAR},
-      </if>
-      <if test="punishaward != null" >
-        #{punishaward,jdbcType=VARCHAR},
-      </if>
-      <if test="annualass != null" >
-        #{annualass,jdbcType=VARCHAR},
-      </if>
-      <if test="reason != null" >
-        #{reason,jdbcType=VARCHAR},
-      </if>
-    </trim>
+    values (#{id,jdbcType=INTEGER},#{vote_alia,jdbcType=VARCHAR},#{cadre_name,jdbcType=VARCHAR},#{sex,jdbcType=VARCHAR},
+        #{birth,jdbcType=VARCHAR},#{nation,jdbcType=VARCHAR},
+        #{nativeplace,jdbcType=VARCHAR},#{health,jdbcType=VARCHAR},
+        #{politicalface,jdbcType=VARCHAR},#{worktime,jdbcType=VARCHAR},
+        #{majorpost,jdbcType=VARCHAR},#{seducation,jdbcType=VARCHAR},
+        #{seducationdetail,jdbcType=VARCHAR},#{weducation,jdbcType=VARCHAR},
+        #{weducationdetail,jdbcType=VARCHAR},#{newpost,jdbcType=VARCHAR},#{appointtime,jdbcType=VARCHAR},
+        #{resume,jdbcType=VARCHAR},#{punishaward,jdbcType=VARCHAR})
   </insert>
 
   <select id="selectByIdFoundName" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     SELECT id,cadre_name,job FROM huse_cadre where id = #{id}
   </select>
-  <update id="updateByPrimaryKeySelective" parameterType="com.huse.pojo.CadreDatail" >
-    update cadre_detail
-    <set >
-      <if test="cadre_name != null" >
-        cadre_name = #{cadre_name,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null" >
-        sex = #{sex,jdbcType=VARCHAR},
-      </if>
-      <if test="birth != null" >
-        birth = #{birth,jdbcType=VARCHAR},
-      </if>
-      <if test="nation != null" >
-        nation = #{nation,jdbcType=VARCHAR},
-      </if>
-      <if test="nativeplace != null" >
-        nativeplace = #{nativeplace,jdbcType=VARCHAR},
-      </if>
-      <if test="brithplace != null" >
-        brithplace = #{brithplace,jdbcType=VARCHAR},
-      </if>
-      <if test="nativetytime != null" >
-        nativetytime = #{nativetytime,jdbcType=VARCHAR},
-      </if>
-      <if test="worktime != null" >
-        worktime = #{worktime,jdbcType=VARCHAR},
-      </if>
-      <if test="health != null" >
-        health = #{health,jdbcType=VARCHAR},
-      </if>
-      <if test="majorpost != null" >
-        majorpost = #{majorpost,jdbcType=VARCHAR},
-      </if>
-      <if test="expertise != null" >
-        expertise = #{expertise,jdbcType=VARCHAR},
-      </if>
-      <if test="seducation != null" >
-        seducation = #{seducation,jdbcType=VARCHAR},
-      </if>
-      <if test="seducationdetail != null" >
-        seducationdetail = #{seducationdetail,jdbcType=VARCHAR},
-      </if>
-      <if test="weducation != null" >
-        weducation = #{weducation,jdbcType=VARCHAR},
-      </if>
-      <if test="weducationdetail != null" >
-        weducationdetail = #{weducationdetail,jdbcType=VARCHAR},
-      </if>
-      <if test="newpost != null" >
-        newpost = #{newpost,jdbcType=VARCHAR},
-      </if>
-      <if test="wantpost != null" >
-        wantpost = #{wantpost,jdbcType=VARCHAR},
-      </if>
-      <if test="falsepost != null" >
-        falsepost = #{falsepost,jdbcType=VARCHAR},
-      </if>
-      <if test="resume != null" >
-        resume = #{resume,jdbcType=VARCHAR},
-      </if>
-      <if test="punishaward != null" >
-        punishaward = #{punishaward,jdbcType=VARCHAR},
-      </if>
-      <if test="annualass != null" >
-        annualass = #{annualass,jdbcType=VARCHAR},
-      </if>
-      <if test="reason != null" >
-        reason = #{reason,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
   <update id="updateByPrimaryKey" parameterType="com.huse.pojo.CadreDatail" >
     update cadre_detail
-    set cadre_name = #{cadre_name,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=VARCHAR},
-      birth = #{birth,jdbcType=VARCHAR},
-      nation = #{nation,jdbcType=VARCHAR},
-      nativeplace = #{nativeplace,jdbcType=VARCHAR},
-      brithplace = #{brithplace,jdbcType=VARCHAR},
-      nativetytime = #{nativetytime,jdbcType=VARCHAR},
-      worktime = #{worktime,jdbcType=VARCHAR},
-      health = #{health,jdbcType=VARCHAR},
-      majorpost = #{majorpost,jdbcType=VARCHAR},
-      expertise = #{expertise,jdbcType=VARCHAR},
-      seducation = #{seducation,jdbcType=VARCHAR},
-      seducationdetail = #{seducationdetail,jdbcType=VARCHAR},
-      weducation = #{weducation,jdbcType=VARCHAR},
-      weducationdetail = #{weducationdetail,jdbcType=VARCHAR},
-      newpost = #{newpost,jdbcType=VARCHAR},
-      wantpost = #{wantpost,jdbcType=VARCHAR},
-      falsepost = #{falsepost,jdbcType=VARCHAR},
-      resume = #{resume,jdbcType=VARCHAR},
-      punishaward = #{punishaward,jdbcType=VARCHAR},
-      annualass = #{annualass,jdbcType=VARCHAR},
-      reason = #{reason,jdbcType=VARCHAR}
+    set birth = #{birth,jdbcType=VARCHAR},sex = #{sex,jdbcType=VARCHAR}, nation=#{nation,jdbcType=VARCHAR},
+        nativeplace=#{nativeplace,jdbcType=VARCHAR},health=#{health,jdbcType=VARCHAR},
+        politicalface=#{politicalface,jdbcType=VARCHAR},worktime=#{worktime,jdbcType=VARCHAR},
+        majorpost=#{majorpost,jdbcType=VARCHAR},seducation=#{seducation,jdbcType=VARCHAR},
+        seducationdetail=#{seducationdetail,jdbcType=VARCHAR}, weducation=#{weducation,jdbcType=VARCHAR},
+        weducationdetail=#{weducationdetail,jdbcType=VARCHAR},appointtime=#{appointtime,jdbcType=VARCHAR},
+        resume=#{resume,jdbcType=VARCHAR}, punishaward=#{punishaward,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByNameJob" parameterType="com.huse.pojo.CadreDatail" >
     update cadre_detail
-    set cadre_name = #{cadre_name,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=VARCHAR},
-      birth = #{birth,jdbcType=VARCHAR},
-      nation = #{nation,jdbcType=VARCHAR},
-      nativeplace = #{nativeplace,jdbcType=VARCHAR},
-      brithplace = #{brithplace,jdbcType=VARCHAR},
-      nativetytime = #{nativetytime,jdbcType=VARCHAR},
-      worktime = #{worktime,jdbcType=VARCHAR},
-      health = #{health,jdbcType=VARCHAR},
-      majorpost = #{majorpost,jdbcType=VARCHAR},
-      expertise = #{expertise,jdbcType=VARCHAR},
-      seducation = #{seducation,jdbcType=VARCHAR},
-      seducationdetail = #{seducationdetail,jdbcType=VARCHAR},
-      weducation = #{weducation,jdbcType=VARCHAR},
-      weducationdetail = #{weducationdetail,jdbcType=VARCHAR},
-      newpost = #{newpost,jdbcType=VARCHAR},
-      wantpost = #{wantpost,jdbcType=VARCHAR},
-      falsepost = #{falsepost,jdbcType=VARCHAR},
-      resume = #{resume,jdbcType=VARCHAR},
-      punishaward = #{punishaward,jdbcType=VARCHAR},
-      annualass = #{annualass,jdbcType=VARCHAR},
-      reason = #{reason,jdbcType=VARCHAR}
-    where (cadre_name) in ((#{cadre_name}))
+    set birth = #{birth,jdbcType=VARCHAR}, sex = #{sex,jdbcType=VARCHAR}, nation=#{nation,jdbcType=VARCHAR},
+        nativeplace=#{nativeplace,jdbcType=VARCHAR},health=#{health,jdbcType=VARCHAR},
+        politicalface=#{politicalface,jdbcType=VARCHAR},worktime=#{worktime,jdbcType=VARCHAR},
+        majorpost=#{majorpost,jdbcType=VARCHAR},seducation=#{seducation,jdbcType=VARCHAR},
+        seducationdetail=#{seducationdetail,jdbcType=VARCHAR}, weducation=#{weducation,jdbcType=VARCHAR},
+        weducationdetail=#{weducationdetail,jdbcType=VARCHAR},appointtime=#{appointtime,jdbcType=VARCHAR},
+        resume=#{resume,jdbcType=VARCHAR}, punishaward=#{punishaward,jdbcType=VARCHAR}
+    where (cadre_name,newpost) in ((#{cadre_name},#{newpost}))
   </update>
 </mapper>
-        <!--cadre_name = #{cadre_name,jdbcType=VARCHAR}-->

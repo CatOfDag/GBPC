@@ -1,7 +1,8 @@
-package com.huse.service;
+package com.huse.service.Impl;
 
 import com.huse.mapper.VoteMapper;
 import com.huse.pojo.Vote;
+import com.huse.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,11 @@ public class VoteServiceImp implements VoteService {
     @Override
     public int count() {
         return voteMapper.count();
+    }
+
+    @Override
+    public String countOperationVote() {
+        return voteMapper.countOperationVote();
     }
 
     @Override

@@ -1,7 +1,8 @@
-package com.huse.service;
+package com.huse.service.Impl;
 
 import com.huse.mapper.ParticipantMapper;
 import com.huse.pojo.Participant;
+import com.huse.service.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,8 +60,13 @@ public class ParticipantServiceImp implements ParticipantService {
     }
 
     @Override
-    public Participant selectByPIN(String PIN) {
-        return participantMapper.selectByPIN(PIN);
+    public Participant selectByPIN(String pin) {
+        return participantMapper.selectByPIN(pin);
+    }
+
+    @Override
+    public List<Participant> selectByRole(String role) {
+        return participantMapper.selectByRole(role);
     }
 
     @Override

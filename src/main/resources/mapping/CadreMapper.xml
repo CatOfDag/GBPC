@@ -25,9 +25,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.huse.pojo.Cadre" >
-    insert into huse_cadre (id, cadre_name, job, 
-      state, `desc`, password,
-      role, avote_lias)
+    insert into huse_cadre
     values (#{id,jdbcType=INTEGER}, #{cadreName,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR}, 
       #{state,jdbcType=BIT}, #{desc,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{role,jdbcType=CHAR}, #{avoteLias,jdbcType=VARCHAR})
@@ -144,10 +142,21 @@
   <select id="selectByAlias" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT * FROM huse_cadre where avote_lias = #{alias}
   </select>
+  <select id="selectRoleByName" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT left(role,7) FROM huse_cadre where cadre_name = #{name,jdbcType=VARCHAR}
+  </select>
 
-  <update id="updateHuseCadreJob" parameterType="java.lang.String">
+  <update id="updatePwd" parameterType="java.lang.String">
     update huse_cadre
-    set job = #{job,jdbcType=VARCHAR}
-    where cadre_name = #{cadre_name,jdbcType=VARCHAR}
+    set password = #{newPassword,jdbcType=VARCHAR}
+    where cadre_name = #{cadreName,jdbcType=VARCHAR}
   </update>
+
+  <select id="selectFirAndSecCategory" parameterType="java.lang.String"  resultMap="BaseResultMap">
+    select * FROM huse_cadre where avote_lias = #{alias} and role like concat('行政与教辅单位','%')  or role = '教学学院正职'
+  </select>
+
+  <select id="selectThirdCategory" parameterType="java.lang.String"  resultMap="BaseResultMap">
+    select * from huse_cadre where job LIKE CONCAT(#{role},'%') and avote_lias = #{alias} and role='教学学院副职';
+  </select>
 </mapper>

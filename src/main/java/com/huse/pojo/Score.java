@@ -121,4 +121,14 @@ public class Score {
                 ", honest=" + honest +
                 '}';
     }
+
+    public int[] getScore(){
+        int[] score = new int[5];
+        score[0]=virtue;
+        score[1]=ability;
+        score[2]=diligence;
+        score[3]=feats;
+        score[4]=honest;
+        return score;
+    }
 }

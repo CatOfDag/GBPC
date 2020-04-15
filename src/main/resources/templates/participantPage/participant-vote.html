@@ -4,35 +4,7 @@
     <meta charset="UTF-8">
     <title>干部列表</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <style>
-        .tbd tr td {
-            width: 180px;
-        }
-
-        .color_block {
-            float: right;
-            display: block;
-            height: 22px;
-            width: 250px;
-        }
-
-        .color_block ul li {
-            display: block;
-            height: 20px;
-            width: 20px;
-            float: left;
-            margin-left: 5px;
-        }
-
-        .color_block ul span {
-            display: block;
-            height: 20px;
-            width: 30px;
-            float: left;
-            margin-left: 5px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="../static/css/style.css" type="text/css" />
 </head>
 <body>
 <div>
@@ -47,7 +19,7 @@
     </div>
     <div class="layui-col-md10 layui-col-xs12 layui-col-lg-offset1">
         <blockquote class="layui-elem-quote">
-            请投票！&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前投票:
+            请投票！    当前投票:
             <span style="color: #0B61A4" th:text="${participant.voteAlias}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             您当前的身份是:<span style="color: #0B61A4" th:text="${participant.role}"></span>
             <input type="hidden" th:value="${participant.pin}">
@@ -63,77 +35,76 @@
         <form class="layui-form" action="" id="voteData">
             <table class="layui-table">
                 <tbody class="tbd" id="tbd">
-                <tr>
-                    <td>序号</td>
-                    <td>姓名</td>
-                    <td>职务</td>
-                    <td>德</td>
-                    <td>能</td>
-                    <td>勤</td>
-                    <td>绩</td>
-                    <td>廉</td>
-                    <td>得分</td>
+                    <tr>
+                        <td>序号</td>
+                        <td>姓名</td>
+                        <td>职务</td>
+                        <td>德</td>
+                        <td>能</td>
+                        <td>勤</td>
+                        <td>绩</td>
+                        <td>廉</td>
+                        <td>得分</td>
+                    </tr>
 
-                </tr>
-                <span th:each="c,userStat : ${cadreByAlias}">
-                    <tr class="select">
-                    <td th:text="${userStat.index+1}"></td>
+                    <span th:each="c,userStat : ${cadre}">
+                        <tr class="select">
+                            <td th:text="${userStat.index+1}"></td>
 
-                    <td><a th:href="@{'/vote/showInfo?id='+${c.id}+'&name='+${c.cadreName}}"
-                           th:text="${c.cadreName}" target="_blank"
-                           style="color: #01AAED;text-decoration: underline;"></a>
-                    </td>
+                            <td><a th:href="@{'/vote/showInfo?id='+${c.id}+'&name='+${c.cadreName}}"
+                                   th:text="${c.cadreName}" target="_blank"
+                                   style="color: #01AAED;text-decoration: underline;"></a>
+                            </td>
 
-                    <td th:text="${c.job}"></td>
-                    <td onmouseover="check()">
-                        <select name="virtue">
-                            <option value=""></option>
-                            <option value="1">好</option>
-                            <option value="2" selected>较好</option>
-                            <option value="3">一般</option>
-                            <option value="4">差</option>
-                        </select>
-
-                    </td>
-                    <td onmouseover="check()">
-                        <select name="ability">
-                            <option value=""></option>
-                            <option value="1">好</option>
-                            <option value="2" selected>较好</option>
-                            <option value="3">一般</option>
-                            <option value="4">差</option>
-                        </select>
-                    </td>
-                    <td onmouseover="check()">
-                        <select name="diligence">
-                            <option value=""></option>
-                            <option value="1">好</option>
-                            <option value="2" selected>较好</option>
-                            <option value="3">一般</option>
-                            <option value="4">差</option>
-                        </select>
-                    </td>
-                    <td onmouseover="check()">
-                        <select name="feats">
-                            <option value=""></option>
-                            <option value="1">好</option>
-                            <option value="2" selected>较好</option>
-                            <option value="3">一般</option>
-                            <option value="4">差</option>
-                        </select>
-                    </td>
-                    <td onmouseover="check()">
-                        <select name="honest">
-                            <option value=""></option>
-                            <option value="1">好</option>
-                            <option value="2" selected>较好</option>
-                            <option value="3">一般</option>
-                            <option value="4">差</option>
-                        </select>
-                    </td>
-                    <td>0</td>
-                </tr>
-                </span>
+                            <td th:text="${c.job}"></td>
+                                <td onmouseleave="check()">
+                                    <select name="virtue" th:id="virtue+(${userStat.index+1})">
+                                        <option></option>
+                                        <option value="1" selected>好</option>
+                                        <option value="2">较好</option>
+                                        <option value="3">一般</option>
+                                        <option value="4">差</option>
+                                    </select>
+                                </td>
+                                <td onmouseleave="check()">
+                                    <select name="ability" th:id="ability+(${userStat.index+1})">
+                                        <option></option>
+                                        <option value="1" selected>好</option>
+                                        <option value="2">较好</option>
+                                        <option value="3">一般</option>
+                                        <option value="4">差</option>
+                                    </select>
+                                </td>
+                                <td onmouseleave="check()">
+                                    <select name="diligence" th:id="diligence+(${userStat.index+1})">
+                                        <option></option>
+                                        <option value="1" selected>好</option>
+                                        <option value="2">较好</option>
+                                        <option value="3">一般</option>
+                                        <option value="4">差</option>
+                                    </select>
+                                </td>
+                                <td onmouseleave="check()">
+                                    <select name="feats" th:id="feats+(${userStat.index+1})">
+                                        <option></option>
+                                        <option value="1" selected>好</option>
+                                        <option value="2">较好</option>
+                                        <option value="3">一般</option>
+                                        <option value="4">差</option>
+                                    </select>
+                                </td>
+                                <td onmouseleave="check()">
+                                    <select name="honest" th:id="honest+(${userStat.index+1})">
+                                        <option></option>
+                                        <option value="1" selected>好</option>
+                                        <option value="2">较好</option>
+                                        <option value="3">一般</option>
+                                        <option value="4">差</option>
+                                    </select>
+                                </td>
+                            <td>0</td>
+                        </tr>
+                    </span>
                 </tbody>
             </table>
             <div style="width: 116px;height: 46px;margin: 15px auto">
@@ -146,10 +117,101 @@
                     立即提交
                 </button>
             </div>
-
+            <div style="position: fixed;right: 5px;bottom: 1%;">
+                <div class="dateSign" onclick="dataSave()"><div class="dateSignFont">数据<br>备份</div></div>
+                <div class="dateSign" onclick="dataRecover()"><div class="dateSignFont">数据<br>恢复</div></div>
+            </div>
         </form>
     </div>
     <script th:inline="javascript">
+        //数据备份云端
+        function dataSave(){
+            var tb_td = document.querySelectorAll(".select");
+            var len = tb_td.length, k = 0, index_num;
+            var pin = [[${participant.pin}]], alias = [[${participant.voteAlias}]];
+            var scorelist = [];
+            var flag = true;
+            for (; k <= len - 1; k++) {
+                var virtue = 0, ability = 0, diligence = 0, feats = 0, honest = 0, score = 0;
+                var cadreName = tb_td[k].children[1].textContent;
+                virtue = tb_td[k].children[3].children[0].selectedIndex;
+                ability = tb_td[k].children[4].children[0].selectedIndex;
+                diligence = tb_td[k].children[5].children[0].selectedIndex;
+                feats = tb_td[k].children[6].children[0].selectedIndex;
+                honest = tb_td[k].children[7].children[0].selectedIndex;
+                score = tb_td[k].children[8].innerHTML;
+
+                scorelist.push({
+                    "pin": pin,
+                    "cadreName": cadreName,
+                    "alias": alias,
+                    "virtue": virtue,
+                    "ability": ability,
+                    "diligence": diligence,
+                    "feats": feats,
+                    "honest": honest
+                });
+            }
+            var s = JSON.stringify(scorelist);
+            layer.confirm("是否开始数据备份??", {skin: "layui-layer-lan", icon: 3, title: "提示", anim: 5}, function (index) {
+                $.ajax({
+                    url: "/vote/dataSave",
+                    async: false,
+                    data: s,
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        if(data.res){
+                            layer.msg("数据备份成功");
+                            layer.close(index);
+                        }
+                        else layer.msg("数据备份失败");
+                    },
+                    error: function (data) {
+                        layer.msg("输入信息有误,请重试!",function () {
+                            location.replace(location.href);
+                        });
+                    }
+                })
+            })
+        }
+        //数据恢复
+        function dataRecover(){
+            layer.confirm("是否开始数据恢复??", {skin: "layui-layer-lan", icon: 3, title: "提示", anim: 5},function (index) {
+                $.ajax({
+                    url: "/vote/dataRecover",
+                    async: false,
+                    data: [[${participant.pin}]],
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        var tb = document.querySelectorAll(".select");
+                        var rowEnd = tb.length;
+                        var arr = ["好","较好","一般","差"];
+                        if(data.length = rowEnd){
+                            for(var i = 0; i < rowEnd; i++){
+                                var dataA = data[i];
+                                for (var j = 3; j <= 7; j++){
+                                    tb[i].children[j].children[0].value=dataA[j-3];
+                                    tb[i].children[j].children[1].children[0].children[0].value=arr[dataA[j-3]-1];
+                                }
+                            }
+                            layer.msg("数据恢复成功！",{icon:6});
+                            check();
+                        }
+                        else layer.msg("数据获取失败,请重试!",);
+                    },
+                    error: function (data) {
+                        layer.msg("输入信息有误,请重试!",function () {
+                            location.replace(location.href);
+                        });
+                    }
+                })
+            })
+
+        }
         //Demo
         layui.use(['form', 'layer'], function () {
             var form = layui.form;
@@ -164,7 +226,6 @@
                 for (; k <= len - 1; k++) {
                     var virtue = 0, ability = 0, diligence = 0, feats = 0, honest = 0, score = 0;
                     var cadreName = tb_td[k].children[1].textContent;
-                    var job = tb_td[k].children[2].innerHTML;
                     virtue = tb_td[k].children[3].children[0].selectedIndex;
                     ability = tb_td[k].children[4].children[0].selectedIndex;
                     diligence = tb_td[k].children[5].children[0].selectedIndex;
@@ -240,7 +301,11 @@
             }
         }
 
-        window.onload = check();
+        window.onload = beginf();
+
+        function beginf() {
+            check();
+        }
 
         //获取所有的列,并赋予每个表格颜色
         function check() {
@@ -262,12 +327,8 @@
                     } else if (index == "4") {
                         tb_td[k].children[j].style.backgroundColor = "#ff3300"
                         score += 50;
-                    } else {
-                        count--;
-                        tb_td[k].children[j].style.backgroundColor = "rgba(23,23,23,0.45)"
                     }
                 }
-
                 tb_td[k].children[8].innerHTML = score / count;
             }
         }
@@ -296,9 +357,13 @@
                 error: function (data) {
                     layer.msg("输入信息有误,请重试!")
                 }
-
             })
         }
+        //防止页面后退
+        history.pushState(null, null, document.URL);
+        window.addEventListener('popstate', function () {
+            history.pushState(null, null, document.URL);
+        });
     </script>
 </div>
 </body>

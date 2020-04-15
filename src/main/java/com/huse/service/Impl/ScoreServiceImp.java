@@ -1,7 +1,8 @@
-package com.huse.service;
+package com.huse.service.Impl;
 
 import com.huse.mapper.ScoreMapper;
 import com.huse.pojo.Score;
+import com.huse.service.ScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +60,11 @@ public class ScoreServiceImp implements ScoreService {
     }
 
     @Override
+    public List<String> fuzzyQueryRS(String info, String alias) {
+        return scoreMapper.fuzzyQueryRS(info,alias);
+    }
+
+    @Override
     public List<String> selectAllCadreName(String alias) {
         return scoreMapper.selectAllCadreName(alias);
     }
@@ -66,6 +72,26 @@ public class ScoreServiceImp implements ScoreService {
     @Override
     public List<Score> selectByCadreName(String cadreName) {
         return scoreMapper.selectByCadreName(cadreName);
+    }
+
+    @Override
+    public List<Score> selectLeaderVoteNumByName(String cadreName) {
+        return scoreMapper.selectLeaderVoteNumByName(cadreName);
+    }
+
+    @Override
+    public List<Score> selectOtherVoteNumByName(String cadreName) {
+        return scoreMapper.selectOtherVoteNumByName(cadreName);
+    }
+
+    @Override
+    public List<String> selectByRole(String role) {
+        return scoreMapper.selectByRole(role);
+    }
+
+    @Override
+    public List<Score> selectByPin(String pin) {
+        return scoreMapper.selectByPin(pin);
     }
 
 

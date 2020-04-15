@@ -3,6 +3,8 @@ server:
   port: 8008
   servlet:
     path: /
+    session:
+      timeout: 2592000 #(s)配置session的超时处理
   tomcat:
     uri-encoding: UTF-8
 #设置日志的显示级别,level中是以<k,v>存储的
@@ -14,8 +16,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/huse?useUnicode=true&characterEncoding=UTF-8
-    username: root
-    password: 123456
+    username: gbpc
+    password: husewrs0746
   #thymeleaf的配置
   thymeleaf:
     cache: false

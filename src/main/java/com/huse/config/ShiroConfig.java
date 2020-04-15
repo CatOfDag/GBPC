@@ -3,21 +3,24 @@ package com.huse.config;
 import com.huse.utils.UserRealm;
 import com.huse.utils.UserRealm2;
 import org.apache.shiro.codec.Base64;
-import org.apache.shiro.realm.Realm;
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.SessionListener;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.apache.shiro.mgt.SecurityManager;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -29,10 +32,10 @@ public class ShiroConfig {
      */
     @Bean
     public SimpleCookie rememberMeCookie(){
+
         //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
         SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
         //setcookie的httponly属性如果设为true的话，会增加对xss防护的安全系数。它有以下特点：
-
         //setcookie()的第七个参数
         //设为true后，只能通过http访问，javascript无法访问
         //防止xss读取cookie
@@ -75,10 +78,10 @@ public class ShiroConfig {
      *
      * @return
      */
+
     @Bean
     public UserRealm userRealm() {
         UserRealm userRealm = new UserRealm();
-//        userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return userRealm;
     }
 
@@ -87,26 +90,33 @@ public class ShiroConfig {
         UserRealm2 userRealm2 = new UserRealm2();
         return userRealm2;
     }
+
+    @Bean
+    public SessionDAO sessionDAO(){
+        return new EnterpriseCacheSessionDAO();
+    }
     /**
      * 安全管理器
      * 注：使用shiro-spring-boot-starter 1.4时，返回类型是SecurityManager会报错，直接引用shiro-spring则不报错
-     *
      * @return
      */
+
     @Bean
-    public DefaultWebSecurityManager securityManager() {
-        List<Realm> realms = new ArrayList<>();
-        //多realm认证需要使用setRealms方法将各个realm添加进去
-        realms.add(userRealm());
-        realms.add(userRealm2());
+    public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-//        securityManager.setRealms(realms);
         securityManager.setRealm(userRealm());
         securityManager.setRememberMeManager(rememberMeManager());
+        securityManager.setSessionManager(sessionManager());
         return securityManager;
     }
-
-
+    @Bean
+    public DefaultWebSessionManager sessionManager(){
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setSessionDAO(sessionDAO());
+        sessionManager.setGlobalSessionTimeout(259200000L);/*ms*/
+        Collection<SessionListener> listeners = new ArrayList<SessionListener>();
+        return sessionManager;
+    }
     //开启shiro注解权限控制
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
@@ -125,14 +135,8 @@ public class ShiroConfig {
         return defaultAAP;
     }
     /**
-     *
-     * 403页面跳转问题
-     *
-     * */
-
-    /**
      * 设置过滤规则
-     *
+     *403页面跳转问题
      * @param securityManager
      * @return
      */
@@ -159,9 +163,9 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/cadre/cadreInfo","roles[cadre]");
         filterChainDefinitionMap.put("/participant/parVote","roles[par]");
         filterChainDefinitionMap.put("/participant/checkPIN","anon");
+        filterChainDefinitionMap.put("/test/**","anon");
         filterChainDefinitionMap.put("/**", "user");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
-
 }

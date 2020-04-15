@@ -137,4 +137,7 @@
   <select id="selectByPIN" resultMap="BaseResultMap" parameterType="java.lang.String">
     SELECT * FROM huse_participant WHERE PIN = #{PIN}
   </select>
+  <select id="selectByRole" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT * FROM huse_participant WHERE role = #{role}
+  </select>
 </mapper>

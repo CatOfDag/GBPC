@@ -77,7 +77,7 @@
             var layEvent = obj.event;
             if (layEvent === "edit") {
                 layer.open({
-                    title: "编辑用户",
+                    title: "修改投票项目信息",
                     type: 2,
                     shade: false,
                     maxmin: true,
@@ -86,7 +86,7 @@
                     content: "edit?id="+data.id,
                     zIndex: layer.zIndex,
                     end: function () {
-                        $(".layui-laypage-btn")[0].click();
+                        $(".layui-btn")[0].click();
                     }
                 });
             } else if (layEvent === "del") {
@@ -125,7 +125,7 @@
                     }
                     console.log("选择的id-->" + idsStr);
                     layer.msg("操作成功！", {icon: 1, time: 1000}, function () {
-                        $(".layui-laypage-btn")[0].click();
+                        $(".layui-btn")[0].click();
                     });
                 } else {
                     layer.msg("未选择有效数据", {
@@ -138,7 +138,7 @@
 
         $("#addUser").click(function () {
             layer.open({
-                title: "添加用户",
+                title: "新建投票项目",
                 type: 2,
                 shade: false,
                 maxmin: true,
@@ -148,7 +148,7 @@
                 content: "add",
                 zIndex: layer.zIndex,
                 end: function () {
-                    $(".layui-laypage-btn")[0].click();
+                    $(".layui-btn")[0].click();
                 }
             });
         })

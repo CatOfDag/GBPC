@@ -37,10 +37,9 @@
         <button class="layui-btn layui-btn-warm" id="batchimport" style="margin-left: 0px">
             <i class="layui-icon">&#xe67c;</i>批量导入
         </button>
-        <button class="layui-btn" id="addUser" style="margin-left: 1px">
+        <button class="layui-btn" id="addUser">
             <i class="layui-icon">&#xe61f;</i>添加干部
         </button>
-
         <a th:href="@{/sys_file/gb.xlsx}" style="display: block;float: right;line-height: 40px;width: 100px;height: 40px;
     color: #1c20d0;text-decoration: underline;">导入模板下载</a>
     </okToolbar>
@@ -70,6 +69,9 @@
                         url: "getCadreLists"
                     });
                 }
+                else{
+                    layer.msg(res.info);
+                }
             }
         });
 
@@ -89,20 +91,20 @@
             url: "getCadreLists",
             limit: 10,
             page: true,
+            loading: true,
             cols: [[
                 {type: "checkbox"},
                 {field: "id", title: "ID", width: 80, sort: true},
-                {field: "cadreName", title: "干部姓名", width: 100},
-                {field: "password", title: "密码", width: 120},
-                {field: "job", title: "职务", width: 150},
-                {field: "role", title: "身份", width: 100},
+                {field: "cadreName", title: "干部姓名", width: 120},
+                {field: "password", title: "密码", width: 100},
+                {field: "job", title: "职务", width: 295},
+                {field: "role", title: "身份", width: 185},
                 {field: "state", title: "状态", width: 85},
                 {field: "avoteLias", title: "参与的投票项目", width: 200},
-                {field: "desc", title: "简介", width: 200},
+                {field: "desc", title: "描述", width: 200},
                 {title: "操作", width: 200, align: 'center', templet: "#operationTpl"}
             ]],
             done: function (res, curr, count) {
-                $("#countNum").text(count);
             }
         });
 
@@ -112,14 +114,13 @@
                 url: adminListUrl
                 , where: {}
             });
-            var index = layer.load(2, {time: 1 * 1000});
+            var index = layer.load(2, {time: 1000});
             return false;
         });
 
         table.on("tool(tableFilter)", function (obj) {
             var data = obj.data;
             var layEvent = obj.event;
-            console.log(JSON.stringify(data.id));
             if (layEvent === "edit") {
                 layer.open({
                     title: "编辑干部信息",
@@ -212,6 +213,7 @@
                 content: "add",
                 zIndex: layer.zIndex,
                 end: function () {
+                    location.reload();
                     $(".layui-laypage-btn")[0].click();
                 }
             });

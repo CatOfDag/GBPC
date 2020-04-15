@@ -34,7 +34,8 @@
                     <dd><a href="javascript:;" path="userCenter" tab-id="0-1">个人中心<span class="layui-badge-dot"></span></a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="/logout">退出</a></li>
+            <!--<li class="layui-nav-item"><a th:href="@{'/logout/out?user='+${admin.adminName}}" target="_self">退出</a></li>-->
+            <li class="layui-nav-item"><a href="/logout" target="_self">退出</a></li>
         </ul>
     </div>
     <!--左侧导航区域-->
@@ -45,7 +46,7 @@
                     <a class="" href="javascript:;">
                         <i class="iconfont icon-xiazai"></i> 投票管理
                     </a>
-                    <dl class="layui-nav-child">
+                    <dl class="layui-nav-child" th:if="${admin?.role == 'su'}">
                         <dd><a href="javascript:;" path="vote/votelist" tab-id="1-1"><i class="iconfont icon-xiazai"></i> 投票项目</a></dd>
                     </dl>
                     <dl class="layui-nav-child">
@@ -61,7 +62,7 @@
                         <dd><a href="javascript:;" path="cadre/cadrelist" tab-id="2-1"><i class="iconfont icon-wenzhang2"></i> 参评干部列表</a></dd>
                     </dl>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" path="cadre/cadreInformation" tab-id="2-2"><i class="iconfont icon-wenzhang2"></i> 参评人员详情</a></dd>
+                        <dd><a href="javascript:;" path="cadre/cadreInformation" tab-id="2-2"><i class="iconfont icon-wenzhang2"></i> 参评干部详情</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
@@ -97,7 +98,9 @@
                         <i class="iconfont icon-weibiaoti35"></i> 投票结果
                     </a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" path="result/resultlist" tab-id="6-1"><i class="iconfont icon-weibiaoti35"></i> 生成结果表</a></dd>
+                        <dd><a href="javascript:;" path="result/LeaderResultlist" tab-id="6-1"><i class="iconfont icon-weibiaoti35"></i> 校党委委员投票统计</a></dd>
+                        <dd><a href="javascript:;" path="result/OtherResultlist" tab-id="6-2"><i class="iconfont icon-weibiaoti35"></i> 其他人员投票统计</a></dd>
+                        <dd><a href="javascript:;" path="result/Resultlist" tab-id="6-3"><i class="iconfont icon-weibiaoti35"></i> 投票总结果</a></dd>
                     </dl>
                 </li>
             </ul>

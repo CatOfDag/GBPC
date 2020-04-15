@@ -9,9 +9,6 @@ public interface CadreDatailMapper {
 
     int insert(CadreDatail record);
 
-
-    int insertname(CadreDatail record);
-
     int insertSelective(CadreDatail record);
 
     CadreDatail selectByPrimaryKey(Integer id);

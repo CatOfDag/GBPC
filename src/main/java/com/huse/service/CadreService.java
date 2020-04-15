@@ -25,9 +25,15 @@ public interface CadreService {
 
     Cadre selectByName(String name);
 
-    Cadre selectByNameID(String name, String id);//手贱，应该是selectByNamePassword()
+    Cadre selectByNamePassword(String name, String id);
+
+    String selectRoleByName(String name);
     //按投票别名查找
     List<Cadre> selectByAlias(String alias);
 
-    int updateHuseCadreJob(String newpost,String cadre_name);//updateByNameJob的附带必要操作
+    int updatePwd(String cadreName,String newPassword);//修改密码
+
+    List<Cadre> selectFirAndSecCategory(String alias);//获取第一类和第二类干部角色
+
+    List<Cadre> selectThirdCategory(String alias,String role);//获取第三类干部角色
 }

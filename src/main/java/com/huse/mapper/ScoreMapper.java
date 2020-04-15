@@ -26,5 +26,15 @@ public interface ScoreMapper {
 
     List<String> selectAllCadreName(@Param("alias") String alias);
 
+    List<String> fuzzyQueryRS(@Param("info") String info,String alias);
+
+    List<Score> selectOtherVoteNumByName(String alias);
+
+    List<Score> selectLeaderVoteNumByName(String alias);
+
     List<Score> selectByCadreName(String cadreName);
+
+    List<String> selectByRole(String role);
+
+    List<Score> selectByPin(String pin);
 }

@@ -26,16 +26,29 @@
 <!--        隐藏域-->
         <input type="text" hidden name="id">
         <input type="text" hidden name="pin">
-        <input type="text" hidden name="state">
         <div class="layui-form-item">
             <label class="layui-form-label">身份</label>
             <div class="layui-input-block">
                 <select name="role" lay-filter="role" lay-verify="required">
                     <option value=""></option>
-                    <option value="校领导">校领导</option>
-                    <option value="干部">干部</option>
-                    <option value="教师">教师</option>
-                    <option value="群众">群众</option>
+                    <option value="校党委委员">校党委委员</option>
+                    <option value="各界代表">各界代表</option>
+                    <option value="普通中层干部">普通中层干部</option>
+                    <option value="特殊中层干部">特殊中层干部</option>
+                    <option value="经济与管理学院">经管学院教职工、学生代表</option>
+                    <option value="人文与社会科学学院">人文学院教职工、学生代表</option>
+                    <option value="马克思主义学院">马思学院教职工、学生代表</option>
+                    <option value="体育学院">体育学院教职工、学生代表</option>
+                    <option value="外国语学院">外语学院教职工、学生代表</option>
+                    <option value="传媒学院">传媒学院教职工、学生代表</option>
+                    <option value="理学院">理学院教职工、学生代表</option>
+                    <option value="电子与信息工程学院">电信学院教职工、学生代表</option>
+                    <option value="土木与环境工程学院">土环学院教职工、学生代表</option>
+                    <option value="化学与生物工程学院">化生学院教职工、学生代表</option>
+                    <option value="音乐与舞蹈学院">音舞学院教职工、学生代表</option>
+                    <option value="美术与艺术设计学院">美术学院教职工、学生代表</option>
+                    <option value="旅游与文化产业学院">旅管学院教职工、学生代表</option>
+                    <option value="国学院">国学院教职工、学生代表</option>
                 </select>
             </div>
         </div>
@@ -47,6 +60,15 @@
                     <span th:each="v : ${votes}">
                         <option th:value="${v.alias}"><span th:text="${v.alias}"></span></option>
                     </span>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <select type="" name="state" id="state" lay-verify="required" >
+                    <option value="true">true</option>
+                    <option value="false">false</option>
                 </select>
             </div>
         </div>

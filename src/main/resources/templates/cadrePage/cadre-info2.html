@@ -5,6 +5,11 @@
     <title>详情</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
+<style type="text/css">
+    .edit-css{width: 100%;height: 800px;font-family: 仿宋;font-size: 18px;font-weight:inherit;background: #FAFAFA;}
+    .edit-css td{border:inset 1px black;height: 50px;width: 100px;text-align: center;}
+    .edit-css textarea{font-size: 18px;margin:0 auto;font-weight: initial;resize: none;margin-top: 5px;border: 0px;width: 98%;height: 98%;}
+</style>
 <body>
 <div th:include="publictemplate :: css"></div>
 <div class="layui-header" style="background: #393d49">
@@ -14,58 +19,61 @@
     <blockquote class="layui-elem-quote" style="text-align: center;">
         <h2><span class="x-red" th:text="${cadre.cadre_name}"></span> 的信息页面！</h2>
     </blockquote>
-    <table class="layui-table" style="font-size: large;">
+    <table class="edit-css" style="font-size: large;">
         <colgroup> <col width="250"><col></colgroup>
         <tbody>
+
         <tr>
-            <td class="modify-td">姓名</td><td th:text="${cadre?.cadre_name}"></td>
-            <td class="modify-td">性别</td><td th:text="${cadre?.sex}"></td>
-            <td class="modify-td">出生年月</td><td th:text="${cadre?.birth}"></td>
-            <td colspan="2" rowspan="4">
+            <td>姓名</td><td th:text="${cadre?.cadre_name}"></td>
+            <td>性别</td><td style="width: 100px" th:text="${cadre?.sex}"></td>
+            <td>出身年月</td>
+            <td style="width: 140px" th:text="${cadre?.birth}"></td>
+            <td colspan="2" rowspan="3">
                 <p align="center">
                     <span th:if="${cadreInfo==null or cadreInfo.headerPic==null}">
-                        <img th:src="@{/headpic/nopic.png}" height="170px">
+                        <img th:src="@{/headportrait/nopic.png}" height="170px">
                     </span>
                     <span th:if="${cadreInfo != null and cadreInfo.headerPic!=null}">
-                        <img  th:src="@{/headportrait/{headpic}(headpic=${cadreInfo.headerPic})}" height="170px">
+                        <img th:src="@{/headpic/{headpic}(headpic=${cadreInfo.headerPic})}" width="122px" height="170px" style="margin: 2px;">
                     </span>
                 </p>
             </td>
         </tr>
         <tr>
-            <td class="modify-td">民族</td><td th:text="${cadre?.nation}"></td>
-            <td class="modify-td">籍贯</td><td th:text="${cadre?.nativeplace}"></td>
-            <td class="modify-td">出生地</td><td th:text="${cadre?.brithplace}"></td>
+            <td>民族</td><td th:text="${cadre?.nation}"></td>
+            <td>籍贯</td><td th:text="${cadre?.nativeplace}"></td>
+            <td>健康状况</td><td th:text="${cadre?.health}"></td>
         </tr>
         <tr>
-            <td class="modify-td">入党时间</td><td th:text="${cadre?.nativeplace}"></td>
-            <td class="modify-td">参加工作时间</td><td th:text="${cadre?.worktime}"></td>
-            <td class="modify-td">健康状况</td><td th:text="${cadre?.health}"></td>
+            <td>政治面貌</td><td th:text="${cadre?.politicalface}"></td>
+            <td>参加工作时间</td><td th:text="${cadre?.worktime}"></td>
+            <td>专业技术职务</td><td th:text="${cadre?.majorpost}"></td>
         </tr>
         <tr>
-            <td class="modify-td">专业技术职务</td><td colspan="2" th:text="${cadre?.majorpost}"></td>
-            <td class="modify-td">熟悉专业有何专长</td><td colspan="2" th:text="${cadre?.expertise}"></td>
+            <td rowspan="2">学历学位</td>
+            <td>全日制教育</td><td colspan="2" th:text="${cadre?.seducation}"></td>
+            <td>毕业院校及专业</td><td colspan="2" th:text="${cadre?.seducationdetail}"></td>
         </tr>
         <tr>
-            <td class="modify-td" rowspan="2">学历学位</td>
-            <td class="modify-td">全日制教育</td><td colspan="2" th:text="${cadre?.seducation}"></td>
-            <td class="modify-td">毕业院校系及专业</td><td colspan="2" th:text="${cadre?.seducationdetail}"></td>
+            <td>在职教育</td><td colspan="2" th:text="${cadre?.weducation}"></td>
+            <td>毕业院校及专业</td><td colspan="2" th:text="${cadre?.weducationdetail}"></td>
         </tr>
         <tr>
-            <td class="modify-td">在职教育</td><td colspan="2" th:text="${cadre?.weducation}"></td>
-            <td class="modify-td">毕业院校系及专业</td><td colspan="2" th:text="${cadre?.weducationdetail}"></td>
+            <td>现任职务及任职时间</td><td>现任职务</td><td colspan="2" th:text="${cadre?.newpost}"></td>
+            <td>任职时间</td><td colspan="2" th:text="${cadre?.appointtime}"></td>
         </tr>
-        <tr><td class="modify-td">现任职务</td><td colspan="6" th:text="${cadre?.newpost}"></td><tr>
-        <tr><td class="modify-td">拟任职务</td><td colspan="6" th:text="${cadre?.wantpost}"></td><tr>
-        <tr><td class="modify-td">拟免职务</td><td colspan="6" th:text="${cadre?.falsepost}"></td><tr>
-        <tr><td class="modify-td">简&nbsp&nbsp&nbsp&nbsp&nbsp历</td><td colspan="6" th:text="${cadre?.resume}"></td><tr>
-        <tr><td class="modify-td">惩奖情况</td><td colspan="6" th:text="${cadre?.punishaward}"></td><tr>
-        <tr><td class="modify-td">年度考核结果</td><td colspan="6" th:text="${cadre?.annualass}"></td><tr>
-        <tr><td class="modify-td">任免理由</td><td colspan="6" th:text="${cadre?.reason}"></td></tr>
+        <tr>
+            <td style="height: 180px">本年度所做的主要工作(条目式，500字以内)</td>
+            <td colspan="6"><textarea readonly th:text="${cadre?.resume}"></textarea></td>
+        </tr>
+        <tr>
+            <td style="height: 120px">本年度所获主要奖励(条目式)</td>
+            <td colspan="6"><textarea readonly th:text="${cadre?.punishaward}"></textarea></td>
+        </tr>
+
         <tr>
             <td class="modify-td">附件下载</td>
-            <td colspan="6">
-
+            <td colspan="6" style="text-align: left">
                 <span th:if="${cadreInfo==null or cadreInfo.filePath==null}">
                         <a>无附件</a>
                     </span>

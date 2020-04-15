@@ -1,7 +1,8 @@
-package com.huse.service;
+package com.huse.service.Impl;
 
 import com.huse.mapper.InfoMapper;
 import com.huse.pojo.Info;
+import com.huse.service.InfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

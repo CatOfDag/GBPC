@@ -1,8 +1,8 @@
 package com.huse.pojo;
 
-import java.io.Serializable;
+import com.huse.utils.BeanTrim;
 
-public class Cadre implements Serializable {
+public class Cadre{
     private Integer id;
 
     private String cadreName;
@@ -81,6 +81,14 @@ public class Cadre implements Serializable {
 
     public void setAvoteLias(String avoteLias) {
         this.avoteLias = avoteLias == null ? null : avoteLias.trim();
+    }
+
+    public Cadre(){/*前台传该类型值到后台对应方法，引起无参构造，从而清除Bean里面所有String类型值的前后空格*/
+        try {
+            BeanTrim.trim(this);
+        }catch (Exception e){
+            System.out.println("------BeanTrim_Exception-----------------");
+        }
     }
 
     @Override

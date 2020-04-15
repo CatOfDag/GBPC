@@ -21,6 +21,8 @@ public interface VoteService {
 
     int count();
 
+    String countOperationVote();
+
     List<Vote> selectAllVote();
 
     Vote selectByAlisa(String alisa);

@@ -1,7 +1,8 @@
-package com.huse.service;
+package com.huse.service.Impl;
 
 import com.huse.mapper.AdminMapper;
 import com.huse.pojo.Admin;
+import com.huse.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

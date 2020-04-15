@@ -1,57 +1,28 @@
 package com.huse.pojo;
 
-import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
-import java.lang.Integer;
 
 
 public class CadreDatail implements Serializable {
     private Integer id;
-
+    private String vote_alia;
     private String cadre_name;
-
     private String sex;
-
     private String birth;
-
     private String nation;
-
     private String nativeplace;
-
-    private String brithplace;
-
-    private String nativetytime;
-
-    private String worktime;
-
     private String health;
-
+    private String politicalface;
+    private String worktime;
     private String majorpost;
-
-    private String expertise;
-
     private String seducation;
-
     private String seducationdetail;
-
     private String weducation;
-
     private String weducationdetail;
-
     private String newpost;
-
-    private String wantpost;
-
-    private String falsepost;
-
+    private String appointtime;
     private String resume;
-
     private String punishaward;
-
-    private String annualass;
-
-    private String reason;
 
     public Integer getId() {
         return id;
@@ -59,6 +30,14 @@ public class CadreDatail implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getVote_alia() {
+        return vote_alia;
+    }
+
+    public void setVote_alia(String vote_alia) {
+        this.vote_alia = vote_alia;
     }
 
     public String getCadre_name() {
@@ -77,7 +56,7 @@ public class CadreDatail implements Serializable {
         this.sex = sex;
     }
 
-    public String getBirth() {
+    public String  getBirth() {
         return birth;
     }
 
@@ -101,20 +80,20 @@ public class CadreDatail implements Serializable {
         this.nativeplace = nativeplace;
     }
 
-    public String getBrithplace() {
-        return brithplace;
+    public String getHealth() {
+        return health;
     }
 
-    public void setBrithplace(String brithplace) {
-        this.brithplace = brithplace;
+    public void setHealth(String health) {
+        this.health = health;
     }
 
-    public String getNativetytime() {
-        return nativetytime;
+    public String getPoliticalface() {
+        return politicalface;
     }
 
-    public void setNativetytime(String nativetytime) {
-        this.nativetytime = nativetytime;
+    public void setPoliticalface(String politicalface) {
+        this.politicalface = politicalface;
     }
 
     public String getWorktime() {
@@ -125,28 +104,12 @@ public class CadreDatail implements Serializable {
         this.worktime = worktime;
     }
 
-    public String getHealth() {
-        return health;
-    }
-
-    public void setHealth(String health) {
-        this.health = health;
-    }
-
     public String getMajorpost() {
         return majorpost;
     }
 
     public void setMajorpost(String majorpost) {
         this.majorpost = majorpost;
-    }
-
-    public String getExpertise() {
-        return expertise;
-    }
-
-    public void setExpertise(String expertise) {
-        this.expertise = expertise;
     }
 
     public String getSeducation() {
@@ -189,20 +152,12 @@ public class CadreDatail implements Serializable {
         this.newpost = newpost;
     }
 
-    public String getWantpost() {
-        return wantpost;
+    public String getAppointtime() {
+        return appointtime;
     }
 
-    public void setWantpost(String wantpost) {
-        this.wantpost = wantpost;
-    }
-
-    public String getFalsepost() {
-        return falsepost;
-    }
-
-    public void setFalsepost(String falsepost) {
-        this.falsepost = falsepost;
+    public void setAppointtime(String appointtime) {
+        this.appointtime = appointtime;
     }
 
     public String getResume() {
@@ -221,20 +176,28 @@ public class CadreDatail implements Serializable {
         this.punishaward = punishaward;
     }
 
-    public String getAnnualass() {
-        return annualass;
+    public CadreDatail(Integer id,String vote_alia, String cadre_name, String newpost) {
+        this.id = id;
+        this.vote_alia = vote_alia;
+        this.cadre_name = cadre_name;
+        this.newpost = newpost;
+        this.sex = null;
+        this.birth = null;
+        this.nation = null;
+        this.nativeplace = null;
+        this.health = null;
+        this.politicalface = null;
+        this.worktime = null;
+        this.majorpost = null;
+        this.seducation = null;
+        this.seducationdetail = null;
+        this.weducation = null;
+        this.weducationdetail = null;
+        this.appointtime = null;
+        this.resume = null;
+        this.punishaward = null;
     }
-
-    public void setAnnualass(String annualass) {
-        this.annualass = annualass;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
+    public CadreDatail() {
     }
 
     @Override
@@ -246,23 +209,18 @@ public class CadreDatail implements Serializable {
                 ", birth='" + birth + '\'' +
                 ", nation='" + nation + '\'' +
                 ", nativeplace='" + nativeplace + '\'' +
-                ", brithplace='" + brithplace + '\'' +
-                ", nativetytime='" + nativetytime + '\'' +
-                ", worktime='" + worktime + '\'' +
                 ", health='" + health + '\'' +
+                ", politicalface='" + politicalface + '\'' +
+                ", worktime='" + worktime + '\'' +
                 ", majorpost='" + majorpost + '\'' +
-                ", expertise='" + expertise + '\'' +
                 ", seducation='" + seducation + '\'' +
                 ", seducationdetail='" + seducationdetail + '\'' +
                 ", weducation='" + weducation + '\'' +
                 ", weducationdetail='" + weducationdetail + '\'' +
                 ", newpost='" + newpost + '\'' +
-                ", wantpost='" + wantpost + '\'' +
-                ", falsepost='" + falsepost + '\'' +
+                ", appointtime='" + appointtime + '\'' +
                 ", resume='" + resume + '\'' +
                 ", punishaward='" + punishaward + '\'' +
-                ", annualass='" + annualass + '\'' +
-                ", reason='" + reason + '\'' +
                 '}';
     }
 }

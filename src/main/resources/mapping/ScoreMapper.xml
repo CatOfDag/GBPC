@@ -169,6 +169,19 @@
     </where>
   </select>
 
+  <select id="fuzzyQueryRS" resultType="java.lang.String" parameterType="java.lang.String">
+    SELECT cadre_name FROM huse_score
+    <where>
+      <if test="info !=null and info !=''">
+        cadre_name like '%${info}%'
+      </if>
+
+      <if test="alias != null and alias !=''">
+        and alias = #{alias};
+      </if>
+    </where>
+  </select>
+
   <select id="selectAllCadreName" resultType="java.lang.String" parameterType="java.lang.String">
     SELECT DISTINCT cadre_name FROM  huse_score
     <where>
@@ -180,5 +193,24 @@
   <select id="selectByCadreName" resultMap="BaseResultMap" parameterType="java.lang.String">
     SELECT * FROM huse_score WHERE cadre_name = #{cadreName}
   </select>
-
+  <select id="selectLeaderVoteNumByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT * FROM huse_score WHERE cadre_name = #{cadreName} and PIN in (
+			SELECT PIN
+			from huse_participant
+			where role = '校党委委员'
+		)
+  </select>
+  <select id="selectOtherVoteNumByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT * FROM huse_score WHERE cadre_name = #{cadreName} and PIN in (
+			SELECT PIN
+			from huse_participant
+			where role != '校党委委员'
+		)
+  </select>
+  <select id="selectByRole" resultType="java.lang.String" parameterType="java.lang.String">
+    SELECT cadre_name FROM huse_cadre WHERE role = #{role}
+  </select>
+  <select id="selectByPin" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT * FROM huse_score where PIN = #{pin}
+  </select>
 </mapper>
